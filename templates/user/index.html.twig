@@ -1,0 +1,40 @@
+{# templates/user/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des utilisateurs
+{% endblock %}
+
+{% block body %}
+	<h1>Liste des utilisateurs</h1>
+	<a href="{{ path('user_add') }}" class="btn btn-primary">Ajouter un utilisateur</a>
+
+	<table>
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Email</th>
+				<th>Role</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for user in users %}
+				<tr>
+					<td>{{ user.id }}</td>
+					<td>{{ user.email }}</td>
+					<td>{{ user.role }}</td>
+					<td>
+						{# <a href="{{ path('user_show', {'id': user.id}) }}">Afficher</a> #}
+						{# <a href="{{ path('user_edit', {'id': user.id}) }}">Modifier</a> #}
+						{# <a href="{{ path('user_delete', {'id': user.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">Supprimer</a> #}
+							<a href="#"> Afficher</a>
+						<a href="#">Modifier</a>
+						<a href="#" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">Supprimer</a>
+
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}
