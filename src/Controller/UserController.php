@@ -11,10 +11,13 @@ use App\Entity\User;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 class UserController extends AbstractController
 {
-    #[Route('/admin', name: 'app_admin')]
+    #[Route('/admin', name: 'admin_index', methods: ["GET"])]
     /**
      * @Route("/admin", name="admin_index", methods={"GET"})
      */
@@ -27,17 +30,20 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/add', name: 'app_admin')]
+    #[Route('/admin/add', name: 'admin_add', methods: ['GET', 'POST'])]
     /**
      * @Route("/admin/add", name="admin_add", methods={"GET","POST"})
      */
     public function add(Request $request, EntityManagerInterface $entityManager)
     {
         $user = new User();
+        $defaultPassword = "unsa_white_knight_pass_word_very_long";
 
         $form = $this->createFormBuilder($user)
             ->add('email', EmailType::class)
-            ->add('password', PasswordType::class)
+            ->add('password', HiddenType::class, [
+                'data' => $defaultPassword,
+            ])
             ->add('role', ChoiceType::class, [
                 'choices' => [
                     'Admin' => 'admin',
@@ -65,7 +71,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/show/{id}', name: 'app_admin')]
+    #[Route('/admin/show/{id}', name: 'user_show', methods: ['GET'])]
     /**
      * @Route("/admin/show/{id}", name="user_show", methods={"GET"})
      */
@@ -76,7 +82,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/edit/{id}', name: 'app_admin')]
+    #[Route('/admin/edit/{id}', name: 'utilisateur_edit', methods: ['GET', 'POST'])]
     /**
      * @Route("/admin/edit/{id}", name="utilisateur_edit", methods={"GET","POST"})
      */
@@ -113,8 +119,7 @@ class UserController extends AbstractController
         ]);
     }
 
-
-    #[Route('/admin/delete/{id}', name: 'app_admin')]
+    #[Route('/admin/delete/{id}', name: 'user_delete', methods: ['DELETE'])]
     /**
      * @Route("/admin/delete/{id}", name="user_delete", methods={"DELETE"})
      */

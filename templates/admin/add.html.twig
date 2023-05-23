@@ -1,20 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ajouter un utilisateur
-{% endblock %}
+{% block title %}Ajouter un utilisateur{% endblock %}
 
 {% block body %}
-	<h1>Ajouter un utilisateur</h1>
+    <h1>Ajouter un utilisateur</h1>
 
-	{{ form_start(form) }}
-	{{ form_row(form.email) }}
-	{{ form_row(form.password) }}
-	{{ form_row(form.role) }}
+    {{ form_start(form) }}
+    <div>
+        {{ form_label(form.email) }}
+        {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.email) }}
+    </div>
+    <div>
+        {{ form_label(form.role) }}
+        {{ form_widget(form.role, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.role) }}
+    </div>
 
-	<button type="submit">Ajouter</button>
+    <button type="submit" class="btn btn-primary">Ajouter</button>
+    {{ form_end(form) }}
 
-	{{ form_end(form) }}
-	<form action="{{ path('admin_index') }}" method="get">
-		<button type="submit">Annuler</button>
-	</form>
+    <form action="{{ path('admin_index') }}" method="get">
+        <button type="submit" class="btn btn-secondary">Annuler</button>
+    </form>
 {% endblock %}

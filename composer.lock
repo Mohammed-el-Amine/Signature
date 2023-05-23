@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e111ed2e54f378ca0ac40d7ed6eb061",
+    "content-hash": "9d79bc0ff3ef26c9230f88dbf0d56aad",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -4143,7 +4143,7 @@
         },
         {
             "name": "symfony/mailer",
-            "version": "v6.3.0-BETA1",
+            "version": "v6.3.0-RC1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mailer.git",
@@ -4203,7 +4203,7 @@
             "description": "Helps sending emails",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/mailer/tree/v6.3.0-BETA1"
+                "source": "https://github.com/symfony/mailer/tree/v6.3.0-RC1"
             },
             "funding": [
                 {
@@ -4220,6 +4220,75 @@
                 }
             ],
             "time": "2023-04-24T14:22:26+00:00"
+        },
+        {
+            "name": "symfony/mailgun-mailer",
+            "version": "v6.3.0-RC1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/mailgun-mailer.git",
+                "reference": "2fafefe8683a93155aceb6cca622c7cee2e27174"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/mailgun-mailer/zipball/2fafefe8683a93155aceb6cca622c7cee2e27174",
+                "reference": "2fafefe8683a93155aceb6cca622c7cee2e27174",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1",
+                "symfony/mailer": "^5.4.21|^6.2.7"
+            },
+            "conflict": {
+                "symfony/http-foundation": "<6.2"
+            },
+            "require-dev": {
+                "symfony/http-client": "^5.4|^6.0",
+                "symfony/webhook": "^6.3"
+            },
+            "type": "symfony-mailer-bridge",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Mailer\\Bridge\\Mailgun\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Mailgun Mailer Bridge",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/mailgun-mailer/tree/v6.3.0-RC1"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2023-05-02T16:15:19+00:00"
         },
         {
             "name": "symfony/messenger",
