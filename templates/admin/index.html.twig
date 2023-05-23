@@ -1,5 +1,3 @@
-{# templates/user/index.html.twig #}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Liste des utilisateurs
@@ -7,7 +5,7 @@
 
 {% block body %}
 	<h1>Liste des utilisateurs</h1>
-	<a href="{{ path('user_add') }}" class="btn btn-primary">Ajouter un utilisateur</a>
+	<a href="{{ path('admin_add') }}" class="btn btn-primary">Ajouter un utilisateur</a>
 
 	<table>
 		<thead>
@@ -27,11 +25,14 @@
 					<td>
 						{# <a href="{{ path('user_show', {'id': user.id}) }}">Afficher</a> #}
 						{# <a href="{{ path('user_edit', {'id': user.id}) }}">Modifier</a> #}
-						{# <a href="{{ path('user_delete', {'id': user.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">Supprimer</a> #}
+						{# <a href="{{ path('admin_delete', {'id': user.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">Supprimer</a> #}
 							<a href="#"> Afficher</a>
 						<a href="#">Modifier</a>
-						<a href="#" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">Supprimer</a>
-
+						<form action="{{ path('user_delete', {'id': user.id}) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">
+							<input type="hidden" name="_method" value="DELETE">
+							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+							<button type="submit">Supprimer</button>
+						</form>
 					</td>
 				</tr>
 			{% endfor %}

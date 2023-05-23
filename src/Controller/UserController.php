@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UserRepository;
 use App\Entity\User;
@@ -14,28 +15,25 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class UserController extends AbstractController
 {
-    #[Route('/user', name: 'app_user')]
+    #[Route('/admin', name: 'app_admin')]
     /**
-     * @Route("/users", name="user_index", methods={"GET"})
+     * @Route("/admin", name="admin_index", methods={"GET"})
      */
     public function index(UserRepository $userRepository)
     {
-        // Récupérer la liste des utilisateurs depuis le repository
         $users = $userRepository->findAll();
 
-        // Rendre une vue (template) en passant la liste des utilisateurs en tant que variable
-        return $this->render('user/index.html.twig', [
-            'users' => $users,
+        return $this->render('admin/index.html.twig', [
+            'users' => $users, // liste des users
         ]);
     }
 
-    #[Route('/users/add', name: 'app_user')]
+    #[Route('/admin/add', name: 'app_admin')]
     /**
-     * @Route("/users/add", name="user_add", methods={"GET","POST"})
+     * @Route("/admin/add", name="admin_add", methods={"GET","POST"})
      */
     public function add(Request $request, EntityManagerInterface $entityManager)
     {
-        // Créer une nouvelle instance de l'entité User
         $user = new User();
 
         // Créer le formulaire manuellement avec les champs requis
@@ -58,37 +56,41 @@ class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // Rediriger vers la page de liste des utilisateurs après l'ajout
-            return $this->redirectToRoute('user_index');
+            return $this->redirectToRoute('admin_index');
         }
 
         // Afficher le formulaire dans le template
-        return $this->render('user/add.html.twig', [
+        return $this->render('admin/add.html.twig', [
             'form' => $form->createView(),
         ]);
     }
 
+    #[Route('/admin/{id}/show', name: 'app_admin')]
     /**
-     * @Route("/users/show/{id}", name="user_show", methods={"GET"})
+     * @Route("/admin/show/{id}", name="user_show", methods={"GET"})
      */
     public function show(User $user)
     {
         // Votre logique pour afficher un utilisateur
     }
 
-    // /**
-    //  * @Route("/{id}/edit", name="utilisateur_edit", methods={"GET","POST"})
-    //  */
+    /**
+     * @Route("/admin/{id}/edit", name="utilisateur_edit", methods={"GET","POST"})
+     */
     public function edit()
     {
         // Votre logique pour éditer un utilisateur
     }
 
-    // /**
-    //  * @Route("/{id}", name="utilisateur_delete", methods={"DELETE"})
-    //  */
-    public function delete()
+    #[Route('/admin/{id}/delete', name: 'app_admin')]
+    /**
+     * @Route("/admin/{id}/delete", name="user_delete", methods={"DELETE"})
+     */
+    public function delete(User $user, EntityManagerInterface $entityManager)
     {
-        // Votre logique pour supprimer un utilisateur
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('admin_index');
     }
 }
