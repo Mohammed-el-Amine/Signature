@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de l'utilisateur
+{% endblock %}
+
+{% block body %}
+	<h1>Détails de l'utilisateur</h1>
+	<table>
+		<tbody>
+			<tr>
+				<th>ID:</th>
+				<td>{{ user.id }}</td>
+			</tr>
+			<tr>
+				<th>Email:</th>
+				<td>{{ user.email }}</td>
+			</tr>
+			<tr>
+				<th>Rôle:</th>
+				<td>{{ user.role }}</td>
+			</tr>
+		</tbody>
+	</table>
+	<form action="{{ path('admin_index') }}" method="get">
+		<button type="submit">Retour à la liste des utilisateurs</button>
+	</form>
+{% endblock %}

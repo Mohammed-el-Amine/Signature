@@ -5,7 +5,9 @@
 
 {% block body %}
 	<h1>Liste des utilisateurs</h1>
-	<a href="{{ path('admin_add') }}" class="btn btn-primary">Ajouter un utilisateur</a>
+	<form action="{{ path('admin_add') }}" method="get">
+		<button type="submit">Ajouter un utilisateur</button>
+	</form>
 
 	<table>
 		<thead>
@@ -23,11 +25,14 @@
 					<td>{{ user.email }}</td>
 					<td>{{ user.role }}</td>
 					<td>
-						{# <a href="{{ path('user_show', {'id': user.id}) }}">Afficher</a> #}
-						{# <a href="{{ path('user_edit', {'id': user.id}) }}">Modifier</a> #}
-						{# <a href="{{ path('admin_delete', {'id': user.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">Supprimer</a> #}
-							<a href="#"> Afficher</a>
-						<a href="#">Modifier</a>
+						<form action="{{ path('user_show', {'id': user.id}) }}" method="get">
+							<button type="submit">Afficher</button>
+						</form>
+						<form action="{{ path('utilisateur_edit', {'id': user.id}) }}" method="get">
+							<input type="hidden" name="_token" value="{{ csrf_token('edit' ~ user.id) }}">
+							<button type="submit">Modifier</button>
+						</form>
+
 						<form action="{{ path('user_delete', {'id': user.id}) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">
 							<input type="hidden" name="_method" value="DELETE">
 							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
