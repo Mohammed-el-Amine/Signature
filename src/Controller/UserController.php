@@ -49,8 +49,8 @@ class UserController extends AbstractController
             ])
             ->add('role', ChoiceType::class, [
                 'choices' => [
-                    'Admin' => 'admin',
                     'Utilisateur' => 'utilisateur',
+                    'Admin' => 'admin'
                 ],
             ])
             ->getForm();
