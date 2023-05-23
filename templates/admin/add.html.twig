@@ -1,26 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ajouter un utilisateur{% endblock %}
+{% block title %}Ajouter un utilisateur
+{% endblock %}
 
 {% block body %}
-    <h1>Ajouter un utilisateur</h1>
+	<h1>Ajouter un utilisateur</h1>
 
-    {{ form_start(form) }}
-    <div>
-        {{ form_label(form.email) }}
-        {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
-        {{ form_errors(form.email) }}
-    </div>
-    <div>
-        {{ form_label(form.role) }}
-        {{ form_widget(form.role, {'attr': {'class': 'form-control'}}) }}
-        {{ form_errors(form.role) }}
-    </div>
+	{# dans le cas ou l'adresse email serait deja utiliser #}
+	{% for message in app.flashes('danger') %}
+		<div class="alert alert-danger">
+			{{ message }}
+		</div>
+	{% endfor %}
 
-    <button type="submit" class="btn btn-primary">Ajouter</button>
-    {{ form_end(form) }}
+	{{ form_start(form) }}
+	<div>
+		{{ form_label(form.email) }}
+		{{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+		{{ form_errors(form.email) }}
+	</div>
+	<div>
+		{{ form_label(form.role) }}
+		{{ form_widget(form.role, {'attr': {'class': 'form-control'}}) }}
+		{{ form_errors(form.role) }}
+	</div>
 
-    <form action="{{ path('admin_index') }}" method="get">
-        <button type="submit" class="btn btn-secondary">Annuler</button>
-    </form>
+	<button type="submit" class="btn btn-primary">Ajouter</button>
+	{{ form_end(form) }}
+
+	<form action="{{ path('admin_index') }}" method="get">
+		<button type="submit" class="btn btn-secondary">Annuler</button>
+	</form>
 {% endblock %}

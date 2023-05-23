@@ -1,3 +1,3 @@
 framework:
     mailer:
-        dsn: '%env(MAILER_DSN)%'
+        dsn: "smtp://postmaster@sandbox2d5e1ea5fe7e445e9e7b8488a8c33c2a.mailgun.org:50382a4831aae72a9d542e027dc97d1f-07ec2ba2-b157b669@smtp.mailgun.org?encryption=tls&auth_mode=plain"
