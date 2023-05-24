@@ -3,10 +3,112 @@
 {% block title %}Liste des utilisateurs
 {% endblock %}
 
+{% block stylesheets %}
+	{{ parent() }}
+	<style>
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+
+		table th,
+		table td {
+			padding: 8px;
+			border: 1px solid #ddd;
+			text-align: center;
+		}
+
+		table th {
+			background-color: #f2f2f2;
+		}
+
+		form {
+			display: inline-block;
+			margin-right: 5px;
+		}
+
+		button {
+			display: inline-block;
+			padding: 5px 10px;
+			font-size: 14px;
+			border-radius: 4px;
+			background-color: #007bff;
+			border: none;
+			color: #fff;
+		}
+
+		button:hover {
+			background-color: #0069d9;
+		}
+
+		.confirm-delete {
+			color: #ff0000;
+			cursor: pointer;
+		}
+
+		/* Styles pour la modal */
+		.modal {
+			display: none;
+			position: fixed;
+			z-index: 1;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			overflow: auto;
+			background-color: rgba(0, 0, 0, 0.4);
+		}
+
+		.modal-content {
+			background-color: #fff;
+			margin: 10% auto;
+			padding: 20px;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			width: 80%;
+			height: 100%;
+			box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+			max-height: 70vh;
+		}
+
+		.modal-header {
+			padding-bottom: 10px;
+			border-bottom: 1px solid #ddd;
+			text-align: center;
+		}
+
+		.modal-title {
+			margin: 0;
+			font-size: 20px;
+			font-weight: bold;
+		}
+
+		.modal-body {
+			flex-grow: 1;
+			height: 100%;
+		}
+
+		.close {
+			color: #aaa;
+			float: right;
+			font-size: 28px;
+			font-weight: bold;
+			cursor: pointer;
+		}
+
+		.close:hover,
+		.close:focus {
+			color: black;
+			text-decoration: none;
+		}
+	</style>
+{% endblock %}
+
 {% block body %}
-	<h1>Liste des utilisateurs</h1>
 	<form action="{{ path('admin_add') }}" method="get">
-		<button type="submit">Ajouter un utilisateur</button>
+		<button type="button" onclick="goToDashboard()">Dashboard</button>
+		<h1 style="font-size: 24px; font-weight: bold; text-align: center;">Liste des utilisateurs</h1>
+		<button type="button" onclick="openModal('{{ path('admin_add') }}', 'Ajouter un utilisateur')">Ajouter un utilisateur</button>
 	</form>
 
 	<table>
@@ -20,25 +122,66 @@
 		<tbody>
 			{% for user in users %}
 				<tr>
-					<td>{{ user.email }}</td>
-					<td>{{ user.role }}</td>
-					<td>
-						<form action="{{ path('user_show', {'id': user.id}) }}" method="get">
-							<button type="submit">Afficher</button>
-						</form>
-						<form action="{{ path('utilisateur_edit', {'id': user.id}) }}" method="get">
-							<input type="hidden" name="_token" value="{{ csrf_token('edit' ~ user.id) }}">
-							<button type="submit">Modifier</button>
-						</form>
-
-						<form action="{{ path('user_delete', {'id': user.id}) }}" method="DELETE" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">
+					<td style="text-align: center;">{{ user.email }}</td>
+					<td style="text-align: center;">{{ user.role }}</td>
+					<td style="text-align: center;">
+						<button type="button" onclick="openModal('{{ path('user_show', {'id': user.id}) }}', 'Afficher')">Afficher</button>
+						<button type="button" onclick="openModal('{{ path('utilisateur_edit', {'id': user.id}) }}', 'Modifier')">Modifier</button>
+						<form action="{{ path('user_delete', {'id': user.id}) }}" method="DELETE" onsubmit="return confirmDelete(event)">
 							<input type="hidden" name="_method" value="DELETE">
 							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-							<button type="submit">Supprimer</button>
+							<button type="submit" class="confirm-delete">Supprimer</button>
 						</form>
 					</td>
 				</tr>
 			{% endfor %}
 		</tbody>
 	</table>
+
+	<!-- Modal -->
+	<div id="modal" class="modal">
+		<div class="modal-content">
+			<div class="modal-header">
+				<span class="close" onclick="closeModal()">&times;</span>
+				<h2 class="modal-title"></h2>
+			</div>
+			<div class="modal-body"></div>
+		</div>
+	</div>
+
+	<script>
+		function confirmDelete(event) {
+return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');
+}
+
+function goToDashboard() {
+window.location.href = "{{ path('admin_dashboard') }}";
+}
+
+function openModal(url, title) {
+var modal = document.getElementById('modal');
+var modalTitle = modal.querySelector('.modal-title');
+var modalBody = modal.querySelector('.modal-body');
+
+// Charger le contenu de l'URL dans la modal via une requête iframe
+modalTitle.textContent = title;
+modalBody.innerHTML = '<iframe src="' + url + '" style="width:100%; height:100%; border:none;"></iframe>';
+
+// Afficher la modal
+modal.style.display = 'block';
+}
+
+function closeModal() {
+var modal = document.getElementById('modal');
+var modalTitle = modal.querySelector('.modal-title');
+var modalBody = modal.querySelector('.modal-body');
+
+// Réinitialiser le contenu de la modal
+modalTitle.textContent = '';
+modalBody.innerHTML = '';
+
+// Fermer la modal
+modal.style.display = 'none';
+}
+	</script>
 {% endblock %}

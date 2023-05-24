@@ -35,7 +35,6 @@ class HomeController extends AbstractController
             $email = $data['email'];
             $password = $data['password'];
 
-            // Vérification de l'utilisateur dans la base de données par son adresse e-mail
             $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
 
             if ($user) {

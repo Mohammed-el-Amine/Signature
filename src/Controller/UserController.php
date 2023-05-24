@@ -21,9 +21,9 @@ use Symfony\Component\Uid\Uuid;
 
 class UserController extends AbstractController
 {
-    #[Route('/admin', name: 'admin_index', methods: ["GET"])]
+    #[Route('/admin/users', name: 'admin_index', methods: ["GET"])]
     /**
-     * @Route("/admin", name="admin_index", methods={"GET"})
+     * @Route("/admin/users", name="admin_index", methods={"GET"})
      */
     public function index(UserRepository $userRepository)
     {
@@ -34,9 +34,9 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/add', name: 'admin_add', methods: ['GET', 'POST'])]
+    #[Route('/admin/user/add', name: 'admin_add', methods: ['GET', 'POST'])]
     /**
-     * @Route("/admin/add", name="admin_add", methods={"GET","POST"})
+     * @Route("/admin/user/add", name="admin_add", methods={"GET","POST"})
      */
     public function add(Request $request, EntityManagerInterface $entityManager, SessionInterface $session)
     {
@@ -88,8 +88,9 @@ class UserController extends AbstractController
             ];
 
             $mgClient->messages()->send($domain, $params);
+            $this->addFlash('success', 'L\'ajout d\'un nouvelle utilisateur a été effectué avec succès.Un e-mail vient de lui être envoyer pour crée son mot de passe');
 
-            return $this->redirectToRoute('admin_index');
+            // return $this->redirectToRoute('home_index');
         }
 
         return $this->render('admin/add.html.twig', [
@@ -129,7 +130,7 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             // Rediriger vers une page de confirmation ou de connexion
-            return $this->render('home/index.html.twig', [
+            return $this->render('/home/index.html.twig', [
                 'form' => $form->createView(),
                 'user' => $user
             ]);
@@ -141,9 +142,9 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/show/{id}', name: 'user_show', methods: ['GET'])]
+    #[Route('/admin/user/show/{id}', name: 'user_show', methods: ['GET'])]
     /**
-     * @Route("/admin/show/{id}", name="user_show", methods={"GET"})
+     * @Route("/admin/user/show/{id}", name="user_show", methods={"GET"})
      */
     public function show(User $user)
     {
@@ -152,9 +153,9 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/edit/{id}', name: 'utilisateur_edit', methods: ['GET', 'POST'])]
+    #[Route('/admin/user/edit/{id}', name: 'utilisateur_edit', methods: ['GET', 'POST'])]
     /**
-     * @Route("/admin/edit/{id}", name="utilisateur_edit", methods={"GET","POST"})
+     * @Route("/admin/user/edit/{id}", name="utilisateur_edit", methods={"GET","POST"})
      */
     public function edit(User $user, Request $request, EntityManagerInterface $entityManager)
     {
@@ -196,18 +197,17 @@ class UserController extends AbstractController
 
             $entityManager->flush();
 
-            return $this->redirectToRoute('admin_index');
+            $this->addFlash('success', 'L\'enregistrement a été effectué avec succès.');
         }
-
-        return $this->render('admin/edit.html.twig', [
+        return $this->redirectToRoute('admin/edit.html.twig', [
             'form' => $form->createView(),
             'user' => $user,
         ]);
     }
 
-    #[Route('/admin/delete/{id}', name: 'user_delete', methods: ['DELETE'])]
+    #[Route('/admin/user/delete/{id}', name: 'user_delete', methods: ['DELETE'])]
     /**
-     * @Route("/admin/delete/{id}", name="user_delete", methods={"GET", "DELETE"})
+     * @Route("/admin/user/delete/{id}", name="user_delete", methods={"GET", "DELETE"})
      */
     public function delete(User $user, EntityManagerInterface $entityManager)
     {
@@ -215,5 +215,17 @@ class UserController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('admin_index');
+    }
+
+    #[Route('/admin', name: 'admin_dashboard')]
+    /**
+     * @Route("/admin", name="admin_dashboard")
+     */
+    public function adminHome(UserRepository $userRepository)
+    {
+        $users = $userRepository->findAll();
+        return $this->render('admin/home.html.twig', [
+            'users' => $users,
+        ]);
     }
 }

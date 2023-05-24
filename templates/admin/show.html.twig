@@ -3,21 +3,77 @@
 {% block title %}Détails de l'utilisateur
 {% endblock %}
 
+{% block stylesheets %}
+	{{ parent() }}
+	<style>
+		h1 {
+			font-size: 24px;
+			font-weight: bold;
+			margin-bottom: 20px;
+			color: #333;
+			text-align: center;
+		}
+
+		.user-details {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		.user-details table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-bottom: 20px;
+		}
+
+		.user-details th,
+		.user-details td {
+			padding: 10px;
+			border: 1px solid #ddd;
+			text-align: center;
+		}
+
+		.user-details th {
+			background-color: #f2f2f2;
+		}
+
+		.user-details form {
+			margin-top: 10px;
+			text-align: center;
+		}
+
+		.user-details button {
+			padding: 8px 16px;
+			font-size: 14px;
+			border-radius: 4px;
+			background-color: #007bff;
+			border: none;
+			color: #fff;
+			cursor: pointer;
+		}
+
+		.user-details button:hover {
+			background-color: #0069d9;
+		}
+	</style>
+{% endblock %}
+
 {% block body %}
-	<h1>Détails de l'utilisateur</h1>
-	<table>
-		<tbody>
-			<tr>
-				<th>Email:</th>
-				<td>{{ user.email }}</td>
-			</tr>
-			<tr>
-				<th>Rôle:</th>
-				<td>{{ user.role }}</td>
-			</tr>
-		</tbody>
-	</table>
-	<form action="{{ path('admin_index') }}" method="get">
-		<button type="submit">Retour à la liste des utilisateurs</button>
-	</form>
+	<div class="user-details">
+		<h1>Détails de l'utilisateur</h1>
+		<table>
+			<thead>
+				<tr>
+					<th>Email</th>
+					<th>Rôle</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td style="text-align: center;">{{ user.email }}</td>
+					<td style="text-align: center;">{{ user.role }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 {% endblock %}
