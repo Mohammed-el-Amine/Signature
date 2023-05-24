@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<h1>Connexion</h1>
+
+	{% if loginForm is defined %}
+		{{ form_start(loginForm) }}
+
+		{{ form_row(loginForm.email) }}
+		{{ form_row(loginForm.password) }}
+
+		<button type="submit">Se connecter</button>
+
+		{{ form_end(loginForm) }}
+	{% else %}
+		<p>Le formulaire de connexion n'est pas disponible.</p>
+	{% endif %}
+{% endblock %}

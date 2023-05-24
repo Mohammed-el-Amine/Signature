@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-// require 'vendor/autoload.php';
-
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,10 +11,13 @@ use App\Entity\User;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Mailgun\Mailgun;
+use Symfony\Component\Uid\Uuid;
 
 class UserController extends AbstractController
 {
@@ -29,7 +30,7 @@ class UserController extends AbstractController
         $users = $userRepository->findAll();
 
         return $this->render('admin/index.html.twig', [
-            'users' => $users, // liste des users
+            'users' => $users,
         ]);
     }
 
@@ -71,6 +72,8 @@ class UserController extends AbstractController
             $hashedPassword = password_hash($user->getPassword(), PASSWORD_DEFAULT);
             $user->setPassword($hashedPassword);
 
+            $user->setToken(Uuid::v4());
+
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -81,7 +84,7 @@ class UserController extends AbstractController
                 'from'    => 'mohammed-el-amine.djellal@epitech.eu',
                 'to'      => $email,
                 'subject' => 'Création de compte',
-                'text'    => 'Veuillez cliquer sur le lien suivant pour créer votre mot de passe : https://127.0.0.1:8000/create-password',
+                'text'    => 'Veuillez cliquer sur le lien suivant pour créer votre mot de passe : ' . $this->generateUrl('create_password', ['token' => $user->getToken()], UrlGeneratorInterface::ABSOLUTE_URL),
             ];
 
             $mgClient->messages()->send($domain, $params);
@@ -91,6 +94,50 @@ class UserController extends AbstractController
 
         return $this->render('admin/add.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/create-password/{token}', name: 'create_password', methods: ['GET', 'POST'])]
+    public function createPassword(Request $request, EntityManagerInterface $entityManager, string $token)
+    {
+        $user = $entityManager->getRepository(User::class)->findOneBy(['token' => $token]);
+
+        if (!$user) {
+            throw $this->createNotFoundException('Utilisateur non trouvé');
+        }
+
+        $form = $this->createFormBuilder($user)
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'invalid_message' => 'Les champs du mot de passe doivent correspondre.',
+                'options' => ['attr' => ['class' => 'password-field']],
+                'required' => true,
+                'first_options' => ['label' => 'Nouveau mot de passe'],
+                'second_options' => ['label' => 'Confirmer le mot de passe'],
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $newPassword = $form->get('password')->getData();
+            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+            $user->setPassword($hashedPassword);
+            $user->setToken(null);
+
+            $entityManager->flush();
+
+            // Rediriger vers une page de confirmation ou de connexion
+            return $this->render('home/index.html.twig', [
+                'form' => $form->createView(),
+                'user' => $user
+            ]);
+        }
+
+        return $this->render('create_password.html.twig', [
+            'form' => $form->createView(),
+            'user' => $user
         ]);
     }
 
@@ -111,52 +158,47 @@ class UserController extends AbstractController
      */
     public function edit(User $user, Request $request, EntityManagerInterface $entityManager)
     {
-        // Récupérer les valeurs actuelles de l'utilisateur
         $currentEmail = $user->getEmail();
         $currentRole = $user->getRole();
+        $currentPassword = $user->getPassword();
 
         $form = $this->createFormBuilder($user)
             ->add('email', EmailType::class, [
-                'data' => $currentEmail, // Affecter la valeur actuelle de l'email au champ
+                'data' => $currentEmail,
             ])
             ->add('password', PasswordType::class, [
-                'required' => false, // Rendre le champ facultatif pour éviter de le modifier involontairement
-                'empty_data' => '', // Définir une valeur par défaut vide pour le champ du mot de passe
+                'required' => false,
+                'empty_data' => '',
             ])
             ->add('role', ChoiceType::class, [
                 'choices' => [
                     'Admin' => 'admin',
                     'Utilisateur' => 'utilisateur',
                 ],
-                'data' => $currentRole, // Affecter la valeur actuelle du rôle au champ
+                'data' => $currentRole,
             ])
             ->getForm();
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Mettre à jour les propriétés de l'utilisateur avec les nouvelles valeurs
-            $user->setEmail($currentEmail); // Réaffecter la valeur actuelle de l'email
-            $user->setRole($currentRole); // Réaffecter la valeur actuelle du rôle
+            $user->setEmail($currentEmail);
+            $user->setRole($currentRole);
 
-            // Vérifier si le champ du mot de passe a été modifié
             $newPassword = $user->getPassword();
             if (!empty($newPassword)) {
-                // Hacher le nouveau mot de passe avant de le sauvegarder dans la base de données
                 $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
                 $user->setPassword($hashedPassword);
             } else {
-                // Aucun nouveau mot de passe fourni, réaffecter le mot de passe actuel
-                $user->setPassword($user->getPassword());
+                // Aucun nouveau mot de passe fourni, on ne l'actualise pas
+                $user->setPassword($currentPassword);
             }
 
-            // Sauvegarder les modifications dans la base de données
             $entityManager->flush();
 
             return $this->redirectToRoute('admin_index');
         }
 
-        // Afficher le formulaire d'édition dans le template
         return $this->render('admin/edit.html.twig', [
             'form' => $form->createView(),
             'user' => $user,
