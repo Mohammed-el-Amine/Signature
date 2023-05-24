@@ -39,22 +39,21 @@ class HomeController extends AbstractController
             $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
 
             if ($user) {
-                // L'utilisateur existe dans la base de données
                 if ($this->isPasswordValid($user, $password)) {
-                    // Le mot de passe est valide - Redirection vers la page souhaitée après connexion réussie
-                    // return $this->redirectToRoute('app_dashboard');
-                    echo 'Mot de passe valide<br>';
                     $role = $user->getRole();
-                    var_dump($role);
                     // faire la redirection en fonction du role si user = /profile si admin = /admin
+                    if ($role === "admin") {
+                        echo "je suis administrateur";
+                    } else {
+                        echo "je suis un user";
+                    }
                 } else {
                     // Le mot de passe est invalide
                     echo 'Mot de passe invalide<br>';
                 }
             } else {
-                // L'utilisateur n'existe pas
                 // TODO: Ajoutez ici votre logique pour gérer l'erreur d'utilisateur inexistant
-                echo 'Utilisateur inexistant';
+                echo 'Veuillez vérifiez votre adresse email ou votre mot de passe.<br>Si vous ne possédez pas d\'identifiant de connexion merci de vous rapprocher du responsable informatique';
             }
         }
 
@@ -65,11 +64,8 @@ class HomeController extends AbstractController
 
     private function isPasswordValid(User $user, string $password): bool
     {
-        // Récupérez le mot de passe haché de l'utilisateur depuis la base de données
         $hashedPassword = $user->getPassword();
 
-        // Vérifiez si le mot de passe fourni correspond au mot de passe haché
-        // Vous pouvez utiliser la fonction password_verify() de PHP pour cela
         return password_verify($password, $hashedPassword);
     }
 }
