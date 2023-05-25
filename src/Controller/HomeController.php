@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\User;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class HomeController extends AbstractController
 {
@@ -21,7 +22,7 @@ class HomeController extends AbstractController
     }
 
     #[Route('/', name: 'app_home')]
-    public function index(Request $request): Response
+    public function index(Request $request, SessionInterface $session): Response
     {
         $form = $this->createFormBuilder()
             ->add('email', EmailType::class)
@@ -39,12 +40,14 @@ class HomeController extends AbstractController
 
             if ($user) {
                 if ($this->isPasswordValid($user, $password)) {
+                    $session->set('user_id', $user->getId()); // Stocke l'identifiant de l'utilisateur dans la session
+
                     $role = $user->getRole();
-                    // faire la redirection en fonction du role si user = /profile si admin = /admin
+                    // Faire la redirection en fonction du rôle : si utilisateur, vers /profile ; si admin, vers /admin
                     if ($role === "admin") {
-                        echo "je suis administrateur";
+                        return $this->redirectToRoute('admin_dashboard');
                     } else if ($role === 'utilisateur') {
-                        echo "je suis un user";
+                        return $this->redirectToRoute('profile');
                     }
                 } else {
                     // Le mot de passe est invalide
