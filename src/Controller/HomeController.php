@@ -43,7 +43,7 @@ class HomeController extends AbstractController
                     // faire la redirection en fonction du role si user = /profile si admin = /admin
                     if ($role === "admin") {
                         echo "je suis administrateur";
-                    } else {
+                    } else if ($role === 'utilisateur') {
                         echo "je suis un user";
                     }
                 } else {
@@ -52,7 +52,7 @@ class HomeController extends AbstractController
                 }
             } else {
                 // TODO: Ajoutez ici votre logique pour gérer l'erreur d'utilisateur inexistant
-                echo 'Veuillez vérifiez votre adresse email ou votre mot de passe.<br>Si vous ne possédez pas d\'identifiant de connexion merci de vous rapprocher du responsable informatique';
+                echo 'Veuillez vérifiez votre adresse email.<br>Si vous ne possédez pas d\'identifiant de connexion merci de vous rapprocher du responsable informatique.';
             }
         }
 

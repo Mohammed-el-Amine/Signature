@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UserRepository;
@@ -98,7 +99,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/create-password/{token}', name: 'create_password', methods: ['GET', 'POST'])]
+    #[Route('user/create-password/{token}', name: 'create_password', methods: ['GET', 'POST'])]
     public function createPassword(Request $request, EntityManagerInterface $entityManager, string $token)
     {
         $user = $entityManager->getRepository(User::class)->findOneBy(['token' => $token]);
@@ -130,13 +131,10 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             // Rediriger vers une page de confirmation ou de connexion
-            return $this->render('/home/index.html.twig', [
-                'form' => $form->createView(),
-                'user' => $user
-            ]);
+            return $this->redirectToRoute('app_home');
         }
 
-        return $this->render('create_password.html.twig', [
+        return $this->render('password/create_password.html.twig', [
             'form' => $form->createView(),
             'user' => $user
         ]);
@@ -186,7 +184,11 @@ class UserController extends AbstractController
             $user->setEmail($currentEmail);
             $user->setRole($currentRole);
 
+            $newRole = $form->get('role')->getData();
+            $user->setRole($newRole);
+
             $newPassword = $user->getPassword();
+
             if (!empty($newPassword)) {
                 $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
                 $user->setPassword($hashedPassword);
@@ -199,7 +201,7 @@ class UserController extends AbstractController
 
             $this->addFlash('success', 'L\'enregistrement a été effectué avec succès.');
         }
-        return $this->redirectToRoute('admin/edit.html.twig', [
+        return $this->render('admin/edit.html.twig', [
             'form' => $form->createView(),
             'user' => $user,
         ]);
