@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+
 class HomeController extends AbstractController
 {
     private $entityManager;
@@ -22,7 +23,7 @@ class HomeController extends AbstractController
     }
 
     #[Route('/', name: 'app_home')]
-    public function index(Request $request, SessionInterface $session): Response
+    public function index(Request $request, SessionInterface $session,): Response
     {
         $form = $this->createFormBuilder()
             ->add('email', EmailType::class)
@@ -43,7 +44,6 @@ class HomeController extends AbstractController
                     $session->set('user_id', $user->getId()); // Stocke l'identifiant de l'utilisateur dans la session
 
                     $role = $user->getRole();
-                    // Faire la redirection en fonction du rôle : si utilisateur, vers /profile ; si admin, vers /admin
                     if ($role === "admin") {
                         return $this->redirectToRoute('admin_dashboard');
                     } else if ($role === 'utilisateur') {
@@ -52,12 +52,10 @@ class HomeController extends AbstractController
 
                     }
                 } else {
-                    // Le mot de passe est invalide
                     echo 'Mot de passe invalide<br>';
                 }
             } else {
-                // TODO: Ajoutez ici votre logique pour gérer l'erreur d'utilisateur inexistant
-                echo 'Veuillez vérifiez votre adresse email.<br>Si vous ne possédez pas d\'identifiant de connexion merci de vous rapprocher du responsable informatique.';
+                $this->addFlash('success', 'L\'ajout d\'un nouvel utilisateur a été effectué avec succès. Un e-mail vient de lui être envoyé pour créer son mot de passe.');
             }
         }
 
