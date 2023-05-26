@@ -26,7 +26,7 @@ class UserController extends AbstractController
     public function index(UserRepository $userRepository, SessionInterface $session, UrlGeneratorInterface $urlGenerator)
     {
         // Vérifier si la session est active
-        if (!$session->isStarted()) {
+        if (!$session->has('user_id')) {
             // Rediriger vers la page de connexion
             return new RedirectResponse($urlGenerator->generate('app_home'));
         }
@@ -56,7 +56,7 @@ class UserController extends AbstractController
      */
     public function add(UserRepository $userRepository, Request $request, EntityManagerInterface $entityManager, SessionInterface $session, UrlGeneratorInterface $urlGenerator)
     {
-        if (!$session->isStarted()) {
+        if (!$session->has('user_id')) {
             return new RedirectResponse($urlGenerator->generate('app_home'));
         }
 
@@ -174,7 +174,7 @@ class UserController extends AbstractController
      */
     public function show(UserRepository $userRepository, User $user, SessionInterface $session, UrlGeneratorInterface $urlGenerator)
     {
-        if (!$session->isStarted()) {
+        if (!$session->has('user_id')) {
             return new RedirectResponse($urlGenerator->generate('app_home'));
         }
 
@@ -201,7 +201,7 @@ class UserController extends AbstractController
      */
     public function edit(User $user, Request $request, EntityManagerInterface $entityManager, SessionInterface $session, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator)
     {
-        if (!$session->isStarted()) {
+        if (!$session->has('user_id')) {
             return new RedirectResponse($urlGenerator->generate('app_home'));
         }
 
@@ -273,7 +273,7 @@ class UserController extends AbstractController
      */
     public function delete(User $user, EntityManagerInterface $entityManager, SessionInterface $session, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator)
     {
-        if (!$session->isStarted()) {
+        if (!$session->has('user_id')) {
             return new RedirectResponse($urlGenerator->generate('app_home'));
         }
 
@@ -301,7 +301,7 @@ class UserController extends AbstractController
      */
     public function adminHome(UserRepository $userRepository, SessionInterface $session, UrlGeneratorInterface $urlGenerator)
     {
-        if (!$session->isStarted()) {
+        if (!$session->has('user_id')) {
             return new RedirectResponse($urlGenerator->generate('app_home'));
         }
 
@@ -321,5 +321,18 @@ class UserController extends AbstractController
         return $this->render('admin/home.html.twig', [
             'users' => $users,
         ]);
+    }
+
+    #[Route('/logout', name: 'logout')]
+    /**
+     * @Route("/logout", name="logout")
+     */
+    public function logout(SessionInterface $session, UrlGeneratorInterface $urlGenerator)
+    {
+        if ($session->has('user_id')) {
+            $session->invalidate();
+            return new RedirectResponse($urlGenerator->generate('app_home'));
+        } else
+            return new RedirectResponse($urlGenerator->generate('app_home'));
     }
 }
