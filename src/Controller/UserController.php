@@ -23,8 +23,14 @@ use Symfony\Component\Uid\Uuid;
 class UserController extends AbstractController
 {
     #[Route('/admin/users', name: 'admin_index', methods: ["GET"])]
-    public function index(UserRepository $userRepository, SessionInterface $session)
+    public function index(UserRepository $userRepository, SessionInterface $session, UrlGeneratorInterface $urlGenerator)
     {
+        // Vérifier si la session est active
+        if (!$session->isStarted()) {
+            // Rediriger vers la page de connexion
+            return new RedirectResponse($urlGenerator->generate('app_home'));
+        }
+
         $userId = $session->get('user_id');
 
         if ($userId) {
@@ -36,7 +42,6 @@ class UserController extends AbstractController
         } else {
             throw $this->createAccessDeniedException('Access Denied');
         }
-        // echo 'je suis admin';
 
         $users = $userRepository->findAll();
 
@@ -45,14 +50,15 @@ class UserController extends AbstractController
         ]);
     }
 
-
-
     #[Route('/admin/user/add', name: 'admin_add', methods: ['GET', 'POST'])]
     /**
      * @Route("/admin/user/add", name="admin_add", methods={"GET","POST"})
      */
-    public function add(UserRepository $userRepository, Request $request, EntityManagerInterface $entityManager, SessionInterface $session)
+    public function add(UserRepository $userRepository, Request $request, EntityManagerInterface $entityManager, SessionInterface $session, UrlGeneratorInterface $urlGenerator)
     {
+        if (!$session->isStarted()) {
+            return new RedirectResponse($urlGenerator->generate('app_home'));
+        }
 
         $userId = $session->get('user_id');
 
@@ -65,6 +71,7 @@ class UserController extends AbstractController
         } else {
             throw $this->createAccessDeniedException('Access Denied');
         }
+
         $user = new User();
         $defaultPassword = "unsa_white_knight_pass_word_very_long";
 
@@ -114,8 +121,6 @@ class UserController extends AbstractController
 
             $mgClient->messages()->send($domain, $params);
             $this->addFlash('success', 'L\'ajout d\'un nouvelle utilisateur a été effectué avec succès.Un e-mail vient de lui être envoyer pour crée son mot de passe');
-
-            // return $this->redirectToRoute('home_index');
         }
 
         return $this->render('admin/add.html.twig', [
@@ -154,7 +159,6 @@ class UserController extends AbstractController
 
             $entityManager->flush();
 
-            // Rediriger vers une page de confirmation ou de connexion
             return $this->redirectToRoute('app_home');
         }
 
@@ -168,8 +172,12 @@ class UserController extends AbstractController
     /**
      * @Route("/admin/user/show/{id}", name="user_show", methods={"GET"})
      */
-    public function show(UserRepository $userRepository, User $user, SessionInterface $session)
+    public function show(UserRepository $userRepository, User $user, SessionInterface $session, UrlGeneratorInterface $urlGenerator)
     {
+        if (!$session->isStarted()) {
+            return new RedirectResponse($urlGenerator->generate('app_home'));
+        }
+
         $userId = $session->get('user_id');
 
         if ($userId) {
@@ -181,6 +189,7 @@ class UserController extends AbstractController
         } else {
             throw $this->createAccessDeniedException('Access Denied');
         }
+
         return $this->render('admin/show.html.twig', [
             'user' => $user,
         ]);
@@ -190,8 +199,11 @@ class UserController extends AbstractController
     /**
      * @Route("/admin/user/edit/{id}", name="utilisateur_edit", methods={"GET","POST"})
      */
-    public function edit(User $user, Request $request, EntityManagerInterface $entityManager, SessionInterface $session, UserRepository $userRepository)
+    public function edit(User $user, Request $request, EntityManagerInterface $entityManager, SessionInterface $session, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator)
     {
+        if (!$session->isStarted()) {
+            return new RedirectResponse($urlGenerator->generate('app_home'));
+        }
 
         $userId = $session->get('user_id');
 
@@ -204,6 +216,7 @@ class UserController extends AbstractController
         } else {
             throw $this->createAccessDeniedException('Access Denied');
         }
+
         $currentEmail = $user->getEmail();
         $currentRole = $user->getRole();
         $currentPassword = $user->getPassword();
@@ -258,8 +271,12 @@ class UserController extends AbstractController
     /**
      * @Route("/admin/user/delete/{id}", name="user_delete", methods={"GET", "DELETE"})
      */
-    public function delete(User $user, EntityManagerInterface $entityManager, SessionInterface $session, UserRepository $userRepository)
+    public function delete(User $user, EntityManagerInterface $entityManager, SessionInterface $session, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator)
     {
+        if (!$session->isStarted()) {
+            return new RedirectResponse($urlGenerator->generate('app_home'));
+        }
+
         $userId = $session->get('user_id');
 
         if ($userId) {
@@ -271,6 +288,7 @@ class UserController extends AbstractController
         } else {
             throw $this->createAccessDeniedException('Access Denied');
         }
+
         $entityManager->remove($user);
         $entityManager->flush();
 
@@ -281,8 +299,24 @@ class UserController extends AbstractController
     /**
      * @Route("/admin", name="admin_dashboard")
      */
-    public function adminHome(UserRepository $userRepository)
+    public function adminHome(UserRepository $userRepository, SessionInterface $session, UrlGeneratorInterface $urlGenerator)
     {
+        if (!$session->isStarted()) {
+            return new RedirectResponse($urlGenerator->generate('app_home'));
+        }
+
+        $userId = $session->get('user_id');
+
+        if ($userId) {
+            $user = $userRepository->find($userId);
+
+            if ($user && $user->getRole() !== 'admin') {
+                throw $this->createAccessDeniedException('Access Denied');
+            }
+        } else {
+            throw $this->createAccessDeniedException('Access Denied');
+        }
+
         $users = $userRepository->findAll();
         return $this->render('admin/home.html.twig', [
             'users' => $users,
