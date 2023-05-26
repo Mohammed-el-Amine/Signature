@@ -117,19 +117,25 @@
 
 				{{ form_end(loginForm) }}
 
+				{% for flashMessage in app.flashes('success') %}
+					<div class="success-message" role="alert">
+						{{ flashMessage }}
+					</div>
+				{% endfor %}
+
 				<script>
 					const showPasswordBtn = document.getElementById('showPasswordBtn');
-const passwordInput = document.querySelector('.password-input input');
+					const passwordInput = document.querySelector('.password-input input');
 
-showPasswordBtn.addEventListener('click', function () {
-if (passwordInput.type === 'password') {
-passwordInput.type = 'text';
-showPasswordBtn.textContent = '💀';
-} else {
-passwordInput.type = 'password';
-showPasswordBtn.textContent = '👀';
-}
-});
+					showPasswordBtn.addEventListener('click', function () {
+					if (passwordInput.type === 'password') {
+					passwordInput.type = 'text';
+					showPasswordBtn.textContent = '💀';
+					} else {
+					passwordInput.type = 'password';
+					showPasswordBtn.textContent = '👀';
+					}
+					});
 				</script>
 			{% else %}
 				<p>Le formulaire de connexion n'est pas disponible.</p>

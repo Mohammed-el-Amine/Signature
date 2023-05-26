@@ -49,13 +49,12 @@ class HomeController extends AbstractController
                     } else if ($role === 'utilisateur') {
                         // return $this->redirectToRoute('profile');
                         return $this->redirectToRoute('admin_dashboard');
-
                     }
                 } else {
                     echo 'Mot de passe invalide<br>';
                 }
             } else {
-                $this->addFlash('success', 'L\'ajout d\'un nouvel utilisateur a été effectué avec succès. Un e-mail vient de lui être envoyé pour créer son mot de passe.');
+                $this->addFlash('danger', 'Veuillez vérifiez votre adresse email.<br>Si vous ne possédez pas d \'identifiant de connexion merci de vous rapprocher du responsable informatique.');
             }
         }
 
