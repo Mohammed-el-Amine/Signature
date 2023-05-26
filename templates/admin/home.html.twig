@@ -29,6 +29,30 @@
 			background-color: #0069d9;
 			border-color: #0062cc;
 		}
+
+		.btn-logout {
+			display: inline-block;
+			font-weight: 400;
+			color: #fff;
+			text-align: center;
+			vertical-align: middle;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			background-color: #dc3545;
+			border: 1px solid #dc3545;
+			padding: 0.375rem 0.75rem;
+			font-size: 1rem;
+			line-height: 1.5;
+			border-radius: 0.25rem;
+			transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+		}
+		.btn-logout:hover {
+			color: #fff;
+			background-color: #c82333;
+			border-color: #bd2130;
+		}
 	</style>
 {% endblock %}
 
@@ -36,11 +60,15 @@
 	<h1>Admin Dashboard!</h1>
 
 	<button type="button" class="btn btn-primary" onclick="goToUsers()">Utilisateurs</button>
+	<button type="button" class="btn btn-logout" onclick="logout()">Déconnexion</button>
 
 	<script>
 		function goToUsers() {
 window.location.href = "{{ path('admin_index') }}";
 }
-	</script>
 
+function logout() {
+window.location.href = "{{ path('logout') }}";
+}
+	</script>
 {% endblock %}

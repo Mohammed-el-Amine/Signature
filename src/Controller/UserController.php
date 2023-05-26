@@ -271,25 +271,25 @@ class UserController extends AbstractController
     /**
      * @Route("/admin/user/delete/{id}", name="user_delete", methods={"GET", "DELETE"})
      */
-    public function delete(User $user, EntityManagerInterface $entityManager, SessionInterface $session, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator)
+    public function delete(User $userToDelete, EntityManagerInterface $entityManager, SessionInterface $session, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator)
     {
         if (!$session->has('user_id')) {
             return new RedirectResponse($urlGenerator->generate('app_home'));
         }
 
-        $userId = $session->get('user_id');
+        $adminId = $session->get('user_id');
 
-        if ($userId) {
-            $user = $userRepository->find($userId);
+        if ($adminId) {
+            $adminUser = $userRepository->find($adminId);
 
-            if ($user && $user->getRole() !== 'admin') {
+            if ($adminUser && $adminUser->getRole() !== 'admin') {
                 throw $this->createAccessDeniedException('Access Denied');
             }
         } else {
             throw $this->createAccessDeniedException('Access Denied');
         }
 
-        $entityManager->remove($user);
+        $entityManager->remove($userToDelete);
         $entityManager->flush();
 
         return $this->redirectToRoute('admin_index');
@@ -329,10 +329,7 @@ class UserController extends AbstractController
      */
     public function logout(SessionInterface $session, UrlGeneratorInterface $urlGenerator)
     {
-        if ($session->has('user_id')) {
-            $session->invalidate();
-            return new RedirectResponse($urlGenerator->generate('app_home'));
-        } else
-            return new RedirectResponse($urlGenerator->generate('app_home'));
+        $session->invalidate();
+        return new RedirectResponse($urlGenerator->generate('app_home'));
     }
 }
