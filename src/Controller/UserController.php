@@ -23,11 +23,21 @@ use Symfony\Component\Uid\Uuid;
 class UserController extends AbstractController
 {
     #[Route('/admin/users', name: 'admin_index', methods: ["GET"])]
-    /**
-     * @Route("/admin/users", name="admin_index", methods={"GET"})
-     */
-    public function index(UserRepository $userRepository)
+    public function index(UserRepository $userRepository, SessionInterface $session)
     {
+        $userId = $session->get('user_id');
+
+        if ($userId) {
+            $user = $userRepository->find($userId);
+
+            if ($user && $user->getRole() !== 'admin') {
+                throw $this->createAccessDeniedException('Access Denied');
+            }
+        } else {
+            throw $this->createAccessDeniedException('Access Denied');
+        }
+        // echo 'je suis admin';
+
         $users = $userRepository->findAll();
 
         return $this->render('admin/index.html.twig', [
@@ -35,12 +45,26 @@ class UserController extends AbstractController
         ]);
     }
 
+
+
     #[Route('/admin/user/add', name: 'admin_add', methods: ['GET', 'POST'])]
     /**
      * @Route("/admin/user/add", name="admin_add", methods={"GET","POST"})
      */
-    public function add(Request $request, EntityManagerInterface $entityManager, SessionInterface $session)
+    public function add(UserRepository $userRepository, Request $request, EntityManagerInterface $entityManager, SessionInterface $session)
     {
+
+        $userId = $session->get('user_id');
+
+        if ($userId) {
+            $user = $userRepository->find($userId);
+
+            if ($user && $user->getRole() !== 'admin') {
+                throw $this->createAccessDeniedException('Access Denied');
+            }
+        } else {
+            throw $this->createAccessDeniedException('Access Denied');
+        }
         $user = new User();
         $defaultPassword = "unsa_white_knight_pass_word_very_long";
 
@@ -144,8 +168,19 @@ class UserController extends AbstractController
     /**
      * @Route("/admin/user/show/{id}", name="user_show", methods={"GET"})
      */
-    public function show(User $user)
+    public function show(UserRepository $userRepository, User $user, SessionInterface $session)
     {
+        $userId = $session->get('user_id');
+
+        if ($userId) {
+            $user = $userRepository->find($userId);
+
+            if ($user && $user->getRole() !== 'admin') {
+                throw $this->createAccessDeniedException('Access Denied');
+            }
+        } else {
+            throw $this->createAccessDeniedException('Access Denied');
+        }
         return $this->render('admin/show.html.twig', [
             'user' => $user,
         ]);
@@ -155,8 +190,20 @@ class UserController extends AbstractController
     /**
      * @Route("/admin/user/edit/{id}", name="utilisateur_edit", methods={"GET","POST"})
      */
-    public function edit(User $user, Request $request, EntityManagerInterface $entityManager)
+    public function edit(User $user, Request $request, EntityManagerInterface $entityManager, SessionInterface $session, UserRepository $userRepository)
     {
+
+        $userId = $session->get('user_id');
+
+        if ($userId) {
+            $user = $userRepository->find($userId);
+
+            if ($user && $user->getRole() !== 'admin') {
+                throw $this->createAccessDeniedException('Access Denied');
+            }
+        } else {
+            throw $this->createAccessDeniedException('Access Denied');
+        }
         $currentEmail = $user->getEmail();
         $currentRole = $user->getRole();
         $currentPassword = $user->getPassword();
@@ -211,8 +258,19 @@ class UserController extends AbstractController
     /**
      * @Route("/admin/user/delete/{id}", name="user_delete", methods={"GET", "DELETE"})
      */
-    public function delete(User $user, EntityManagerInterface $entityManager)
+    public function delete(User $user, EntityManagerInterface $entityManager, SessionInterface $session, UserRepository $userRepository)
     {
+        $userId = $session->get('user_id');
+
+        if ($userId) {
+            $user = $userRepository->find($userId);
+
+            if ($user && $user->getRole() !== 'admin') {
+                throw $this->createAccessDeniedException('Access Denied');
+            }
+        } else {
+            throw $this->createAccessDeniedException('Access Denied');
+        }
         $entityManager->remove($user);
         $entityManager->flush();
 
