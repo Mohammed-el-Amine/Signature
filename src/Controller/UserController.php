@@ -56,21 +56,21 @@ class UserController extends AbstractController
      */
     public function add(UserRepository $userRepository, Request $request, EntityManagerInterface $entityManager, SessionInterface $session, UrlGeneratorInterface $urlGenerator)
     {
-        if (!$session->has('user_id')) {
-            return new RedirectResponse($urlGenerator->generate('app_home'));
-        }
+        // if (!$session->has('user_id')) {
+        //     return new RedirectResponse($urlGenerator->generate('app_home'));
+        // }
 
-        $userId = $session->get('user_id');
+        // $userId = $session->get('user_id');
 
-        if ($userId) {
-            $user = $userRepository->find($userId);
+        // if ($userId) {
+        //     $user = $userRepository->find($userId);
 
-            if ($user && $user->getRole() !== 'admin') {
-                throw $this->createAccessDeniedException('Access Denied');
-            }
-        } else {
-            throw $this->createAccessDeniedException('Access Denied');
-        }
+        //     if ($user && $user->getRole() !== 'admin') {
+        //         throw $this->createAccessDeniedException('Access Denied');
+        //     }
+        // } else {
+        //     throw $this->createAccessDeniedException('Access Denied');
+        // }
 
         $user = new User();
         $defaultPassword = "unsa_white_knight_pass_word_very_long";
@@ -199,7 +199,7 @@ class UserController extends AbstractController
     /**
      * @Route("/admin/user/edit/{id}", name="utilisateur_edit", methods={"GET","POST"})
      */
-    public function edit(User $user, Request $request, EntityManagerInterface $entityManager, SessionInterface $session, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator)
+    public function edit(User $editUser, Request $request, EntityManagerInterface $entityManager, SessionInterface $session, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator)
     {
         if (!$session->has('user_id')) {
             return new RedirectResponse($urlGenerator->generate('app_home'));
@@ -208,20 +208,20 @@ class UserController extends AbstractController
         $userId = $session->get('user_id');
 
         if ($userId) {
-            $user = $userRepository->find($userId);
+            $currentUser = $userRepository->find($userId);
 
-            if ($user && $user->getRole() !== 'admin') {
+            if ($currentUser && $currentUser->getRole() !== 'admin') {
                 throw $this->createAccessDeniedException('Access Denied');
             }
         } else {
             throw $this->createAccessDeniedException('Access Denied');
         }
 
-        $currentEmail = $user->getEmail();
-        $currentRole = $user->getRole();
-        $currentPassword = $user->getPassword();
+        $currentEmail = $editUser->getEmail();
+        $currentRole = $editUser->getRole();
+        $currentPassword = $editUser->getPassword();
 
-        $form = $this->createFormBuilder($user)
+        $form = $this->createFormBuilder($editUser)
             ->add('email', EmailType::class, [
                 'data' => $currentEmail,
             ])
@@ -241,20 +241,20 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setEmail($currentEmail);
-            $user->setRole($currentRole);
+            $editUser->setEmail($currentEmail);
+            $editUser->setRole($currentRole);
 
             $newRole = $form->get('role')->getData();
-            $user->setRole($newRole);
+            $editUser->setRole($newRole);
 
-            $newPassword = $user->getPassword();
+            $newPassword = $editUser->getPassword();
 
             if (!empty($newPassword)) {
                 $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-                $user->setPassword($hashedPassword);
+                $editUser->setPassword($hashedPassword);
             } else {
                 // Aucun nouveau mot de passe fourni, on ne l'actualise pas
-                $user->setPassword($currentPassword);
+                $editUser->setPassword($currentPassword);
             }
 
             $entityManager->flush();
@@ -263,7 +263,7 @@ class UserController extends AbstractController
         }
         return $this->render('admin/edit.html.twig', [
             'form' => $form->createView(),
-            'user' => $user,
+            'user' => $editUser,
         ]);
     }
 
