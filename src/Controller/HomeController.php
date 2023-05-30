@@ -47,8 +47,7 @@ class HomeController extends AbstractController
                     if ($role === "admin") {
                         return $this->redirectToRoute('admin_dashboard');
                     } else if ($role === 'utilisateur') {
-                        // return $this->redirectToRoute('profile');
-                        return $this->redirectToRoute('admin_dashboard');
+                        return $this->redirectToRoute('user_profile');
                     }
                 } else {
                     echo 'Mot de passe invalide<br>';
