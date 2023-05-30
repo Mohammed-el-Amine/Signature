@@ -56,21 +56,21 @@ class UserController extends AbstractController
      */
     public function add(UserRepository $userRepository, Request $request, EntityManagerInterface $entityManager, SessionInterface $session, UrlGeneratorInterface $urlGenerator)
     {
-        // if (!$session->has('user_id')) {
-        //     return new RedirectResponse($urlGenerator->generate('app_home'));
-        // }
+        if (!$session->has('user_id')) {
+            return new RedirectResponse($urlGenerator->generate('app_home'));
+        }
 
-        // $userId = $session->get('user_id');
+        $userId = $session->get('user_id');
 
-        // if ($userId) {
-        //     $user = $userRepository->find($userId);
+        if ($userId) {
+            $user = $userRepository->find($userId);
 
-        //     if ($user && $user->getRole() !== 'admin') {
-        //         throw $this->createAccessDeniedException('Access Denied');
-        //     }
-        // } else {
-        //     throw $this->createAccessDeniedException('Access Denied');
-        // }
+            if ($user && $user->getRole() !== 'admin') {
+                throw $this->createAccessDeniedException('Access Denied');
+            }
+        } else {
+            throw $this->createAccessDeniedException('Access Denied');
+        }
 
         $user = new User();
         $defaultPassword = "unsa_white_knight_pass_word_very_long";
