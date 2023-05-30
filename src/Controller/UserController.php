@@ -323,6 +323,64 @@ class UserController extends AbstractController
         ]);
     }
 
+    #[Route('/profile', name: 'user_profile')]
+    /**
+     * @Route("/profile", name="user_profile")
+     */
+    public function userProfile(Request $request, EntityManagerInterface $entityManager, SessionInterface $session, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator)
+    {
+        if (!$session->has('user_id')) {
+            return new RedirectResponse($urlGenerator->generate('app_home'));
+        }
+
+        $userId = $session->get('user_id');
+
+        if ($userId) {
+            $user = $userRepository->find($userId);
+        } else {
+            throw $this->createAccessDeniedException('Access Denied');
+        }
+
+        $currentEmail = $user->getEmail();
+        $currentPassword = $user->getPassword();
+
+        $form = $this->createFormBuilder($user)
+            ->add('email', EmailType::class, [
+                'data' => $currentEmail,
+                'disabled' => true,
+            ])
+            ->add('password', PasswordType::class, [
+                'required' => false,
+                'empty_data' => '',
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setEmail($currentEmail);
+
+            $newPassword = $user->getPassword();
+
+            if (!empty($newPassword)) {
+                $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+                $user->setPassword($hashedPassword);
+            } else {
+                // Aucun nouveau mot de passe fourni, on ne l'actualise pas
+                $user->setPassword($currentPassword);
+            }
+
+            $entityManager->flush();
+
+            $this->addFlash('success', 'L\'enregistrement a été effectué avec succès.');
+        }
+
+        return $this->render('user/profile.html.twig', [
+            'form' => $form->createView(),
+            'user' => $user,
+        ]);
+    }
+
     #[Route('/logout', name: 'logout')]
     /**
      * @Route("/logout", name="logout")
