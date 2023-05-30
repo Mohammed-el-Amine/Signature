@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UserRepository;
+use Symfony\Component\HttpFoundation\Response;
 use App\Entity\User;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -17,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use App\Repository\EmailSignatureRepository;
 use Mailgun\Mailgun;
 use Symfony\Component\Uid\Uuid;
 
@@ -327,7 +329,7 @@ class UserController extends AbstractController
     /**
      * @Route("/profile", name="user_profile")
      */
-    public function userProfile(Request $request, EntityManagerInterface $entityManager, SessionInterface $session, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator)
+    public function userProfile(Request $request, EntityManagerInterface $entityManager, SessionInterface $session, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator, EmailSignatureRepository $signatureRepository)
     {
         if (!$session->has('user_id')) {
             return new RedirectResponse($urlGenerator->generate('app_home'));
@@ -375,9 +377,13 @@ class UserController extends AbstractController
             $this->addFlash('success', 'L\'enregistrement a été effectué avec succès.');
         }
 
+        $signatures = $signatureRepository->findAll();
+        // var_dump($signatures);
+
         return $this->render('user/profile.html.twig', [
             'form' => $form->createView(),
             'user' => $user,
+            'signatures' => $signatures,
         ]);
     }
 

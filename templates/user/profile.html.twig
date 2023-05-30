@@ -24,6 +24,29 @@
 	<button type="submit" class="btn btn-primary">Enregistrer</button>
 	{{ form_end(form) }}
 
+	<h1>Liste des signatures</h1>
+
+
+	<ul>
+		{% for signature in signatures %}
+			<li>{{ signature.id }}</li>
+			<li>{{ signature.name }}</li>
+			<li>{{ signature.jobTitle }}</li>
+			<li>{{ signature.organization }}</li>
+			<li>{{ signature.address }}</li>
+			<li>{{ signature.city }}</li>
+
+			<li>{{ signature.postalCode }}</li>
+			<li>{{ signature.email }}</li>
+			<li>{{ signature.phone }}</li>
+			<li>{{ signature.signatureHtml }}</li>
+			<li>{{ signature.user.id }}</li>
+
+
+		{% endfor %}
+	</ul>
+
+
 	<h2>Formulaire de signature :</h2>
 	<script>
 		function togglePasswordVisibility() {
@@ -36,6 +59,7 @@ passwordInput.setAttribute("type", "text");
 passwordInput.setAttribute("type", "password");
 }
 }
+
 function logout() {
 window.location.href = "{{ path('logout') }}";
 }
