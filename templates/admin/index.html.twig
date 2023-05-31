@@ -140,6 +140,7 @@
 	<table>
 		<thead>
 			<tr>
+				<th>ID</th>
 				<th>Email</th>
 				<th>Role</th>
 				<th>Actions</th>
@@ -148,6 +149,7 @@
 		<tbody>
 			{% for user in users %}
 				<tr>
+					<td style="text-align:center;">{{user.id}}</td>
 					<td style="text-align: center;">{{ user.email }}</td>
 					<td style="text-align: center;">{{ user.role }}</td>
 					<td style="text-align: center;">

@@ -42,7 +42,7 @@ class EmailSignature
     #[ORM\Column(type: "string", length: 255)]
     private $logo;
 
-    #[ORM\Column(type: "string", length: 255)]
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $socialLink;
 
     #[ORM\Column(type: "text")]

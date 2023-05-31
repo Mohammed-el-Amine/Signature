@@ -62,6 +62,31 @@
 	<button type="button" class="btn btn-primary" onclick="goToUsers()">Utilisateurs</button>
 	<button type="button" class="btn btn-logout" onclick="logout()">Déconnexion</button>
 
+
+	<h1>Liste des signatures</h1>
+
+	<ol>
+		{% for signature in signatures %}
+			<li>
+				<p>{{ signature.name }}</p>
+				<p>{{ signature.jobTitle }}</p>
+				<p>{{ signature.organization }}</p>
+				<p>{{ signature.address }}</p>
+				<p>{{ signature.city }}</p>
+				<p>{{ signature.logo }}</p>
+				{% if signature.socialLink is not null %}
+					<p>{{ signature.socialLink }}</p>
+				{% endif %}
+				<p>{{ signature.postalCode }}</p>
+				<p>{{ signature.email }}</p>
+				<p>{{ signature.phone }}</p>
+				<p>{{ signature.signatureHtml|raw }}</p>
+				<p>Origine de la signature :
+					{{signature.user.email}}</p>
+			</li>
+		{% endfor %}
+	</ol>
+
 	<script>
 		function goToUsers() {
 window.location.href = "{{ path('admin_index') }}";

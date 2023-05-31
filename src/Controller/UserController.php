@@ -299,7 +299,7 @@ class UserController extends AbstractController
     /**
      * @Route("/admin", name="admin_dashboard")
      */
-    public function adminHome(UserRepository $userRepository, SessionInterface $session, UrlGeneratorInterface $urlGenerator)
+    public function adminHome(UserRepository $userRepository, SessionInterface $session, UrlGeneratorInterface $urlGenerator, EmailSignatureRepository $signatureRepository)
     {
         if (!$session->has('user_id')) {
             return new RedirectResponse($urlGenerator->generate('app_home'));
@@ -318,8 +318,11 @@ class UserController extends AbstractController
         }
 
         $users = $userRepository->findAll();
+        $signatures = $signatureRepository->findAll();
+
         return $this->render('admin/home.html.twig', [
             'users' => $users,
+            'signatures' => $signatures,
         ]);
     }
 
@@ -376,7 +379,6 @@ class UserController extends AbstractController
         }
 
         $signatures = $signatureRepository->findAll();
-        // var_dump($signatures);
 
         return $this->render('user/profile.html.twig', [
             'form' => $form->createView(),

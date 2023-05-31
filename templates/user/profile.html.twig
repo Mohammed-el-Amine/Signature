@@ -26,27 +26,25 @@
 
 	<h1>Liste des signatures</h1>
 
-
-	<ul>
+	<ol>
 		{% for signature in signatures %}
-			<li>{{ signature.id }}</li>
-			<li>{{ signature.name }}</li>
-			<li>{{ signature.jobTitle }}</li>
-			<li>{{ signature.organization }}</li>
-			<li>{{ signature.address }}</li>
-			<li>{{ signature.city }}</li>
-			<li>{{ signature.logo }}</li>
-			<li>{{ signature.socialLink }}</li>
-			<li>{{ signature.postalCode }}</li>
-			<li>{{ signature.email }}</li>
-			<li>{{ signature.phone }}</li>
-			<li>{{ signature.signatureHtml|raw }}</li>
-			<li>{{ signature.user.id }}</li>
-
-
+			<li>
+				<p>{{ signature.name }}</p>
+				<p>{{ signature.jobTitle }}</p>
+				<p>{{ signature.organization }}</p>
+				<p>{{ signature.address }}</p>
+				<p>{{ signature.city }}</p>
+				<p>{{ signature.logo }}</p>
+				{% if signature.socialLink is not null %}
+					<p>{{ signature.socialLink }}</p>
+				{% endif %}
+				<p>{{ signature.postalCode }}</p>
+				<p>{{ signature.email }}</p>
+				<p>{{ signature.phone }}</p>
+				<p>{{ signature.signatureHtml|raw }}</p>
+			</li>
 		{% endfor %}
-	</ul>
-
+	</ol>
 
 	<h2>Formulaire de signature :</h2>
 	<script>
