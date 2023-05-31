@@ -39,6 +39,12 @@ class EmailSignature
     #[ORM\Column(type: "string", length: 255)]
     private $phone;
 
+    #[ORM\Column(type: "string", length: 255)]
+    private $logo;
+
+    #[ORM\Column(type: "string", length: 255)]
+    private $socialLink;
+
     #[ORM\Column(type: "text")]
     private $signatureHtml;
 
@@ -143,6 +149,30 @@ class EmailSignature
     public function setPhone(string $phone): self
     {
         $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getLogo(): ?string
+    {
+        return $this->logo;
+    }
+
+    public function setLogo(string $logo): self
+    {
+        $this->logo = $logo;
+
+        return $this;
+    }
+
+    public function getSocialLink(): ?string
+    {
+        return $this->socialLink;
+    }
+
+    public function setSocialLink(string $socialLink): self
+    {
+        $this->socialLink = $socialLink;
 
         return $this;
     }
