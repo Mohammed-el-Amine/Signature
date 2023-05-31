@@ -27,9 +27,7 @@ class UserController extends AbstractController
     #[Route('/admin/users', name: 'admin_index', methods: ["GET"])]
     public function index(UserRepository $userRepository, SessionInterface $session, UrlGeneratorInterface $urlGenerator)
     {
-        // Vérifier si la session est active
         if (!$session->has('user_id')) {
-            // Rediriger vers la page de connexion
             return new RedirectResponse($urlGenerator->generate('app_home'));
         }
 
