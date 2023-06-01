@@ -8,9 +8,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Response;
 use App\Entity\User;
+use App\Entity\EmailSignature;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -369,7 +370,6 @@ class UserController extends AbstractController
                 $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
                 $user->setPassword($hashedPassword);
             } else {
-                // Aucun nouveau mot de passe fourni, on ne l'actualise pas
                 $user->setPassword($currentPassword);
             }
 
@@ -378,10 +378,105 @@ class UserController extends AbstractController
             $this->addFlash('success', 'L\'enregistrement a été effectué avec succès.');
         }
 
-        $signatures = $signatureRepository->findAll();
+        $signatures = $signatureRepository->findAll(); //toutes les signatures
+
+        // $signature = new EmailSignature();
+
+        // // Création du formulaire pour générer la signature
+        // $signatureForm = $this->createFormBuilder()
+        //     ->add('name', TextType::class, [
+        //         'required' => true,
+        //         'label' => 'Nom et Prénom',
+        //     ])
+        //     ->add('jobTitle', TextType::class, [
+        //         'required' => true,
+        //         'label' => 'Titre du poste',
+        //     ])
+        //     ->add('organization', TextType::class, [
+        //         'required' => true,
+        //         'label' => 'Nom de l\'Organisation',
+        //     ])
+        //     ->add('address', TextType::class, [
+        //         'required' => true,
+        //         'label' => 'Adresse',
+        //     ])
+        //     ->add('postalCode', TextType::class, [
+        //         'required' => true,
+        //         'label' => 'Code postal',
+        //     ])
+        //     ->add('city', TextType::class, [
+        //         'required' => true,
+        //         'label' => 'Ville',
+        //     ])
+        //     ->add('email', EmailType::class, [
+        //         'required' => true,
+        //         'label' => 'Email',
+        //     ])
+        //     ->add('phone', TextType::class, [
+        //         'required' => true,
+        //         'label' => 'Téléphone',
+        //     ])
+        //     ->add('logo', ChoiceType::class, [
+        //         'required' => false,
+        //         'label' => 'Logo',
+        //         'choices' => [
+        //             'Logo 1' => 'logo1.jpg',
+        //             'Logo 2' => 'logo2.jpg',
+        //             // Ajoutez ici d'autres choix de logos
+        //         ],
+        //     ])
+        //     ->add('additionalLogo', ChoiceType::class, [
+        //         'required' => false,
+        //         'label' => 'Ajouter un deuxième logo',
+        //         'choices' => [
+        //             'Logo 1' => 'logo1.jpg',
+        //             'Logo 2' => 'logo2.jpg',
+        //             // Ajoutez ici d'autres choix de logos
+        //         ],
+        //         'empty_data' => null,
+        //     ])
+        //     ->add('socialLinks', ChoiceType::class, [
+        //         'label' => 'Sélectionnez un réseau social',
+        //         'choices' => [
+        //             'Facebook' => 'facebook',
+        //             'YouTube' => 'youtube',
+        //             'UNSA' => 'unsa',
+        //             'LinkedIn' => 'linkedin',
+        //             'Twitter' => 'twitter',
+        //         ],
+        //         'placeholder' => 'Sélectionnez un réseau social',
+        //     ])
+        //     ->getForm();
+
+        // $signatureForm->handleRequest($request);
+
+        // if ($signatureForm->isSubmitted() && $signatureForm->isValid()) {
+        //     // Récupérer les données du formulaire de signature
+        //     $signatureData = $signatureForm->getData();
+
+        //     // Traitement des données du formulaire...
+
+        //     $logo = $signatureData['logo'];
+        //     $additionalLogo = $signatureData['additionalLogo'];
+
+        //     // Gérer les logos sélectionnés
+        //     var_dump($logo);
+        //     var_dump($additionalLogo);
+
+        //     $socialLinks = $signatureData['socialLinks'];
+
+        //         $url = $socialLinks;
+        //         var_dump($url);
+
+
+        //     $entityManager->flush();
+
+        //     $this->addFlash('success', 'L\'enregistrement a été effectué avec succès.');
+        // }
 
         return $this->render('user/profile.html.twig', [
             'form' => $form->createView(),
+            // 'signatureForm' => $signatureForm->createView(),
             'user' => $user,
             'signatures' => $signatures,
         ]);

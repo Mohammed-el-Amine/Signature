@@ -4,63 +4,115 @@
 {% endblock %}
 
 {% block body %}
-	<button type="button" class="btn btn-logout" onclick="logout()">Déconnexion</button>
-	<h1>Profil</h1>
+<button type="button" class="btn btn-logout" onclick="logout()">Déconnexion</button>
+<h1>Profil</h1>
 
-	{{ form_start(form) }}
-	<div class="form-group">
-		{{ form_label(form.email, 'Email') }}
-		{{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
-	</div>
-	<div class="form-group">
-		{{ form_label(form.password, 'Mot de passe') }}
-		<div class="input-group">
-			{{ form_widget(form.password, {'attr': {'class': 'form-control', 'type': 'password'}}) }}
-			<div class="input-group-append">
-				<button type="button" class="btn btn-outline-secondary" onclick="togglePasswordVisibility()">Afficher</button>
-			</div>
+{{ form_start(form) }}
+<div class="form-group">
+	{{ form_label(form.email, 'Email') }}
+	{{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+</div>
+<div class="form-group">
+	{{ form_label(form.password, 'Mot de passe') }}
+	<div class="input-group">
+		{{ form_widget(form.password, {'attr': {'class': 'form-control', 'type': 'password'}}) }}
+		<div class="input-group-append">
+			<button type="button" class="btn btn-outline-secondary" onclick="togglePasswordVisibility()">Afficher</button>
 		</div>
 	</div>
-	<button type="submit" class="btn btn-primary">Enregistrer</button>
-	{{ form_end(form) }}
+</div>
+<button type="submit" class="btn btn-primary">Enregistrer</button>
+{{ form_end(form) }}
 
-	<h1>Liste des signatures</h1>
+<h1>Liste des signatures</h1>
 
-	<ol>
-		{% for signature in signatures %}
-			<li>
-				<p>{{ signature.name }}</p>
-				<p>{{ signature.jobTitle }}</p>
-				<p>{{ signature.organization }}</p>
-				<p>{{ signature.address }}</p>
-				<p>{{ signature.city }}</p>
-				<p>{{ signature.logo }}</p>
-				{% if signature.socialLink is not null %}
-					<p>{{ signature.socialLink }}</p>
-				{% endif %}
-				<p>{{ signature.postalCode }}</p>
-				<p>{{ signature.email }}</p>
-				<p>{{ signature.phone }}</p>
-				<p>{{ signature.signatureHtml|raw }}</p>
-			</li>
-		{% endfor %}
-	</ol>
+<ol>
+	{% for signature in signatures %}
+		<li>
+			<p>{{ signature.name }}</p>
+			<p>{{ signature.jobTitle }}</p>
+			<p>{{ signature.organization }}</p>
+			<p>{{ signature.address }}</p>
+			<p>{{ signature.city }}</p>
+			<p>{{ signature.logo }}</p>
+			{% if signature.socialLink is not empty %}
+				<p>
+					{% for socialLink in signature.socialLink %}
+						{{ socialLink }}
+					{% endfor %}
+				</p>
+			{% endif %}
+			<p>{{ signature.postalCode }}</p>
+			<p>{{ signature.email }}</p>
+			<p>{{ signature.phone }}</p>
+			<p>{{ signature.signatureHtml|raw }}</p>
+		</li>
+	{% endfor %}
+</ol>
 
-	<h2>Formulaire de signature :</h2>
-	<script>
-		function togglePasswordVisibility() {
-const passwordInput = document.getElementById("{{ form.password.vars.id }}");
-const passwordButtonType = passwordInput.getAttribute("type");
+{# <h2>Formulaire de signature :</h2>
+{{ form_start(signatureForm) }}
+<div class="form-group">
+	{{ form_label(signatureForm.name, 'Nom et Prénom') }}
+	{{ form_widget(signatureForm.name, {'attr': {'class': 'form-control'}}) }}
+</div>
+<div class="form-group">
+	{{ form_label(signatureForm.jobTitle, 'Titre du poste') }}
+	{{ form_widget(signatureForm.jobTitle, {'attr': {'class': 'form-control'}}) }}
+</div>
+<div class="form-group">
+	{{ form_label(signatureForm.organization, 'Nom de l\'Organisation') }}
+    {{ form_widget(signatureForm.organization, {'attr': {'class': 'form-control'}}) }}
+</div>
+<div class="form-group">
+    {{ form_label(signatureForm.address, 'Adresse') }}
+    {{ form_widget(signatureForm.address, {'attr': {'class': 'form-control'}}) }}
+</div>
+<div class="form-group">
+    {{ form_label(signatureForm.postalCode, 'Code postal') }}
+    {{ form_widget(signatureForm.postalCode, {'attr': {'class': 'form-control'}}) }}
+</div>
+<div class="form-group">
+    {{ form_label(signatureForm.city, 'Ville') }}
+    {{ form_widget(signatureForm.city, {'attr': {'class': 'form-control'}}) }}
+</div>
+<div class="form-group">
+    {{ form_label(signatureForm.email, 'Email') }}
+    {{ form_widget(signatureForm.email, {'attr': {'class': 'form-control'}}) }}
+</div>
+<div class="form-group">
+    {{ form_label(signatureForm.phone, 'Téléphone') }}
+    {{ form_widget(signatureForm.phone, {'attr': {'class': 'form-control'}}) }}
+</div>
+<div class="form-group">
+    {{ form_label(signatureForm.logo, 'Logo') }}
+    {{ form_widget(signatureForm.logo, {'attr': {'class': 'form-control'}}) }}
+</div>
+<div class="form-group">
+    {{ form_label(signatureForm.additionalLogo, 'Deuxième logo') }}
+    {{ form_widget(signatureForm.additionalLogo, {'attr': {'class': 'form-control'}}) }}
+</div>
+<div class="form-group">
+{{ form_widget(signatureForm.socialLinks, {'attr': {'class': 'form-control'}}) }}
+{{ form_label(signatureForm.socialLinks) }}
+</div>
+<button type="submit" class="btn btn-primary">Enregistrer la signature</button>
+{{ form_end(signatureForm) }} #}
 
-if (passwordButtonType === "password") {
-passwordInput.setAttribute("type", "text");
-} else {
-passwordInput.setAttribute("type", "password");
-}
-}
+    <script>
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById("{{ form.password.vars.id }}");
+            const passwordButtonType = passwordInput.getAttribute("type");
 
-function logout() {
-window.location.href = "{{ path('logout') }}";
-}
-	</script>
+            if (passwordButtonType === "password") {
+                passwordInput.setAttribute("type", "text");
+            } else {
+                passwordInput.setAttribute("type", "password");
+            }
+        }
+
+        function logout() {
+            window.location.href = "{{ path('logout') }}";
+        }
+    </script>
 {% endblock %}
