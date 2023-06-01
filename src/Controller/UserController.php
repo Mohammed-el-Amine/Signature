@@ -319,11 +319,11 @@ class UserController extends AbstractController
         }
 
         $users = $userRepository->findAll();
-        $signatures = $signatureRepository->findAll();
+        $allSignatures = $signatureRepository->findAll();
 
         return $this->render('admin/home.html.twig', [
             'users' => $users,
-            'signatures' => $signatures,
+            'signatures' => $allSignatures,
         ]);
     }
 
@@ -348,7 +348,7 @@ class UserController extends AbstractController
         $currentEmail = $user->getEmail();
         $currentPassword = $user->getPassword();
 
-        $form = $this->createFormBuilder($user)
+        $userForm = $this->createFormBuilder($user)
             ->add('email', EmailType::class, [
                 'data' => $currentEmail,
                 'disabled' => true,
@@ -359,9 +359,9 @@ class UserController extends AbstractController
             ])
             ->getForm();
 
-        $form->handleRequest($request);
+        $userForm->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($userForm->isSubmitted() && $userForm->isValid()) {
             $user->setEmail($currentEmail);
 
             $newPassword = $user->getPassword();
@@ -378,7 +378,7 @@ class UserController extends AbstractController
             $this->addFlash('success', 'L\'enregistrement a été effectué avec succès.');
         }
 
-        $signatures = $signatureRepository->findAll(); //toutes les signatures
+        $allSignatures = $signatureRepository->findAll(); //toutes les signatures
 
         // $signature = new EmailSignature();
 
@@ -475,10 +475,10 @@ class UserController extends AbstractController
         // }
 
         return $this->render('user/profile.html.twig', [
-            'form' => $form->createView(),
+            'form' => $userForm->createView(),
             // 'signatureForm' => $signatureForm->createView(),
             'user' => $user,
-            'signatures' => $signatures,
+            'signatures' => $allSignatures,
         ]);
     }
 
