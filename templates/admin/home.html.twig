@@ -1,99 +1,98 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Admin Home
+{% block title %}
+  Admin Home
 {% endblock %}
 
 {% block stylesheets %}
-	{{ parent() }}
-	<style>
-		.btn-primary {
-			display: inline-block;
-			font-weight: 400;
-			color: #fff;
-			text-align: center;
-			vertical-align: middle;
-			-webkit-user-select: none;
-			-moz-user-select: none;
-			-ms-user-select: none;
-			user-select: none;
-			background-color: #007bff;
-			border: 1px solid #007bff;
-			padding: 0.375rem 0.75rem;
-			font-size: 1rem;
-			line-height: 1.5;
-			border-radius: 0.25rem;
-			transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-		}
-		.btn-primary:hover {
-			color: #fff;
-			background-color: #0069d9;
-			border-color: #0062cc;
-		}
-
-		.btn-logout {
-			display: inline-block;
-			font-weight: 400;
-			color: #fff;
-			text-align: center;
-			vertical-align: middle;
-			-webkit-user-select: none;
-			-moz-user-select: none;
-			-ms-user-select: none;
-			user-select: none;
-			background-color: #dc3545;
-			border: 1px solid #dc3545;
-			padding: 0.375rem 0.75rem;
-			font-size: 1rem;
-			line-height: 1.5;
-			border-radius: 0.25rem;
-			transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-		}
-		.btn-logout:hover {
-			color: #fff;
-			background-color: #c82333;
-			border-color: #bd2130;
-		}
-	</style>
+  {{ parent() }}
+  <style>
+    .btn-primary {
+      display: inline-block;
+      font-weight: 400;
+      color: #fff;
+      text-align: center;
+      vertical-align: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      background-color: #007bff;
+      border: 1px solid #007bff;
+      padding: 0.375rem 0.75rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      border-radius: 0.25rem;
+      transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    .btn-primary:hover {
+      color: #fff;
+      background-color: #0069d9;
+      border-color: #0062cc;
+    }
+    
+    .btn-logout {
+      display: inline-block;
+      font-weight: 400;
+      color: #fff;
+      text-align: center;
+      vertical-align: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      background-color: #dc3545;
+      border: 1px solid #dc3545;
+      padding: 0.375rem 0.75rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      border-radius: 0.25rem;
+      transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    .btn-logout:hover {
+      color: #fff;
+      background-color: #c82333;
+      border-color: #bd2130;
+    }
+  </style>
 {% endblock %}
 
 {% block body %}
-	<h1>Admin Dashboard!</h1>
+  <h1>Admin Dashboard!</h1>
 
-	<button type="button" class="btn btn-primary" onclick="goToUsers()">Utilisateurs</button>
-	<button type="button" class="btn btn-logout" onclick="logout()">Déconnexion</button>
+  <button type="button" class="btn btn-primary" onclick="goToUsers()">Utilisateurs</button>
+  <button type="button" class="btn btn-logout" onclick="logout()">Déconnexion</button>
 
+  <h1>Liste des signatures</h1>
 
-	<h1>Liste des signatures</h1>
+  <ol>
+    {% for signature in signatures %}
+      {# <p>{{ signature.name }}</p>
+		<p>{{ signature.jobTitle }}</p>
+		<p>{{ signature.organization }}</p>
+		<p>{{ signature.address }}</p>
+		<p>{{ signature.city }}</p>
+		<p>{{ signature.logo }}</p>
+		<p>{{signature.socialLink}}</p>
+		<p>{{ signature.postalCode }}</p>
+		<p>{{ signature.email }}</p>
+		<p>{{ signature.phone }}</p> #}
+      <div class="all_signatures">
+        <p>Signature n°{{ signature.id }}</p>
+        <p>{{ signature.html_code|raw }}</p>
+        <p>Origine de la signature :
+          {{ signature.user.email }}</p>
+      </div>
+    {% endfor %}
+  </ol>
 
-	<ol>
-		{% for signature in signatures %}
-			<li>
-				<p>{{ signature.name }}</p>
-				<p>{{ signature.jobTitle }}</p>
-				<p>{{ signature.organization }}</p>
-				<p>{{ signature.address }}</p>
-				<p>{{ signature.city }}</p>
-				<p>{{ signature.logo }}</p>
-				{% if signature.socialLink is not null %}
-					<p>{{ signature.socialLink }}</p>
-				{% endif %}
-				<p>{{ signature.postalCode }}</p>
-				<p>{{ signature.email }}</p>
-				<p>{{ signature.phone }}</p>
-				<p>{{ signature.signatureHtml|raw }}</p>
-				<p>Origine de la signature :
-					{{signature.user.email}}</p>
-			</li>
-		{% endfor %}
-	</ol>
-
-	<script>
-		function goToUsers() {
-window.location.href = "{{ path('admin_index') }}";
-}
-
-function logout() {
-window.location.href = "{{ path('logout') }}";
-}
-	</script>
+  <script>
+    function goToUsers() {
+      window.location.href = "{{ path('admin_index') }}"
+    }
+    
+    function logout() {
+      window.location.href = "{{ path('logout') }}"
+    }
+  </script>
 {% endblock %}

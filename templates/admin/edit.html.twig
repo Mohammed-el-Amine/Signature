@@ -1,83 +1,76 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier un utilisateur
+{% block title %}
+  Modifier un utilisateur
 {% endblock %}
 
 {% block stylesheets %}
-	{{ parent() }}
-	<style>
-		h1 {
-			font-size: 24px;
-			font-weight: bold;
-			margin-bottom: 20px;
-			color: #333;
-			text-align: center;
-		}
-
-		form {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			margin-top: 20px;
-		}
-
-		form input[type="email"],
-		form input[type="password"],
-		form select {
-			padding: 8px;
-			margin-bottom: 10px;
-			width: 100%;
-			max-width: 300px;
-			border: 1px solid #ddd;
-			border-radius: 4px;
-		}
-
-		form button {
-			padding: 8px 16px;
-			font-size: 14px;
-			border-radius: 4px;
-			background-color: #007bff;
-			border: none;
-			color: #fff;
-			cursor: pointer;
-		}
-
-		form button:hover {
-			background-color: #0069d9;
-		}
-
-		.success-message {
-			margin-top: 20px;
-			padding: 10px;
-			background-color: #d4edda;
-			border-color: #c3e6cb;
-			color: #155724;
-			border-radius: 4px;
-		}
-	</style>
+  {{ parent() }}
+  <style>
+    h1 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #333;
+      text-align: center;
+    }
+    
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+    }
+    
+    form input[type='email'],
+    form input[type='password'],
+    form select {
+      padding: 8px;
+      margin-bottom: 10px;
+      width: 100%;
+      max-width: 300px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    
+    form button {
+      padding: 8px 16px;
+      font-size: 14px;
+      border-radius: 4px;
+      background-color: #007bff;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+    }
+    
+    form button:hover {
+      background-color: #0069d9;
+    }
+    
+    .success-message {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #d4edda;
+      border-color: #c3e6cb;
+      color: #155724;
+      border-radius: 4px;
+    }
+  </style>
 {% endblock %}
 
 {% block body %}
-	<h1>Modifier un utilisateur</h1>
+  <h1>Modifier un utilisateur</h1>
 
-	{{ form_start(form) }}
-	<div style="width: 100%; max-width: 300px;">
-		{{ form_row(form.email) }}
-	</div>
-	<div style="width: 100%; max-width: 300px;">
-		{{ form_row(form.password) }}
-	</div>
-	<div style="width: 100%; max-width: 300px;">
-		{{ form_row(form.role) }}
-	</div>
+  {{ form_start(form) }}
+  <div style="width: 100%; max-width: 300px;">{{ form_row(form.email) }}</div>
+  <div style="width: 100%; max-width: 300px;">{{ form_row(form.password) }}</div>
+  <div style="width: 100%; max-width: 300px;">{{ form_row(form.role) }}</div>
 
-	<button type="submit" class="btn btn-primary">Enregistrer</button>
+  <button type="submit" class="btn btn-primary">Enregistrer</button>
 
-	{{ form_end(form) }}
+  {{ form_end(form) }}
 
-	{% for flashMessage in app.flashes('success') %}
-		<div class="success-message" role="alert">
-			{{ flashMessage }}
-		</div>
-	{% endfor %}
+  {% for flashMessage in app.flashes('success') %}
+    <div class="success-message" role="alert">{{ flashMessage }}</div>
+  {% endfor %}
 {% endblock %}

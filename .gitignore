@@ -20,3 +20,6 @@
 ###< symfony/phpunit-bridge ###
 
 /.env
+
+# exemple de la signature de mail a generer
+/example_mail.html

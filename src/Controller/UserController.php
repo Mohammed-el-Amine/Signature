@@ -9,17 +9,25 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UserRepository;
 use App\Entity\User;
-use App\Entity\EmailSignature;
+use App\Entity\Logo;
+use App\Entity\HtmlSignature;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use App\Repository\EmailSignatureRepository;
+use App\Repository\HtmlSignatureRepository;
+use App\Repository\LogoRepository;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Mailgun\Mailgun;
 use Symfony\Component\Uid\Uuid;
 
@@ -300,7 +308,7 @@ class UserController extends AbstractController
     /**
      * @Route("/admin", name="admin_dashboard")
      */
-    public function adminHome(UserRepository $userRepository, SessionInterface $session, UrlGeneratorInterface $urlGenerator, EmailSignatureRepository $signatureRepository)
+    public function adminHome(UserRepository $userRepository, SessionInterface $session, UrlGeneratorInterface $urlGenerator, HtmlSignatureRepository $signatureRepository, LogoRepository $logo)
     {
         if (!$session->has('user_id')) {
             return new RedirectResponse($urlGenerator->generate('app_home'));
@@ -321,6 +329,9 @@ class UserController extends AbstractController
         $users = $userRepository->findAll();
         $allSignatures = $signatureRepository->findAll();
 
+        dump($allSignatures);
+        dump($logo);
+
         return $this->render('admin/home.html.twig', [
             'users' => $users,
             'signatures' => $allSignatures,
@@ -331,7 +342,7 @@ class UserController extends AbstractController
     /**
      * @Route("/profile", name="user_profile")
      */
-    public function userProfile(Request $request, EntityManagerInterface $entityManager, SessionInterface $session, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator, EmailSignatureRepository $signatureRepository)
+    public function userProfile(Request $request, EntityManagerInterface $entityManager, SessionInterface $session, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator, HtmlSignatureRepository $signatureRepository, LogoRepository $logoRepository)
     {
         if (!$session->has('user_id')) {
             return new RedirectResponse($urlGenerator->generate('app_home'));
@@ -378,107 +389,148 @@ class UserController extends AbstractController
             $this->addFlash('success', 'L\'enregistrement a été effectué avec succès.');
         }
 
+        $signature = new HtmlSignature();
+        $signature->setUserId($user);
+        //a modifier absolument
+        $defaultHtmlCode = '</head>                            
+                            <body>
+                              <table border="0" cellpadding="0" width="500">
+                                <tbody>
+                                  <tr>
+                                    <td align="left" valign="middle" width="10">
+                                      <div class="logo">
+                                        <p><a href="https://www.unsa.org"><img src="$logo"></a></p>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="info">
+                                        <p><span class="name">$name</span><br><span class="role"><i>$jobTitle</i></span><br><span
+                                            class="organization"><i>$organization</i></span><br></p>
+                                      </div>
+                                      <div class="address">
+                                        <p><span>$adress</span><br><span>$postaCode</span>&nbsp;<span>$city CEDEX</span><br></p>
+                                      </div>
+                                      <div class="contact">
+                                        <p><img src="https://reseaux.unsa.org/signature/_mail.svg"><a
+                                            href="mailto:$email">$email</a><br><img
+                                            src="https://reseaux.unsa.org/signature/_phone.svg"><span>$phone</span></p>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </body>';
+
+        $allLogos = $logoRepository->findAll();
+
+        $choices = [];
+        foreach ($allLogos as $logo) {
+            $choices[$logo->getPath()] = $logo->getId();
+        }
+
+        $signatureForm = $this->createFormBuilder($signature)
+            ->add('name', TextType::class)
+            ->add('job_title', TextType::class)
+            ->add('organization', TextType::class)
+            ->add('adress', TextType::class)
+            ->add('postal_code', TextType::class)
+            ->add('city', TextType::class)
+            ->add('email', EmailType::class)
+            ->add('phone', TelType::class)
+            ->add('html_code', TextareaType::class, [
+                'label' => 'Contenu HTML',
+                'disabled' => false,
+                'required' => false,
+                'attr' => [
+                    'readonly' => true,
+                    'rows' => 5
+                ],
+                'data' => $defaultHtmlCode
+            ])
+            ->add('baniere', TextareaType::class, ['required' => false])
+            ->add('logo_id', ChoiceType::class, [
+                'label' => 'Logo',
+                'choices' => $choices,
+                'required' => false,
+            ])
+            ->getForm();
+
+        $signatureForm->handleRequest($request);
+
+        if ($signatureForm->isSubmitted() && $signatureForm->isValid()) {
+
+            //a verifier tt les valeur recuper ne sont pas bonne
+
+            $signatureData = $signatureForm->getData();
+            $name = $signatureData->getName();
+            $jobTitle = $signatureData->getJobTitle();
+            $organization = $signatureData->getOrganization();
+            $address = $signatureData->getAdress();
+            $postalCode = $signatureData->getPostalCode();
+            $city = $signatureData->getCity();
+            $email = $signatureData->getEmail();
+            $phone = $signatureData->getPhone();
+            $path = ''; // Remplacez cette valeur par la source réelle du chemin (s'il existe)
+            $logo = ''; // Remplacez cette valeur par la source réelle du logo
+
+            // Mettez à jour le code HTML de la signature avec les valeurs dynamiques
+            $defaultHtmlCode = '</head>                            
+                                <body>
+                                  <table border="0" cellpadding="0" width="500">
+                                    <tbody>
+                                      <tr>
+                                        <td align="left" valign="middle" width="10">
+                                          <div class="logo">
+                                            <p><a href="https://www.unsa.org"><img src="' . $logo . '"></a></p>
+                                          </div>
+                                        </td>
+                                        <td>
+                                          <div class="info">
+                                            <p><span class="name">' . $name . '</span><br><span class="role"><i>' . $jobTitle . '</i></span><br><span
+                                                class="organization"><i>' . $organization . '</i></span><br></p>
+                                          </div>
+                                          <div class="address">
+                                            <p><span>' . $address . '</span><br><span>' . $postalCode . '</span>&nbsp;<span>' . $city . ' CEDEX</span><br></p>
+                                          </div>
+                                          <div class="contact">
+                                            <p><img src="https://reseaux.unsa.org/signature/_mail.svg"><a
+                                                href="mailto:' . $email . '">' . $email . '</a><br><img
+                                                src="https://reseaux.unsa.org/signature/_phone.svg"><span>' . $phone . '</span></p>
+                                          </div>
+                                          <div class="social">
+                                            <p><img
+                                                src="https://img.freepik.com/vecteurs-premium/logo-youtube-rouge-logo-medias-sociaux_197792-1803.jpg?w=2000"><a
+                                                href="' . $path . '">' . $path . '</a><br></p>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </body>';
+
+            // Récupérer les données du formulaire de signature
+            $entityManager->persist($signature);
+            $entityManager->flush();
+
+
+            $this->addFlash('success', 'L\'enregistrement a été effectué avec succès.');
+            echo " je suis passer";
+        }
+
         $allSignatures = $signatureRepository->findAll(); //toutes les signatures
-
-        // $signature = new EmailSignature();
-
-        // // Création du formulaire pour générer la signature
-        // $signatureForm = $this->createFormBuilder()
-        //     ->add('name', TextType::class, [
-        //         'required' => true,
-        //         'label' => 'Nom et Prénom',
-        //     ])
-        //     ->add('jobTitle', TextType::class, [
-        //         'required' => true,
-        //         'label' => 'Titre du poste',
-        //     ])
-        //     ->add('organization', TextType::class, [
-        //         'required' => true,
-        //         'label' => 'Nom de l\'Organisation',
-        //     ])
-        //     ->add('address', TextType::class, [
-        //         'required' => true,
-        //         'label' => 'Adresse',
-        //     ])
-        //     ->add('postalCode', TextType::class, [
-        //         'required' => true,
-        //         'label' => 'Code postal',
-        //     ])
-        //     ->add('city', TextType::class, [
-        //         'required' => true,
-        //         'label' => 'Ville',
-        //     ])
-        //     ->add('email', EmailType::class, [
-        //         'required' => true,
-        //         'label' => 'Email',
-        //     ])
-        //     ->add('phone', TextType::class, [
-        //         'required' => true,
-        //         'label' => 'Téléphone',
-        //     ])
-        //     ->add('logo', ChoiceType::class, [
-        //         'required' => false,
-        //         'label' => 'Logo',
-        //         'choices' => [
-        //             'Logo 1' => 'logo1.jpg',
-        //             'Logo 2' => 'logo2.jpg',
-        //             // Ajoutez ici d'autres choix de logos
-        //         ],
-        //     ])
-        //     ->add('additionalLogo', ChoiceType::class, [
-        //         'required' => false,
-        //         'label' => 'Ajouter un deuxième logo',
-        //         'choices' => [
-        //             'Logo 1' => 'logo1.jpg',
-        //             'Logo 2' => 'logo2.jpg',
-        //             // Ajoutez ici d'autres choix de logos
-        //         ],
-        //         'empty_data' => null,
-        //     ])
-        //     ->add('socialLinks', ChoiceType::class, [
-        //         'label' => 'Sélectionnez un réseau social',
-        //         'choices' => [
-        //             'Facebook' => 'facebook',
-        //             'YouTube' => 'youtube',
-        //             'UNSA' => 'unsa',
-        //             'LinkedIn' => 'linkedin',
-        //             'Twitter' => 'twitter',
-        //         ],
-        //         'placeholder' => 'Sélectionnez un réseau social',
-        //     ])
-        //     ->getForm();
-
-        // $signatureForm->handleRequest($request);
-
-        // if ($signatureForm->isSubmitted() && $signatureForm->isValid()) {
-        //     // Récupérer les données du formulaire de signature
-        //     $signatureData = $signatureForm->getData();
-
-        //     // Traitement des données du formulaire...
-
-        //     $logo = $signatureData['logo'];
-        //     $additionalLogo = $signatureData['additionalLogo'];
-
-        //     // Gérer les logos sélectionnés
-        //     var_dump($logo);
-        //     var_dump($additionalLogo);
-
-        //     $socialLinks = $signatureData['socialLinks'];
-
-        //         $url = $socialLinks;
-        //         var_dump($url);
-
-
-        //     $entityManager->flush();
-
-        //     $this->addFlash('success', 'L\'enregistrement a été effectué avec succès.');
-        // }
 
         return $this->render('user/profile.html.twig', [
             'form' => $userForm->createView(),
-            // 'signatureForm' => $signatureForm->createView(),
+            'signatureForm' => $signatureForm->createView(),
             'user' => $user,
             'signatures' => $allSignatures,
+        ]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => HtmlSignature::class,
         ]);
     }
 
