@@ -5,7 +5,8 @@
 {% endblock %}
 
 {% block stylesheets %}
-  {{ parent() }}
+{{ parent() }}
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
     .btn-primary {
       display: inline-block;
@@ -63,29 +64,38 @@
   <button type="button" class="btn btn-primary" onclick="goToUsers()">Utilisateurs</button>
   <button type="button" class="btn btn-logout" onclick="logout()">Déconnexion</button>
 
-  <h1>Liste des signatures</h1>
+  <div class="signature">
+		<h1>Liste des signatures</h1>
 
-  <ol>
-    {% for signature in signatures %}
-      {# <p>{{ signature.name }}</p>
-		<p>{{ signature.jobTitle }}</p>
-		<p>{{ signature.organization }}</p>
-		<p>{{ signature.address }}</p>
-		<p>{{ signature.city }}</p>
-		<p>{{ signature.logo }}</p>
-		<p>{{signature.socialLink}}</p>
-		<p>{{ signature.postalCode }}</p>
-		<p>{{ signature.email }}</p>
-		<p>{{ signature.phone }}</p> #}
-      <div class="all_signatures">
-        <p>Signature n°{{ signature.id }}</p>
-        <p>{{ signature.html_code|raw }}</p>
-        <p>Origine de la signature :
-          {{ signature.user.email }}</p>
-      </div>
-    {% endfor %}
+		<table class="table table-striped">
+			<thead class="thead-dark">
+				<tr>
+					<th>Signature n°</th>
+					<th>Signature</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for signature in signatures %}
+					<tr>
+						<td>{{ signature.id }}</td>
+						<td>{{ signature.htmlCode|raw }}</td>
+						<td>
+							{# <a href="{{ path('download_signature_png', {'id': signature.id}) }}">Télécharger en PNG</a> #}
+							{# <a href="{{ path('download_signature_html', {'id': signature.id}) }}">Télécharger en HTML</a> #}
+							{# <a href="{{ path('edit_signature', {'id': signature.id}) }}">Modifier</a> #}
+								<a href="#" class="btn btn-primary"> Télécharger en PNG</a>
+							<a href="#" class="btn btn-primary">Télécharger en HTML</a>
+							<a href="#" class="btn btn-primary">Modifier</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
   </ol>
 
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script>
     function goToUsers() {
       window.location.href = "{{ path('admin_index') }}"

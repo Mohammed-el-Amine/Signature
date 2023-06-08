@@ -391,42 +391,8 @@ class UserController extends AbstractController
 
         $signature = new HtmlSignature();
         $signature->setUserId($user);
-        //a modifier absolument
-        $defaultHtmlCode = '</head>                            
-                            <body>
-                              <table border="0" cellpadding="0" width="500">
-                                <tbody>
-                                  <tr>
-                                    <td align="left" valign="middle" width="10">
-                                      <div class="logo">
-                                        <p><a href="https://www.unsa.org"><img src="$logo"></a></p>
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="info">
-                                        <p><span class="name">$name</span><br><span class="role"><i>$jobTitle</i></span><br><span
-                                            class="organization"><i>$organization</i></span><br></p>
-                                      </div>
-                                      <div class="address">
-                                        <p><span>$adress</span><br><span>$postaCode</span>&nbsp;<span>$city CEDEX</span><br></p>
-                                      </div>
-                                      <div class="contact">
-                                        <p><img src="https://reseaux.unsa.org/signature/_mail.svg"><a
-                                            href="mailto:$email">$email</a><br><img
-                                            src="https://reseaux.unsa.org/signature/_phone.svg"><span>$phone</span></p>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </body>';
 
-        $allLogos = $logoRepository->findAll();
-
-        $choices = [];
-        foreach ($allLogos as $logo) {
-            $choices[$logo->getPath()] = $logo->getId();
-        }
+        $defaultHtmlCode = 'not null'; // Mettez votre valeur par défaut ici
 
         $signatureForm = $this->createFormBuilder($signature)
             ->add('name', TextType::class)
@@ -442,24 +408,17 @@ class UserController extends AbstractController
                 'disabled' => false,
                 'required' => false,
                 'attr' => [
-                    'readonly' => true,
+                    'readonly' => false, // Modifier readonly en false
                     'rows' => 5
                 ],
                 'data' => $defaultHtmlCode
             ])
             ->add('baniere', TextareaType::class, ['required' => false])
-            ->add('logo_id', ChoiceType::class, [
-                'label' => 'Logo',
-                'choices' => $choices,
-                'required' => false,
-            ])
             ->getForm();
 
         $signatureForm->handleRequest($request);
 
         if ($signatureForm->isSubmitted() && $signatureForm->isValid()) {
-
-            //a verifier tt les valeur recuper ne sont pas bonne
 
             $signatureData = $signatureForm->getData();
             $name = $signatureData->getName();
@@ -470,11 +429,80 @@ class UserController extends AbstractController
             $city = $signatureData->getCity();
             $email = $signatureData->getEmail();
             $phone = $signatureData->getPhone();
-            $path = ''; // Remplacez cette valeur par la source réelle du chemin (s'il existe)
-            $logo = ''; // Remplacez cette valeur par la source réelle du logo
+            $path = 'https://www.unsa.org/';
+            // $logo = $signatureData_>getLogo(); 
+            $logo = '/img/LOGO_UNSA_2k19.png';
 
             // Mettez à jour le code HTML de la signature avec les valeurs dynamiques
-            $defaultHtmlCode = '</head>                            
+            $defaultHtmlCode = '<style>
+                                .logo p {
+                                  padding-right: 10px;
+                                  font-size: 12px;
+                                  line-height: 14px;
+                                }
+                                .logo img {
+                                  border: none;
+                                  width: 120px;
+                                }
+                                .info p {
+                                  font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;
+                                  font-size: 12px;
+                                  line-height: 14px;
+                                  color: #000;
+                                  text-align: left;
+                                }
+                                .info span.name {
+                                  color: #000;
+                                  font-weight: bold;
+                                  font-size: 14px;
+                                }
+                                .info span.role {
+                                  color: #666;
+                                  font-style: italic;
+                                }
+                                .info span.organization {
+                                  color: #666;
+                                  font-style: italic;
+                                }
+                                .address p {
+                                  font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;
+                                  font-size: 12px;
+                                  line-height: 14px;
+                                  color: #000;
+                                }
+                                .contact p {
+                                  font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;
+                                  font-size: 12px;
+                                  line-height: 14px;
+                                  color: #000;
+                                }
+                                .contact img {
+                                  border: none;
+                                  height: 13px;
+                                  margin-right: .5em;
+                                }
+                                .contact a {
+                                  color: #666;
+                                  font-style: italic;
+                                }
+                                .contact span {
+                                  color: #666;
+                                }
+                                .social p {
+                                  margin: 0;
+                                  padding: 0;
+                                }
+                                .social img {
+                                  border: none;
+                                  height: 23px;
+                                  margin-right: .5em;
+                                }
+                                .social a {
+                                  color: #666;
+                                  font-style: italic;
+                                }
+                              </style>
+                                </head>                          
                                 <body>
                                   <table border="0" cellpadding="0" width="500">
                                     <tbody>
@@ -499,7 +527,7 @@ class UserController extends AbstractController
                                           </div>
                                           <div class="social">
                                             <p><img
-                                                src="https://img.freepik.com/vecteurs-premium/logo-youtube-rouge-logo-medias-sociaux_197792-1803.jpg?w=2000"><a
+                                                src="' . $logo . '"><a
                                                 href="' . $path . '">' . $path . '</a><br></p>
                                           </div>
                                         </td>
@@ -508,14 +536,16 @@ class UserController extends AbstractController
                                   </table>
                                 </body>';
 
-            // Récupérer les données du formulaire de signature
+            $signature->setHtmlCode($defaultHtmlCode); // Mettez à jour la propriété htmlCode de l'objet $signature
+
             $entityManager->persist($signature);
             $entityManager->flush();
 
-
             $this->addFlash('success', 'L\'enregistrement a été effectué avec succès.');
-            echo " je suis passer";
+            echo "je suis passé";
         }
+
+
 
         $allSignatures = $signatureRepository->findAll(); //toutes les signatures
 
