@@ -373,24 +373,29 @@ class UserController extends AbstractController
         $userForm->handleRequest($request);
 
         if ($userForm->isSubmitted() && $userForm->isValid()) {
-            $user->setEmail($currentEmail);
-
-            $newPassword = $user->getPassword();
-
-            if (!empty($newPassword)) {
-                $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-                $user->setPassword($hashedPassword);
-            } else {
-                $user->setPassword($currentPassword);
+            // Vérifier si le bouton du formulaire de profil a été soumis
+            if ($request->request->has('profile_submit')) {
+                $user->setEmail($currentEmail);
+        
+                $newPassword = $user->getPassword();
+        
+                if (!empty($newPassword)) {
+                    $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+                    $user->setPassword($hashedPassword);
+                } else {
+                    $user->setPassword($currentPassword);
+                }
+        
+                $entityManager->flush();
+        
+                $this->addFlash('success', 'L\'enregistrement du profil a été effectué avec succès.');
             }
-
-            $entityManager->flush();
-
-            $this->addFlash('success', 'L\'enregistrement a été effectué avec succès.');
         }
 
         $signature = new HtmlSignature();
         $signature->setUserId($user);
+
+        
 
         $defaultHtmlCode = 'not null'; // Mettez votre valeur par défaut ici
 
@@ -419,6 +424,8 @@ class UserController extends AbstractController
         $signatureForm->handleRequest($request);
 
         if ($signatureForm->isSubmitted() && $signatureForm->isValid()) {
+
+            if ($request->request->has('signature_submit')) {
 
             $signatureData = $signatureForm->getData();
             $name = $signatureData->getName();
@@ -544,6 +551,7 @@ class UserController extends AbstractController
             $this->addFlash('success', 'L\'enregistrement a été effectué avec succès.');
             echo "je suis passé";
         }
+    }
 
 
 
