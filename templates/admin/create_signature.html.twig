@@ -97,9 +97,9 @@
 									<span id="city">Ville CEDEX</span><br>
 								</p>
 								<p>
-									<img src="https://reseaux.unsa.org/signature/_mail.svg" class="border-0" style="block-size: 12px; margin-inline-end: .5em;">
+									<img src="https://lab-web.unsa.org/signature/img/mail.png" class="border-0" style="block-size: 12px; margin-inline-end: .5em;">
 									<a id="previewEmail" href="mailto:${email}" style="color: #666; font-style: italic;">Adresse Email</a><br>
-									<img src="https://reseaux.unsa.org/signature/_phone.svg" class="border-0" style="block-size: 14px; margin-inline-end: .5em;">
+									<img src="hhttps://lab-web.unsa.org/signature/img/phone.png" class="border-0" style="block-size: 14px; margin-inline-end: .5em;">
 									<span id="phone" style="color: #666;">Numéro</span>
 								</p>
 							</td>
@@ -145,7 +145,7 @@ var updatedElementThird = updatedElementSecond.replace(/(<img id="LOGO-MAIL" src
 var filename = fullName + '.html';
 // Crée et ajoute un lien de téléchargement
 var link = document.createElement('a');
-link.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(updatedElementThird));
+link.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(element));
 // Ajoute le nom du fichier
 link.setAttribute('download', filename);
 link.style.display = 'none';
@@ -161,7 +161,6 @@ var fullName = firstNameValue + ' ' + lastNameValue;
 
 // Récupère l'élément de la signature
 var element = document.getElementById('signature');
-console.log(element);
 // Utilise html2canvas pour capturer l'élément en tant qu'image
 html2canvas(element).then(function (canvas) { // Convertit le canevas en une URL de données d'image PNG
 var dataURL = canvas.toDataURL('image/png');
@@ -173,7 +172,7 @@ link.download = fullName + '.png';
 link.style.display = 'none';
 
 document.body.appendChild(link);
-//link.click();
+link.click();
 document.body.removeChild(link);
 });
 }
