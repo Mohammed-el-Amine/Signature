@@ -329,4 +329,171 @@ class SignatureGeneratorController extends AbstractController
         $allSignature = $signatureRepository->findAll();
         return $this->render('signature/generate_signature.html.twig', []);
     }
+
+    #[Route('/signature/edit/{id}', name: 'edit_signature')]
+    /**
+     * @Route("/signature/edit/{id}", name="edit_signature")
+     */
+    public function editSignature(Request $request, SignatureRepository $signatureRepository, LogoRepository $logoRepository, $id, SessionInterface $session, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator, EntityManagerInterface $entityManager): Response
+    {
+        if (!$session->has('user_id')) {
+            return new RedirectResponse($urlGenerator->generate('app_home'));
+        }
+
+        $userId = $session->get('user_id');
+
+        if ($userId) {
+            $user = $userRepository->find($userId);
+        } else {
+            throw $this->createAccessDeniedException('Access Denied');
+        }
+        // Récupérer l'ID de la signature à modifier à partir de la route
+        $signatureId = $id;
+
+        // Récupérer la signature existante à partir du repository
+        $signature = $signatureRepository->find($signatureId);
+
+        if (!$signature) {
+            throw $this->createNotFoundException('La signature demandée n\'existe pas.');
+        }
+
+        $logos = $logoRepository->findAll();
+        $logoChoices = [];
+
+        foreach ($logos as $logo) {
+            $name = $logo->getName();
+            $path = $logo->getPath();
+            $logoChoices[$name] = $logo;
+        }
+
+        $form = $this->createFormBuilder()
+            ->add('first_name', TextType::class, [
+                'label' => 'Prénom : ',
+                'attr' => [
+                    'placeholder' => 'Prénom',
+                ],
+            ])
+            ->add('last_name', TextType::class, [
+                'label' => 'Nom : ',
+                'attr' => [
+                    'placeholder' => 'Nom',
+                ],
+            ])
+            ->add('role', TextType::class, [
+                'label' => 'Rôle : ',
+                'attr' => [
+                    'placeholder' => 'Poste dans l\'entreprise',
+                ],
+            ])
+            ->add('organization', TextType::class, [
+                'label' => 'Organisation : ',
+                'attr' => [
+                    'placeholder' => 'Nom de l\'entreprise'
+                ],
+            ])
+            ->add('adress', TextType::class, [
+                'label' => 'Adresse : ',
+                'attr' => [
+                    'placeholder' => 'Addresse',
+                ],
+            ])
+            ->add('zip_code', TextType::class, [
+                'label' => 'Code postal : ',
+                'attr' => [
+                    'placeholder' => 'Code Postal',
+                ],
+            ])
+            ->add('city', TextType::class, [
+                'label' => 'Ville : ',
+                'attr' => [
+                    'placeholder' => 'Ville',
+                ],
+            ])
+            ->add('email', EmailType::class, [
+                'label' => 'Email : ',
+                'attr' => [
+                    'placeholder' => 'Email',
+                ],
+            ])
+            ->add('phone_landline', TelType::class, [
+                'label' => 'Téléphone fixe : ',
+                'attr' => [
+                    'placeholder' => 'Tél fixe',
+                ],
+            ])
+            ->add('phone_mobile', TelType::class, [
+                'label' => 'Téléphone portable : ',
+                'attr' => [
+                    'placeholder' => 'Tél portable',
+                ],
+            ])
+            ->add('logo', EntityType::class, [
+                'label' => 'Logo : ',
+                'class' => Logo::class,
+                'choice_label' => 'name',
+                'choice_attr' => function ($key) {
+                    return ['name' => $key->getPath()];
+                },
+                'choices' => $logoChoices,
+                'required' => false,
+            ])
+            ->add('signatureSubmit', SubmitType::class, [
+                'label' => 'Générer la signature',
+                'attr' => [
+                    'class' => 'btn btn-primary',
+                    'name' => 'signatureSubmit', // Ajout de l'attribut name
+                ],
+            ])
+            ->getForm();
+        $nameParts = explode(' ', $signature->getName());
+        $phoneParts = explode('-', $signature->getPhone());
+
+        $phoneLandline = $phoneParts[0];
+        $phoneMobile = $phoneParts[1];
+        $firstName = $nameParts[0];
+        $lastName = $nameParts[1];
+
+        $form->setData([
+            'first_name' => $firstName,
+            'last_name' => $lastName,
+            'role' => $signature->getRole(),
+            'organization' => $signature->getOrganization(),
+            'adress' => $signature->getAdress(),
+            'zip_code' => $signature->getZipCode(),
+            'city' => $signature->getCity(),
+            'email' => $signature->getEmail(),
+            'phone_landline' => $phoneLandline,
+            'phone_mobile' => $phoneMobile,
+            'logo' => $signature->getLogo(),
+        ]);
+
+        $form->handleRequest($request);
+
+        // Traitement de la modification de la signature
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Récupérer les données modifiées à partir de la requête
+            $newSignatureData = $form->getData();
+            
+            // Appliquer les modifications à la signature existante
+            $signature->setName($newSignatureData['first_name'] . ' ' . $newSignatureData['last_name']);
+            $signature->setRole($newSignatureData['role']);
+            $signature->setOrganization($newSignatureData['organization']);
+            $signature->setAdress($newSignatureData['adress']);
+            $signature->setZipCode($newSignatureData['zip_code']);
+            $signature->setCity($newSignatureData['city']);
+            $signature->setEmail($newSignatureData['email']);
+            $signature->setPhone($newSignatureData['phone_landline'] . '-' . $newSignatureData['phone_mobile']);
+            $signature->setLogo($newSignatureData['logo']);
+            
+            // Enregistrer les modifications dans la base de données
+            $entityManager->flush();
+            
+            // Rediriger vers une autre page ou afficher un message de succès
+        }
+
+        return $this->render('signature/edit_signature.html.twig', [
+            'signature' => $signature,
+            'form' => $form->createView(),
+        ]);
+    }
 }

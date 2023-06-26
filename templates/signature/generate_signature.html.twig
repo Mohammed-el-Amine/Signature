@@ -2,6 +2,65 @@
 
 {% block title %}Générer une signature
 {% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+	<style>
+		.modal {
+			display: none;
+			position: fixed;
+			z-index: 1;
+			inset-inline-start: 0;
+			inset-block-start: 0;
+			inline-size: 100%;
+			block-size: 100%;
+			overflow: auto;
+			background-color: rgba(0, 0, 0, 0.4);
+		}
+
+		.modal-content {
+			background-color: #fff;
+			margin: 10% auto;
+			padding: 20px;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			inline-size: 80%;
+			block-size: 100%;
+			box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+			max-block-size: 70vh;
+		}
+
+		.modal-header {
+			padding-block-end: 10px;
+			border-block-end: 1px solid #ddd;
+			text-align: center;
+		}
+
+		.modal-title {
+			margin: 0;
+			font-size: 20px;
+			font-weight: bold;
+		}
+
+		.modal-body {
+			flex-grow: 1;
+			block-size: 100%;
+		}
+
+		.close {
+			color: #aaa;
+			float: inline-end;
+			font-size: 28px;
+			font-weight: bold;
+			cursor: pointer;
+		}
+
+		.close:hover,
+		.close:focus {
+			color: black;
+			text-decoration: none;
+		}
+	</style>
+{% endblock %}
 
 {% block body %}
 
@@ -113,7 +172,7 @@
 							<td class="text-center align-middle">{{ signature.createAT|date('d-m-Y') }}</td>
 							{# <td class="text-center align-middle">{{ signature.updateAT|date('d-m-Y') }}</td> #}
 							<td class="text-center align-middle">
-								<button class="btn btn-warning" onclick="edit()">Éditer</button>
+								<button class="btn btn-warning" onclick="openModal('{{ path('edit_signature',{ id: signature.id }) }}')">Éditer</button>
 								<button class="btn btn-secondary" onclick="">HTML</button>
 								<button class="btn btn-success" onclick="">PNG</button>
 							</td>
@@ -181,7 +240,7 @@
 						{{ form_row(form.logo, {'attr': {'class': 'form-control', 'id': 'form_logo', 'oninput': 'updatePreview()'}}) }}
 					</div>
 				</div>
-				
+
 				{{ form_end(form) }}<br>
 			</form>
 
@@ -236,16 +295,22 @@
 
 			</div>
 		</div>
+		<div id="modal" class="modal">
+			<div class="modal-content">
+				<div class="modal-header">
+					<span class="close" onclick="closeModal()">&times;</span>
+					<h2 class="modal-title"></h2>
+				</div>
+				<div class="modal-body"></div>
+			</div>
+		</div>
 	</div>
+</div>{% endblock %}{% block javascripts %}
+{{ parent() }}
 
-{% endblock %}
+<script>
 
-{% block javascripts %}
-	{{ parent() }}
-
-	<script>
-
-		function DownloadHTML() { // Récupère le nom de la personne
+	function DownloadHTML() { // Récupère le nom de la personne
 var firstNameValue = document.getElementById('form_first_name').value;
 var lastNameValue = document.getElementById('form_last_name').value;
 var fullName = firstNameValue + ' ' + lastNameValue;
@@ -336,7 +401,7 @@ previewZipCode.textContent = zipCodeValue;
 }
 
 function togglePasswordVisibility() {
-var passwordField = document.querySelector('input[name="  {{ userForm.password.vars.full_name }}"]');
+var passwordField = document.querySelector('input[name=" {{ userForm.password.vars.full_name }}"]');
 var showPasswordBtn = document.getElementById("showPasswordBtn");
 
 if (passwordField.type === "password") {
@@ -382,7 +447,29 @@ infoPersoFields.style.display = "none";
 }
 }
 
-window.requestAnimationFrame(updatePreview);
-	</script>
+function openModal(url, title) {
+var modal = document.getElementById('modal')
+var modalTitle = modal.querySelector('.modal-title')
+var modalBody = modal.querySelector('.modal-body')
 
-{% endblock %}
+// Charger le contenu de l'URL dans la modal via une requête iframe
+modalTitle.textContent = title
+modalBody.innerHTML = '<iframe src="' + url + '" style="inline-size:100%; block-size:100%; border:none;"></iframe>'
+
+modal.style.display = 'block'
+}
+
+function closeModal() {
+var modal = document.getElementById('modal')
+var modalTitle = modal.querySelector('.modal-title')
+var modalBody = modal.querySelector('.modal-body')
+
+modalTitle.textContent = ''
+modalBody.innerHTML = ''
+
+modal.style.display = 'none'
+window.location.reload()
+}
+
+window.requestAnimationFrame(updatePreview);
+</script>{% endblock %}

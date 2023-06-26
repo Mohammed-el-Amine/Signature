@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier la signature{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">	
+            <section class="view_signature d-flex justify-content-center align-items-center">
+                <div class="border p-3">
+                    <table class="w-100">
+                        <tbody>
+                            <tr>
+                                <td class="align-middle" style="inline-size: 10%;">
+                                    <p>
+                                        <a href="https://www.unsa.org/"><img id="logo" src="{{signature.logo.path}}" class="border-0" style="inline-size: 120px;" alt="LOGO UNSA"></a>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>
+                                        <span id="name" class="font-weight-bold">{{signature.name}}</span><br>
+                                        <span id="role">
+                                            <i>{{signature.role}}</i>
+                                        </span><br>
+                                        <span id="organization">
+                                            <i>{{signature.organization}}</i>
+                                        </span><br>
+                                    </p>
+                                    <p>
+                                        <span id="address">{{signature.adress}}</span><br>
+                                        <span id="zipCode">{{signature.zipCode}}&nbsp;</span>
+                                        <span id="city">{{signature.city}}
+                                            CEDEX</span><br>
+                                    </p>
+                                    <p>
+                                        <img src="https://reseaux.unsa.org/signature/_mail.svg" class="border-0" style="block-size: 12px; margin-inline-end: .5em;">
+                                        <a id="previewEmail" href="mailto:${email}" style="color: #666; font-style: italic;">{{signature.email}}</a><br>
+                                        <img src="https://reseaux.unsa.org/signature/_phone.svg" class="border-0" style="block-size: 14px; margin-inline-end: .5em;">
+                                        <span id="phone" style="color: #666;">{{signature.phone}}</span>
+                                    </p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+        <div class="col-lg-6">
+            <section class="generate_signature d-flex justify-content-center align-items-center">
+                <form class="form" method="post">
+                    {{ form_start(form) }}
+
+                    <div class="form-group">
+                        {{ form_row(form.last_name, {'attr': {'class': 'form-control', 'id': 'form_last_name', 'oninput': 'updatePreview()'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.first_name, {'attr': {'class': 'form-control', 'id': 'form_first_name', 'oninput': 'updatePreview()'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.email, {'attr': {'class': 'form-control', 'id': 'form_email', 'oninput': 'updatePreview()'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.phone_mobile, {'attr': {'class': 'form-control', 'id': 'form_phone_mobile', 'oninput': 'updatePreview()'}}) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_row(form.phone_landline, {'attr': {'class': 'form-control', 'id': 'form_phone_landline', 'oninput': 'updatePreview()'}}) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_row(form.role, {'attr': {'class': 'form-control', 'id': 'form_role', 'oninput': 'updatePreview()'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.organization, {'attr': {'class': 'form-control', 'id': 'form_organization', 'oninput': 'updatePreview()'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.adress, {'attr': {'class': 'form-control', 'id': 'form_address', 'oninput': 'updatePreview()'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.zip_code, {'attr': {'class': 'form-control', 'id': 'form_zip_code', 'oninput': 'updatePreview()'}}) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.city, {'attr': {'class': 'form-control', 'id': 'form_city', 'oninput': 'updatePreview()'}}) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_row(form.logo, {'attr': {'class': 'form-control', 'id': 'form_logo', 'oninput': 'updatePreview()'}}) }}
+                    </div>
+                    {{ form_end(form) }}<br>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

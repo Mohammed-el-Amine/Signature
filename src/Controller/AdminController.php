@@ -690,7 +690,6 @@ class AdminController extends AbstractController
             ])
             ->getForm();
 
-
         if ($request->isMethod('POST')) {
             $data = $request->request->all();
 
