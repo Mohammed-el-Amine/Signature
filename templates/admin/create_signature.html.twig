@@ -99,7 +99,7 @@
 								<p>
 									<img src="https://lab-web.unsa.org/signature/img/mail.png" class="border-0" style="block-size: 12px; margin-inline-end: .5em;">
 									<a id="previewEmail" href="mailto:${email}" style="color: #666; font-style: italic;">Adresse Email</a><br>
-									<img src="hhttps://lab-web.unsa.org/signature/img/phone.png" class="border-0" style="block-size: 14px; margin-inline-end: .5em;">
+									<img src="https://lab-web.unsa.org/signature/img/phone.png" class="border-0" style="block-size: 14px; margin-inline-end: .5em;">
 									<span id="phone" style="color: #666;">Numéro</span>
 								</p>
 							</td>
@@ -251,6 +251,14 @@ infoPersoFields.style.display = "none";
 }
 
 window.requestAnimationFrame(updatePreview);
+
+
+        window.onbeforeunload = function() {
+            var form = document.querySelector('form');
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+            });
+        };
 	</script>
 
 {% endblock %}

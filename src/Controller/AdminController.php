@@ -244,18 +244,27 @@ class AdminController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            //configurer mon server smtp pcq mailgun c'est pas fou
-            $mgClient = Mailgun::create('9ce219b17ec2b8a27138b5099a79c392-07ec2ba2-8a4b0c3b');
+            $to = $email;
+            $subject = 'Création de compte';
+            $message = '<html>
+                <head>
+                    <title>Création de compte</title>
+                </head>
+                <body>
+                    <p>Veuillez cliquer sur le lien suivant pour créer votre mot de passe :</p>
+                    <a href="' . $this->generateUrl('create_password', ['token' => $user->getToken()], UrlGeneratorInterface::ABSOLUTE_URL) . '">Créer un mot de passe</a>
+                </body>
+            </html>';
 
-            $domain = "sandbox2d5e1ea5fe7e445e9e7b8488a8c33c2a.mailgun.org";
-            $params = [
-                'from'    => 'mohammed-el-amine.djellal@epitech.eu',
-                'to'      => $email,
-                'subject' => 'Création de compte',
-                'text'    => 'Veuillez cliquer sur le lien suivant pour créer votre mot de passe : ' . $this->generateUrl('create_password', ['token' => $user->getToken()], UrlGeneratorInterface::ABSOLUTE_URL),
-            ];
+            $headers = 'From: support@signature_unsa.org' . "\r\n" .
+                'Reply-To: amine.djellal@unsa.org' . "\r\n" .
+                'X-Mailer: PHP/' . phpversion();
+            $headers .= 'MIME-Version: 1.0' . "\r\n";
+            $headers .= 'Content-Type: text/html; charset=UTF-8' . "\r\n";
 
-            $mgClient->messages()->send($domain, $params);
+
+            mail($to, $subject, $message, $headers);
+
 
             $this->addFlash('success', 'L\'ajout d\'un nouvelle utilisateur a été effectué avec succès.Un e-mail vient de lui être envoyer pour crée son mot de passe');
         }
@@ -736,7 +745,7 @@ class AdminController extends AbstractController
         $html .= '<tr>';
         $html .= '<td align="left" valign="middle" width="10">';
         $html .= '<p style="padding-inline-end: 10px;font-size: 12px;line-height: 14px;">';
-        $html .= '<a href="https://www.unsa.org"><img id="LOGO"src="'.'https://lab-web.unsa.org/signature'. $data['logo']->getPath() . '" style="border: none;inline-size: 120px;"></a>';
+        $html .= '<a href="https://www.unsa.org"><img id="LOGO"src="' . 'https://lab-web.unsa.org/signature' . $data['logo']->getPath() . '" style="border: none;inline-size: 120px;"></a>';
         $html .= '</p>';
         $html .= '</td>';
         $html .= '<td>';
