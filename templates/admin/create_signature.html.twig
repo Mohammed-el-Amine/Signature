@@ -127,7 +127,7 @@
 
 	<script>
 
-		function DownloadHTML() { // Récupère le nom de la personne
+function DownloadHTML() { // Récupère le nom de la personne
 var firstNameValue = document.getElementById('form_first_name').value;
 var lastNameValue = document.getElementById('form_last_name').value;
 var fullName = firstNameValue + ' ' + lastNameValue;
@@ -161,7 +161,7 @@ var fullName = firstNameValue + ' ' + lastNameValue;
 
 // Récupère l'élément de la signature
 var element = document.getElementById('signature');
-
+console.log(element);
 // Utilise html2canvas pour capturer l'élément en tant qu'image
 html2canvas(element).then(function (canvas) { // Convertit le canevas en une URL de données d'image PNG
 var dataURL = canvas.toDataURL('image/png');
@@ -173,7 +173,7 @@ link.download = fullName + '.png';
 link.style.display = 'none';
 
 document.body.appendChild(link);
-link.click();
+//link.click();
 document.body.removeChild(link);
 });
 }
