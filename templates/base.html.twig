@@ -4,17 +4,73 @@
     <meta charset="UTF-8" />
     <title>
       {% block title %}
-        Acceuil
+        UNSA
       {% endblock %}
     </title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>" />
-    {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+
     {% block stylesheets %}
-      {{ encore_entry_link_tags('app') }}
+      <!-- CSS Bootstrap -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+      <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+
+      <style>
+        .pagination {
+          display: flex;
+          justify-content: center;
+          margin-block-start: 20px;
+        }
+        
+        .pagination a {
+          color: #000;
+          text-decoration: none;
+          padding: 5px 10px;
+          margin: 0 5px;
+          border: 1px solid #ccc;
+          border-radius: 3px;
+        }
+        
+        .pagination a:hover {
+          background-color: #f0f0f0;
+        }
+        
+        .pagination .current {
+          font-weight: bold;
+          background-color: #ccc;
+        }
+        .input-group {
+          position: relative;
+        }
+        
+        #showPasswordBtn {
+          position: absolute;
+          inset-inline-end: 0;
+          inset-block-start: 60%;
+          inset-block-end: 0;
+          margin: auto;
+          border: none;
+          cursor: pointer;
+        }
+        
+        #infoPersoFields {
+          display: none;
+        }
+
+        #infoEntrepriseFields {
+          display: none;
+        }
+
+        #infoThemeFields {
+          display: none;
+        }
+      </style>
     {% endblock %}
 
     {% block javascripts %}
-      {{ encore_entry_script_tags('app') }}
+
     {% endblock %}
   </head>
   <body>

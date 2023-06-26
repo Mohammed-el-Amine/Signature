@@ -1,0 +1,195 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Logo
+{% endblock %}
+
+{% block stylesheets %}
+
+	{{ parent() }}
+
+	<style>
+		#modal {
+			position: fixed;
+			z-index: 9999;
+			inset-inline-start: 0;
+			inset-block-start: 0;
+			inline-size: 100%;
+			block-size: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-color: rgba(0, 0, 0, 0.5);
+		}
+
+		.modal-content {
+			background-color: #fff;
+			margin: 10% auto;
+			padding: 20px;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			inline-size: 80%;
+			block-size: 80%;
+			box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+			max-block-size: 70vh;
+		}
+
+		.modal-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-block-end: 10px;
+		}
+
+		.modal-title {
+			font-size: 20px;
+			font-weight: bold;
+		}
+
+		.modal-body {
+			margin-block-end: 20px;
+		}
+
+		.close {
+			cursor: pointer;
+			color: #000;
+			font-size: 24px;
+			font-weight: bold;
+			background: none;
+			border: none;
+			padding: 0;
+			outline: none;
+		}
+	</style>
+{% endblock %}
+
+{% block body %}
+	<br><br>
+	<div class="container border"><br><br>
+		<div class="d-flex justify-content-end">
+			<a href="{{ path('logout') }}" class="btn btn-danger">Déconnexion</a>
+		</div><br>
+		<a class="btn btn-outline-info" href="{{ path('admin_dashboard') }}">Dashboard</a>
+		<a class="btn btn-outline-info" href="{{ path('admin_index') }}">Utilisateurs</a>
+		<a class="btn btn-outline-info" href="{{ path('admin_create_signature') }}">crée une signature</a><br><br>
+
+		<div class="listeLogo border">
+			<h1 class="text-center">Liste des logos</h1><br>
+
+			{% for message in app.flashes('error') %}
+				<div class="alert alert-danger">
+					{{ message }}
+				</div>
+			{% endfor %}
+
+			{% for message in app.flashes('success') %}
+				<div class="alert alert-success">
+					{{ message }}
+				</div>
+			{% endfor %}
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Nom</th>
+						<th>Chemin</th>
+						<th>Crée le</th>
+						<th>Modifier</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for logo in logos %}
+						<tr>
+							<td>{{ logo.id }}</td>
+							<td>{{ logo.name }}</td>
+							<td><img src="{{ logo.path }}" class="border-0" style="inline-size: 120px;" alt="LOGO UNSA"/></td>
+							<td>{{ logo.createAT|date('d-m-Y') }}</td>
+							<td>{{ logo.updateAt|date('d-m-Y') }}</td>
+							<td>
+								<a href="#" class="logo-edit" onclick="openModal('{{ path('admin_logo_edit', {'id': logo.id}) }}', 'Modifier le logo')">Modifier</a>
+								<a href="{{ path('admin_logo_delete', {'id': logo.id}) }}" class="logo-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce logo ?')">Supprimer</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div><br><br>
+
+		<div class="allLogos">
+			<h4>Ajouter un logo ?</h4><br>
+			{{ form_start(form) }}
+			<div>
+				{{ form_label(form.name) }}
+				{{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+				{{ form_errors(form.name) }}<br>
+			</div>
+			<div>
+				{{ form_label(form.path) }}
+				{{ form_widget(form.path, {'attr': {'class': 'form-control'}}) }}
+				{{ form_errors(form.path) }}<br>
+			</div>
+			{{ form_end(form) }}
+			<br><br>
+		</div>
+	</div>
+	<br><br>
+	<div id="modal" style="display: none;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title"></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body"></div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script>
+		function openModal(url, title) {
+var modal = document.getElementById('modal');
+var modalTitle = modal.querySelector('.modal-title');
+var modalBody = modal.querySelector('.modal-body');
+modalTitle.textContent = title;
+modalBody.innerHTML = '<iframe src="' + url + '" style="inline-size:100%; block-size:100%; border:none;"></iframe>';
+modal.style.display = 'block';
+}
+
+function closeModal() {
+var modal = document.getElementById('modal');
+var modalTitle = modal.querySelector('.modal-title');
+var modalBody = modal.querySelector('.modal-body');
+modalTitle.textContent = '';
+modalBody.innerHTML = '';
+modal.style.display = 'none';
+window.location.reload();
+}
+
+var deleteLinks = document.getElementsByClassName('logo-delete');
+for (var i = 0; i < deleteLinks.length; i++) {
+deleteLinks[i].addEventListener('click', function (event) {
+event.preventDefault();
+var confirmation = confirm("Êtes-vous sûr de vouloir supprimer ce logo ?");
+if (confirmation) {
+window.location.href = this.getAttribute('href');
+}
+});
+}
+
+var editLinks = document.getElementsByClassName('logo-edit');
+for (var i = 0; i < editLinks.length; i++) {
+editLinks[i].addEventListener('click', function (event) {
+event.preventDefault();
+var url = this.getAttribute('href');
+var title = 'Modifier le logo ';
+openModal(url, title);
+});
+}
+	</script>
+{% endblock %}

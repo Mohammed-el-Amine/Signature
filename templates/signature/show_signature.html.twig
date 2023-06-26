@@ -1,0 +1,13 @@
+{# templates/signature_generator/show_signature.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Signature générée{% endblock %}
+
+{% block body %}
+    <h1>Signature générée</h1> 
+
+    <p>Voici la signature générée :</p>
+
+    {{ signature|raw }}
+{% endblock %}

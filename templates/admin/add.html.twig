@@ -9,7 +9,7 @@
 		h1 {
 			font-size: 24px;
 			font-weight: bold;
-			margin-bottom: 20px;
+			margin-block-end: 20px;
 			color: #333;
 			text-align: center;
 		}
@@ -18,25 +18,25 @@
 			display: flex;
 			flex-direction: column;
 			align-items: center;
-			margin-top: 20px;
+			margin-block-start: 20px;
 		}
 
 		form div {
-			margin-bottom: 10px;
-			width: 100%;
-			max-width: 300px;
+			margin-block-end: 10px;
+			inline-size: 100%;
+			max-inline-size: 300px;
 		}
 
 		form label {
 			display: block;
 			font-weight: bold;
-			margin-bottom: 5px;
+			margin-block-end: 5px;
 		}
 
 		form input[type="email"],
 		form select {
 			padding: 8px;
-			width: 100%;
+			inline-size: 100%;
 			border: 1px solid #ddd;
 			border-radius: 4px;
 		}
@@ -56,7 +56,7 @@
 		}
 
 		.alert-danger {
-			margin-bottom: 10px;
+			margin-block-end: 10px;
 			padding: 10px;
 			background-color: #f8d7da;
 			border-color: #f5c6cb;
@@ -65,7 +65,7 @@
 		}
 
 		.success-message {
-			margin-top: 20px;
+			margin-block-start: 20px;
 			padding: 10px;
 			background-color: #d4edda;
 			border-color: #c3e6cb;
@@ -76,32 +76,34 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Ajouter un utilisateur</h1>
+	<div class="container">
+		<h1 class="mb-4">Ajouter un utilisateur</h1>
 
-	{% for message in app.flashes('danger') %}
-		<div class="alert alert-danger">
-			{{ message }}
+		{% for message in app.flashes('danger') %}
+			<div class="alert alert-danger">
+				{{ message }}
+			</div>
+		{% endfor %}
+
+		{{ form_start(form) }}
+		<div class="mb-3">
+			{{ form_label(form.email, 'Email') }}
+			{{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+			{{ form_errors(form.email) }}
 		</div>
-	{% endfor %}
-
-	{{ form_start(form) }}
-	<div>
-		{{ form_label(form.email) }}
-		{{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
-		{{ form_errors(form.email) }}
-	</div>
-	<div>
-		{{ form_label(form.role) }}
-		{{ form_widget(form.role, {'attr': {'class': 'form-control'}}) }}
-		{{ form_errors(form.role) }}
-	</div>
-
-	<button type="submit" class="btn btn-primary">Ajouter</button>
-	{{ form_end(form) }}
-
-	{% for flashMessage in app.flashes('success') %}
-		<div class="success-message" role="alert">
-			{{ flashMessage }}
+		<div class="mb-3">
+			{{ form_label(form.role, 'Rôle') }}
+			{{ form_widget(form.role, {'attr': {'class': 'form-control'}}) }}
+			{{ form_errors(form.role) }}
 		</div>
-	{% endfor %}
+
+		<button type="submit" class="btn btn-primary">Ajouter</button>
+		{{ form_end(form) }}
+
+		{% for flashMessage in app.flashes('success') %}
+			<div class="alert alert-success mt-4" role="alert">
+				{{ flashMessage }}
+			</div>
+		{% endfor %}
+	</div>
 {% endblock %}

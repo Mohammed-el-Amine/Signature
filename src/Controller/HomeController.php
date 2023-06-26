@@ -12,7 +12,6 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-
 class HomeController extends AbstractController
 {
     private $entityManager;
@@ -23,11 +22,15 @@ class HomeController extends AbstractController
     }
 
     #[Route('/', name: 'app_home')]
-    public function index(Request $request, SessionInterface $session,): Response
+    public function index(Request $request, SessionInterface $session): Response
     {
         $form = $this->createFormBuilder()
-            ->add('email', EmailType::class)
-            ->add('password', PasswordType::class)
+            ->add('email', EmailType::class, [
+                'label' => 'Email',
+            ])
+            ->add('password', PasswordType::class, [
+                'label' => 'Mot de passe',
+            ])
             ->getForm();
 
         $form->handleRequest($request);
@@ -41,23 +44,25 @@ class HomeController extends AbstractController
 
             if ($user) {
                 if ($this->isPasswordValid($user, $password)) {
-                    $session->set('user_id', $user->getId()); // Stocke l'identifiant de l'utilisateur dans la session
+                    $session->set('user_id', $user->getId());
 
                     $role = $user->getRole();
                     if ($role === "admin") {
                         return $this->redirectToRoute('admin_dashboard');
+                        // $this->addFlash('success', 'admin');
                     } else if ($role === 'utilisateur') {
-                        return $this->redirectToRoute('user_profile');
+                        return $this->redirectToRoute('profile_signature');
+                        // $this->addFlash('success', 'utilisateur');
                     }
                 } else {
-                    echo 'Mot de passe invalide<br>';
+                    $this->addFlash('danger', 'Mot de passe invalide');
                 }
             } else {
-                $this->addFlash('danger', 'Veuillez vérifiez votre adresse email.<br>Si vous ne possédez pas d \'identifiant de connexion merci de vous rapprocher du responsable informatique.');
+                $this->addFlash('danger', 'Utilisateur non trouvé');
             }
         }
 
-        return $this->render('home/index.html.twig', [
+        return $this->render('Home/login.html.twig', [
             'loginForm' => $form->createView(),
         ]);
     }
@@ -66,6 +71,9 @@ class HomeController extends AbstractController
     {
         $hashedPassword = $user->getPassword();
 
-        return password_verify($password, $hashedPassword);
+        // Hachage du mot de passe fourni avec la fonction SHA2() de MySQL
+        $hashedPasswordInput = hash('sha256', $password);
+
+        return $hashedPassword === $hashedPasswordInput;
     }
 }

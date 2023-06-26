@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use DateTime;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User
@@ -22,7 +23,7 @@ class User
     #[ORM\Column(length: 255)]
     private ?string $role = null;
 
-    #[ORM\Column(length: 36, unique: true, nullable: true)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $token = null;
 
     public function getId(): ?int
@@ -35,7 +36,7 @@ class User
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(string $email): static
     {
         $this->email = $email;
 
@@ -47,7 +48,7 @@ class User
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(string $password): static
     {
         $this->password = $password;
 
@@ -59,7 +60,7 @@ class User
         return $this->role;
     }
 
-    public function setRole(string $role): self
+    public function setRole(string $role): static
     {
         $this->role = $role;
 
@@ -71,10 +72,27 @@ class User
         return $this->token;
     }
 
-    public function setToken(?string $token): self
+    public function setToken(?string $token): static
     {
         $this->token = $token;
 
         return $this;
     }
+    public function isTokenValid(): bool
+    {
+        $tokenParts = explode('-', $this->token, 3);
+        $token = $tokenParts[0];
+        $tokenCreation = DateTime::createFromFormat('d-m-Y-H-i-s', $tokenParts[2]);
+    
+        if (!$tokenCreation) {
+            return false;
+        }
+    
+        $currentDateTime = new DateTime();
+        $tokenExpiration = clone $tokenCreation;
+        $tokenExpiration->modify('+24 hours');
+    
+        return $currentDateTime <= $tokenExpiration;
+    }
+    
 }

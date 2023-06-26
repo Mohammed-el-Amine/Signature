@@ -1,0 +1,388 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Générer une signature
+{% endblock %}
+
+{% block body %}
+
+	<div class="container"><br>
+		<div class="d-flex justify-content-end">
+			<a href="{{ path('logout') }}" class="btn btn-danger">Déconnexion</a>
+		</div>
+
+		<div style="display: flex; justify-content: center;">
+			<div style="display: flex; align-items: center;">
+				<h1 style="text-align: center; margin-inline-end: 10px;">Bienvue sur votre espace personnel
+					{{user.email}}
+					&nbsp;</h1>
+				<section class="userProfile">
+					<form class="user-form" method="POST">
+						{{ form_start(userForm) }}<br>
+
+						<div class="form-group">
+							<div class="input-group">
+								{{ form_row(userForm.password, {'attr': {'class': 'form-control', 'type': 'password'}}) }}
+								<div class="input-group-append">
+									<button class="btn btn-outline-secondary" type="button" id="showPasswordBtn" onclick="togglePasswordVisibility()">Afficher</button>
+								</div>
+							</div>
+						</div>
+
+						{{ form_end(userForm) }}
+						<br>
+					</form>
+				</section>
+			</div>
+		</div><br><br>
+
+		<section class="all_signatures">
+
+			<form method="GET" action="{{ path('profile_signature') }}">
+				<div class="form-row">
+					<div class="form-group col-md">
+						<label for="date">Date de création :</label>
+						<input type="date" id="date" name="date" class="form-control" value="{{ date }}">
+					</div>
+					<div class="form-group col-md">
+						<label for="nom">Nom :</label>
+						<input type="text" id="nom" name="nom" class="form-control" value="{{ nom }}">
+					</div>
+					<div class="form-group col-md">
+						<label for="email">Email :</label>
+						<input type="text" id="email" name="email" class="form-control" value="{{ email }}">
+					</div>
+				</div>
+
+				<button type="submit" class="btn btn-primary">Rechercher</button>
+			</form><br>
+
+			<table class="table border">
+				<thead class="table-dark">
+					<tr>
+						<th>Nom et Prénom</th>
+						<th>Adresse email</th>
+						<th>Date de création</th>
+						{# <th>Date de modification</th> #}
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for signature in pagination %}
+						<tr>
+							<td>
+								<section class="view_signature d-flex justify-content-center align-items-center mt-5">
+									<table class="w-100">
+										<tr>
+											<td class="align-middle" style="inline-size: 10%;">
+												<p>
+													<a href="https://www.unsa.org/"><img id="logoEdit" src="{{signature.logo.path}}" class="border-0" style="inline-size: 120px;" alt="LOGO UNSA"></a>
+												</p>
+											</td>
+											<td>
+												<div style="display: flex;">
+													<div style="flex-grow: 1;">
+														<p>
+															<span id="nameEdit" class="font-weight-bold">{{signature.name}}</span><br>
+															<span id="roleEdit">
+																<i>{{signature.role}}</i>
+															</span><br>
+															<span id="organizationEdit">
+																<i>{{signature.organization}}</i>
+															</span><br>
+														</p>
+														<p>
+															<span id="addressEdit">{{signature.adress}}</span><br>
+															<span id="zipCodeEdit">{{signature.zipCode}}&nbsp;</span>
+															<span id="cityEdit">{{signature.city}}
+																CEDEX</span><br>
+														</p>
+														<p>
+															<img src="https://reseaux.unsa.org/signature/_mail.svg" class="border-0" style="block-size: 12px; margin-inline-end: .5em;">
+															<a id="emailEdit" href="mailto:${email}" style="color: #666; font-style: italic;">{{signature.email}}</a><br>
+															<img src="https://reseaux.unsa.org/signature/_phone.svg" class="border-0" style="block-size: 14px; margin-inline-end: .5em;">
+															<span id="phoneEdit" style="color: #666;">{{signature.phone}}</span>
+														</p>
+													</div>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</section>
+							</td>
+							<td class="text-center align-middle">{{ signature.email }}</td>
+							<td class="text-center align-middle">{{ signature.createAT|date('d-m-Y') }}</td>
+							{# <td class="text-center align-middle">{{ signature.updateAT|date('d-m-Y') }}</td> #}
+							<td class="text-center align-middle">
+								<button class="btn btn-warning" onclick="edit()">Éditer</button>
+								<button class="btn btn-secondary" onclick="">HTML</button>
+								<button class="btn btn-success" onclick="">PNG</button>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			{# Afficher les liens de pagination #}
+			<div class="pagination">
+				{{ knp_pagination_render(pagination) }}
+			</div>
+
+		</section><br><hr><br>
+
+		<h1>Générer une signature</h1><br><br>
+
+		<section class="generate_signature" style="inline-size: 33%; float: inline-start;">
+
+			<form class="form" method="post">
+				{{ form_start(form) }}
+
+				<a id="infoPersoBtn" class="btn btn-outline-warning" onclick="toggleInfoPerso()">Information personnelle</a><br><br>
+				<div id="infoPersoFields">
+					<div class="form-group">
+						{{ form_row(form.last_name, {'attr': {'class': 'form-control', 'id': 'form_last_name', 'oninput': 'updatePreview()'}}) }}
+					</div>
+					<div class="form-group">
+						{{ form_row(form.first_name, {'attr': {'class': 'form-control', 'id': 'form_first_name', 'oninput': 'updatePreview()'}}) }}
+					</div>
+					<div class="form-group">
+						{{ form_row(form.email, {'attr': {'class': 'form-control', 'id': 'form_email', 'oninput': 'updatePreview()'}}) }}
+					</div>
+					<div class="form-group">
+						{{ form_row(form.phone_mobile, {'attr': {'class': 'form-control', 'id': 'form_phone_mobile', 'oninput': 'updatePreview()'}}) }}
+					</div>
+				</div>
+
+				<a id="infoEntrepriseBtn" class="btn btn-outline-warning" onclick="toggleInfoEntreprise()">Information entreprise</a><br>
+				<div id="infoEntrepriseFields">
+					<div class="form-group">
+						{{ form_row(form.phone_landline, {'attr': {'class': 'form-control', 'id': 'form_phone_landline', 'oninput': 'updatePreview()'}}) }}
+					</div>
+
+					<div class="form-group">
+						{{ form_row(form.role, {'attr': {'class': 'form-control', 'id': 'form_role', 'oninput': 'updatePreview()'}}) }}
+					</div>
+					<div class="form-group">
+						{{ form_row(form.organization, {'attr': {'class': 'form-control', 'id': 'form_organization', 'oninput': 'updatePreview()'}}) }}
+					</div>
+					<div class="form-group">
+						{{ form_row(form.adress, {'attr': {'class': 'form-control', 'id': 'form_address', 'oninput': 'updatePreview()'}}) }}
+					</div>
+					<div class="form-group">
+						{{ form_row(form.zip_code, {'attr': {'class': 'form-control', 'id': 'form_zip_code', 'oninput': 'updatePreview()'}}) }}
+					</div>
+					<div class="form-group">
+						{{ form_row(form.city, {'attr': {'class': 'form-control', 'id': 'form_city', 'oninput': 'updatePreview()'}}) }}
+					</div>
+				</div><br>
+
+				<a id="infoThemeBtn" class="btn btn-outline-warning" onclick="toggleInfoTheme()">Information theme</a><br><br>
+				<div id="infoThemeFields">
+					<div class="form-group">
+						{{ form_row(form.logo, {'attr': {'class': 'form-control', 'id': 'form_logo', 'oninput': 'updatePreview()'}}) }}
+					</div>
+				</div>
+				
+				{{ form_end(form) }}<br>
+			</form>
+
+		</section><br>
+
+		<section class="view_signature d-flex justify-content-center align-items-center mt-5">
+			<div class="border p-3">
+				<table class="w-100">
+					<tbody>
+						<tr>
+							<td class="align-middle" style="inline-size: 10%;">
+								<p>
+									<a href="https://www.unsa.org/"><img id="logo" src="" class="border-0" style="inline-size: 120px;" alt="LOGO UNSA"></a>
+								</p>
+							</td>
+							<td>
+								<p>
+									<span id="name" class="font-weight-bold">Nom et Prénom</span><br>
+									<span id="role">
+										<i>Mon poste</i>
+									</span><br>
+									<span id="organization">
+										<i>Mon entreprise</i>
+									</span><br>
+								</p>
+								<p>
+									<span id="address">Mon adresse</span><br>
+									<span id="zipCode">Code postal&nbsp;</span>
+									<span id="city">Ville CEDEX</span><br>
+								</p>
+								<p>
+									<img src="https://reseaux.unsa.org/signature/_mail.svg" class="border-0" style="block-size: 12px; margin-inline-end: .5em;">
+									<a id="previewEmail" href="mailto:${email}" style="color: #666; font-style: italic;">Adresse Email</a><br>
+									<img src="https://reseaux.unsa.org/signature/_phone.svg" class="border-0" style="block-size: 14px; margin-inline-end: .5em;">
+									<span id="phone" style="color: #666;">Numéro</span>
+								</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<div style="inline-size: 50%; float: inline-end; padding-block-start: 5%;">
+			<div class="Modal">
+				{% if signature is not empty %}
+					<h1>Ma signature :</h1>
+					<div id="signature">{{ signature|raw }}</div>
+					<button class="btn btn-secondary" onclick="DownloadHTML()">Format HTML</button>
+					<button class="btn btn-success" onclick="DownloadPNG()">Format PNG</button>
+				{% endif %}
+
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+
+	<script>
+
+		function DownloadHTML() { // Récupère le nom de la personne
+var firstNameValue = document.getElementById('form_first_name').value;
+var lastNameValue = document.getElementById('form_last_name').value;
+var fullName = firstNameValue + ' ' + lastNameValue;
+
+// Récupère le contenu de la div signature
+var element = document.getElementById('signature').innerHTML;
+
+var updatedElement = element.replace(/(<img id="LOGO" src=")([^"]+)(" style="border: none;inline-size: 120px;">)/, '$1https://raw.githubusercontent.com/Mohammed-el-Amine/Dockerization/Amine/stock/public$2$3');
+
+var updatedElementSecond = updatedElement.replace(/(<img id="LOGO-PHONE" src=")([^"]+)(" style="border: none;block-size: 14px;margin-inline-end: .5em;">)/, '$1https://raw.githubusercontent.com/Mohammed-el-Amine/Dockerization/Amine/stock/public$2$3');
+
+var updatedElementThird = updatedElementSecond.replace(/(<img id="LOGO-MAIL" src=")([^"]+)(" style="border: none;block-size: 12px;margin-inline-end: .5em;">)/, '$1https://raw.githubusercontent.com/Mohammed-el-Amine/Dockerization/Amine/stock/public$2$3');
+
+// Crée un fichier HTML avec le nom de la personne
+var filename = fullName + '.html';
+// Crée et ajoute un lien de téléchargement
+var link = document.createElement('a');
+link.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(updatedElementThird));
+// Ajoute le nom du fichier
+link.setAttribute('download', filename);
+link.style.display = 'none';
+document.body.appendChild(link);
+link.click();
+document.body.removeChild(link);
+}
+
+function DownloadPNG() { // Récupère le nom de la personne
+var firstNameValue = document.getElementById('form_first_name').value;
+var lastNameValue = document.getElementById('form_last_name').value;
+var fullName = firstNameValue + ' ' + lastNameValue;
+
+// Récupère l'élément de la signature
+var element = document.getElementById('signature');
+
+// Utilise html2canvas pour capturer l'élément en tant qu'image
+html2canvas(element).then(function (canvas) { // Convertit le canevas en une URL de données d'image PNG
+var dataURL = canvas.toDataURL('image/png');
+
+// Crée et ajoute un lien de téléchargement
+var link = document.createElement('a');
+link.href = dataURL;
+link.download = fullName + '.png';
+link.style.display = 'none';
+
+document.body.appendChild(link);
+link.click();
+document.body.removeChild(link);
+});
+}
+
+function updatePreview() { // Sélectionnez l'élément de prévisualisation "name"
+var previewName = document.getElementById('name');
+var previewEmail = document.getElementById('previewEmail');
+var previewLogo = document.getElementById('logo');
+var previewOrganization = document.getElementById('organization');
+var previewRole = document.getElementById('role');
+var previewAdress = document.getElementById('address');
+var previewZipCode = document.getElementById('zipCode');
+var previewCity = document.getElementById('city');
+var previewPhone = document.getElementById('phone');
+
+// Sélectionnez la valeur du champ "name"
+var firstNameValue = document.getElementById('form_first_name').value;
+var lastNameValue = document.getElementById('form_last_name').value;
+var emailValue = document.getElementById('form_email').value;
+var logoSelect = document.getElementById('form_logo');
+var selectedOption = logoSelect.options[logoSelect.selectedIndex];
+var logoValue = "https://raw.githubusercontent.com/Mohammed-el-Amine/Dockerization/Amine/stock/public" + selectedOption.getAttribute('name');
+var organizationValue = document.getElementById('form_organization').value;
+var roleValue = document.getElementById('form_role').value;
+var addressValue = document.getElementById('form_adress').value;
+var cityValue = document.getElementById('form_city').value;
+var phoneLandlineValue = document.getElementById('form_phone_landline').value;
+var phoneMobileValue = document.getElementById('form_phone_mobile').value;
+var zipCodeValue = document.getElementById('form_zip_code').value;
+
+// Mettez à jour le contenu de la prévisualisation avec la valeur du champ "name"
+var fullName = firstNameValue + ' ' + lastNameValue;
+previewName.textContent = fullName;
+previewEmail.innerHTML = emailValue;
+previewLogo.src = logoValue;
+previewOrganization.textContent = organizationValue;
+previewRole.textContent = roleValue;
+previewAdress.textContent = addressValue;
+previewCity.textContent = cityValue + " CEDEX";
+previewPhone.textContent = phoneLandlineValue + " - " + phoneMobileValue;
+previewZipCode.textContent = zipCodeValue;
+}
+
+function togglePasswordVisibility() {
+var passwordField = document.querySelector('input[name="  {{ userForm.password.vars.full_name }}"]');
+var showPasswordBtn = document.getElementById("showPasswordBtn");
+
+if (passwordField.type === "password") {
+passwordField.type = "text";
+showPasswordBtn.textContent = "Cacher";
+} else {
+passwordField.type = "password";
+showPasswordBtn.textContent = "Afficher";
+}
+
+}
+function toggleInfoPerso() {
+var infoPersoFields = document.getElementById("infoPersoFields");
+var infoPersoBtn = document.getElementById("infoPersoBtn");
+
+if (infoPersoFields.style.display === "none") {
+infoPersoFields.style.display = "block";
+} else {
+infoPersoFields.style.display = "none";
+}
+
+}
+
+function toggleInfoEntreprise() {
+var infoPersoFields = document.getElementById("infoEntrepriseFields");
+var infoPersoBtn = document.getElementById("infoEntrepriseBtn");
+
+if (infoPersoFields.style.display === "none") {
+infoPersoFields.style.display = "block";
+} else {
+infoPersoFields.style.display = "none";
+}
+}
+
+function toggleInfoTheme() {
+var infoPersoFields = document.getElementById("infoThemeFields");
+var infoPersoBtn = document.getElementById("infoThemeBtn");
+
+if (infoPersoFields.style.display === "none") {
+infoPersoFields.style.display = "block";
+} else {
+infoPersoFields.style.display = "none";
+}
+}
+
+window.requestAnimationFrame(updatePreview);
+	</script>
+
+{% endblock %}

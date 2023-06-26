@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Edition du logo
+{% endblock %}
+
+{% block body %}
+	<br>
+	<div class="container border">
+		<br>
+		{{ form_start(form) }}
+		<div class="form-group">
+			{{ form_label(form.name) }}
+			{{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+			{{ form_errors(form.name) }}
+		</div>
+		<div class="form-group">
+			{{ form_label(form.path) }}
+			{{ form_widget(form.path, {'attr': {'class': 'form-control'}}) }}
+			{{ form_errors(form.path) }}
+		</div>
+		{{ form_end(form) }}<br>
+	</div>
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script></script>
+{% endblock %}

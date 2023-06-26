@@ -1,108 +1,117 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-  Admin Home
-{% endblock %}
-
-{% block stylesheets %}
-{{ parent() }}
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <style>
-    .btn-primary {
-      display: inline-block;
-      font-weight: 400;
-      color: #fff;
-      text-align: center;
-      vertical-align: middle;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      background-color: #007bff;
-      border: 1px solid #007bff;
-      padding: 0.375rem 0.75rem;
-      font-size: 1rem;
-      line-height: 1.5;
-      border-radius: 0.25rem;
-      transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    }
-    .btn-primary:hover {
-      color: #fff;
-      background-color: #0069d9;
-      border-color: #0062cc;
-    }
-    
-    .btn-logout {
-      display: inline-block;
-      font-weight: 400;
-      color: #fff;
-      text-align: center;
-      vertical-align: middle;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      background-color: #dc3545;
-      border: 1px solid #dc3545;
-      padding: 0.375rem 0.75rem;
-      font-size: 1rem;
-      line-height: 1.5;
-      border-radius: 0.25rem;
-      transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    }
-    .btn-logout:hover {
-      color: #fff;
-      background-color: #c82333;
-      border-color: #bd2130;
-    }
-  </style>
+	Dashboard
 {% endblock %}
 
 {% block body %}
-  <h1>Admin Dashboard!</h1>
+	<br><br>
+	<div class="container border"><br><br>
 
-  <button type="button" class="btn btn-primary" onclick="goToUsers()">Utilisateurs</button>
-  <button type="button" class="btn btn-logout" onclick="logout()">Déconnexion</button>
+		<div class="d-flex justify-content-end">
+			<a href="{{ path('logout') }}" class="btn btn-danger">Déconnexion</a>
+		</div>
 
-  <div class="signature">
-		<h1>Liste des signatures</h1>
+		<h1 class="display-4 text-center">Admin Dashboard</h1>
+		<a class="btn btn-outline-info" href="{{ path('admin_index') }}">Utilisateurs</a>
+		<a class="btn btn-outline-info" href="{{ path('admin_logo') }}">Logo</a>
+		<a class="btn btn-outline-info" href="{{path('admin_create_signature')}}">crée une signature</a>
 
-		<table class="table table-striped">
-			<thead class="thead-dark">
-				<tr>
-					<th>Signature n°</th>
-					<th>Signature</th>
-					<th>Actions</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for signature in signatures %}
+		<br><br><br><br>
+		<section class="all_signatures">
+			<h4 class="">Rechercher une signature :
+			</h4>
+
+			<form method="GET" action="{{ path('admin_dashboard') }}"><br>
+				<div class="form-row">
+					<div class="form-group col-md">
+						<label for="date">Date de création :</label>
+						<input type="date" id="date" name="date" class="form-control" value="{{ createAt }}">
+					</div>
+					<div class="form-group col-md">
+						<label for="nom">Nom :</label>
+						<input type="text" id="nom" name="nom" class="form-control" value="{{ name }}">
+					</div>
+					<div class="form-group col-md">
+						<label for="email">Email :</label>
+						<input type="text" id="email" name="email" class="form-control" value="{{ mail }}">
+					</div>
+				</div>
+
+				<button type="submit" class="btn btn-primary">Rechercher</button><br><br>
+			</form><br>
+			<h4 class="text-center">Liste des signatures</h4>
+
+			<table class="table border">
+				<thead class="table-dark">
 					<tr>
-						<td>{{ signature.id }}</td>
-						<td>{{ signature.htmlCode|raw }}</td>
-						<td>
-							{# <a href="{{ path('download_signature_png', {'id': signature.id}) }}">Télécharger en PNG</a> #}
-							{# <a href="{{ path('download_signature_html', {'id': signature.id}) }}">Télécharger en HTML</a> #}
-							{# <a href="{{ path('edit_signature', {'id': signature.id}) }}">Modifier</a> #}
-								<a href="#" class="btn btn-primary"> Télécharger en PNG</a>
-							<a href="#" class="btn btn-primary">Télécharger en HTML</a>
-							<a href="#" class="btn btn-primary">Modifier</a>
-						</td>
+						<th>Signature</th>
+						<th>Adresse email</th>
+						<th>Date de création</th>
+						<th>Actions</th>
 					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-	</div>
-  </ol>
+				</thead>
+				<tbody>
+					{% for signature in pagination %}
+						<tr>
+							<td class="text-center">
+								<section class="view_signature d-flex justify-content-center align-items-center mt-5">
+									<table class="w-100">
+										<tr>
+											<td class="align-middle" style="inline-size: 10%;">
+												<p>
+													<a href="https://www.unsa.org/"><img id="logoEdit" src="{{signature.logo.path}}" class="border-0" style="inline-size: 120px;" alt="LOGO UNSA"></a>
+												</p>
+											</td>
+											<td>
+												<div style="display: flex;">
+													<div style="flex-grow: 1;">
+														<p>
+															<span id="nameEdit" class="font-weight-bold">{{signature.name}}</span><br>
+															<span id="roleEdit">
+																<i>{{signature.role}}</i>
+															</span><br>
+															<span id="organizationEdit">
+																<i>{{signature.organization}}</i>
+															</span><br>
+														</p>
+														<p>
+															<span id="addressEdit">{{signature.adress}}</span><br>
+															<span id="zipCodeEdit">{{signature.zipCode}}&nbsp;</span>
+															<span id="cityEdit">{{signature.city}}
+																CEDEX</span><br>
+														</p>
+														<p>
+															<img src="https://reseaux.unsa.org/signature/_mail.svg" class="border-0" style="block-size: 12px; margin-inline-end: .5em;">
+															<a id="emailEdit" href="mailto:${email}" style="color: #666; font-style: italic;">{{signature.email}}</a><br>
+															<img src="https://reseaux.unsa.org/signature/_phone.svg" class="border-0" style="block-size: 14px; margin-inline-end: .5em;">
+															<span id="phoneEdit" style="color: #666;">{{signature.phone}}</span>
+														</p>
+													</div>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</section>
+							</td>
+							<td class="text-center align-middle">{{ signature.email }}</td>
+							<td class="text-center align-middle">{{ signature.createAT|date('d-m-Y H:i') }}</td>
+							<td class="text-center align-middle">
+								<button class="btn btn-warning" onclick="edit()">Éditer</button>
+								<button class="btn btn-secondary" onclick="">HTML</button>
+								<button class="btn btn-success" onclick="">PNG</button>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
 
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script>
-    function goToUsers() {
-      window.location.href = "{{ path('admin_index') }}"
-    }
-    
-    function logout() {
-      window.location.href = "{{ path('logout') }}"
-    }
-  </script>
+			{# Afficher les liens de pagination #}
+			<div class="pagination">
+				{{ knp_pagination_render(pagination) }}
+			</div>
+
+		</section><br>
+	</div><br><br>
+
 {% endblock %}
