@@ -137,7 +137,7 @@
 				{{ form_start(form) }}
 
 				<a id="infoPersoBtn" class="btn btn-outline-warning" onclick="toggleInfoPerso()">Information personnelle</a><br><br>
-				<div id="infoPersoFields">
+				<div id="infoPersoFields" style="display: none;">
 					<div class="form-group">
 						{{ form_row(form.last_name, {'attr': {'class': 'form-control', 'id': 'form_last_name', 'oninput': 'updatePreview()'}}) }}
 					</div>
@@ -153,7 +153,7 @@
 				</div>
 
 				<a id="infoEntrepriseBtn" class="btn btn-outline-warning" onclick="toggleInfoEntreprise()">Information entreprise</a><br>
-				<div id="infoEntrepriseFields">
+				<div id="infoEntrepriseFields" style="display: none;">
 					<div class="form-group">
 						{{ form_row(form.phone_landline, {'attr': {'class': 'form-control', 'id': 'form_phone_landline', 'oninput': 'updatePreview()'}}) }}
 					</div>
@@ -176,7 +176,7 @@
 				</div><br>
 
 				<a id="infoThemeBtn" class="btn btn-outline-warning" onclick="toggleInfoTheme()">Information theme</a><br><br>
-				<div id="infoThemeFields">
+				<div id="infoThemeFields" style="display: none;">
 					<div class="form-group">
 						{{ form_row(form.logo, {'attr': {'class': 'form-control', 'id': 'form_logo', 'oninput': 'updatePreview()'}}) }}
 					</div>
