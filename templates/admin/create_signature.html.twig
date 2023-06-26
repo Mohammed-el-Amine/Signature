@@ -251,14 +251,6 @@ infoPersoFields.style.display = "none";
 }
 
 window.requestAnimationFrame(updatePreview);
-
-
-        window.onbeforeunload = function() {
-            var form = document.querySelector('form');
-            form.addEventListener('submit', function(event) {
-                event.preventDefault();
-            });
-        };
 	</script>
 
 {% endblock %}

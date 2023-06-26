@@ -245,7 +245,7 @@ class AdminController extends AbstractController
             $entityManager->flush();
 
             $to = $email;
-            $subject = 'Création de compte';
+            $subject = 'Configuration de votre mot de passe .';
             $message = '<html>
                 <head>
                     <title>Création de compte</title>
