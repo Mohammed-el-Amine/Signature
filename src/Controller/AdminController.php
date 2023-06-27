@@ -758,7 +758,7 @@ class AdminController extends AbstractController
         $html .= '<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">';
         $html .= '<span style="color: #000;">' . $data['adress'] . '</span><br>';
         $html .= '<span style="color: #000;">' . $data['zip_code'] . '&nbsp;</span>';
-        $html .= '<span style="color: #000;">' . $data['city'] . '</span><br>';
+        $html .= '<span style="color: #000;">' . $data['city'] . ' CEDEX'.'</span><br>';
         $html .= '</p>';
         $html .= '<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">';
         $html .= '<img id="LOGO-MAIL" src="/signature/img/mail.png" style="border: none;block-size: 12px;margin-inline-end: .5em;">';
