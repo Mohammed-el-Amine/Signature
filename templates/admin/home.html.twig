@@ -102,7 +102,7 @@
 			<h4 class="text-center">Liste des signatures</h4>
 
 			<table class="table border">
-				<thead class="table-dark">
+				<thead class="table-dark text-center">
 					<tr>
 						<th>Signature</th>
 						<th>Adresse email</th>
@@ -113,45 +113,44 @@
 				<tbody>
 					{% for signature in pagination %}
 						<tr>
-							<td class="text-center">
+							<td>
 								<section class="view_signature d-flex justify-content-center align-items-center mt-5">
-									<table class="w-100">
-										<tr>
-											<td class="align-middle" style="inline-size: 10%;">
-												<p>
-													<a href="https://www.unsa.org/"><img id="logoEdit" src="https://lab-web.unsa.org/signature{{signature.logo.path}}" class="border-0" style="inline-size: 120px;" alt="LOGO UNSA"></a>
-												</p>
-											</td>
-											<td>
-												<div style="display: flex;">
-													<div style="flex-grow: 1;">
-														<p>
-															<span id="nameEdit" class="font-weight-bold">{{signature.name}}</span><br>
-															<span id="roleEdit">
+									<div class="border p-3">
+										<table border="0" cellpadding="0" width="500">
+											<tbody>
+												<tr>
+													<td align="left" valign="middle" width="10">
+														<p style="padding-inline-end: 10px;font-size: 12px;line-height: 14px;">
+															<a href="https://www.unsa.org/"><img id="logo" src="https://lab-web.unsa.org/signature{{signature.logo.path}}" class="border-0" style="border: none;inline-size: 120px;" alt="LOGO UNSA"></a>
+														</p>
+													</td>
+													<td>
+														<p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;text-align: start;">
+															<span id="name" class="font-weight-bold" style="color: #000;font-weight: bold;font-size: 14px;">{{signature.name}}</span><br>
+															<span id="role" style="color: #666;">
 																<i>{{signature.role}}</i>
 															</span><br>
-															<span id="organizationEdit">
+															<span id="organization" style="color: #666;">
 																<i>{{signature.organization}}</i>
 															</span><br>
 														</p>
-														<p>
-															<span id="addressEdit">{{signature.adress}}</span><br>
-															<span id="zipCodeEdit">{{signature.zipCode}}&nbsp;</span>
-															<span id="cityEdit">{{signature.city}}
-																CEDEX</span><br>
+														<p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
+															<span id="address" style="color: #000;">{{signature.adress}}</span><br>
+															<span id="zipCode" style="color: #000;">{{signature.zipCode}}&nbsp;</span>
+															<span id="city" style="color: #000;">{{signature.city}} CEDEX</span><br>
 														</p>
-														<p>
-															<img src="https://reseaux.unsa.org/signature/_mail.svg" class="border-0" style="block-size: 12px; margin-inline-end: .5em;">
-															<a id="emailEdit" href="mailto:${email}" style="color: #666; font-style: italic;">{{signature.email}}</a><br>
-															<img src="https://reseaux.unsa.org/signature/_phone.svg" class="border-0" style="block-size: 14px; margin-inline-end: .5em;">
-															<span id="phoneEdit" style="color: #666;">{{signature.phone}}</span>
+														<p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
+															<img src="https://lab-web.unsa.org/signature/img/mail.png" class="border-0"  style="border: none;block-size: 12px;margin-inline-end: .5em;">
+															<a id="previewEmail" href="mailto:${email}" style="color: #666; font-style: italic;">{{signature.email}}</a><br>
+															<img src="https://lab-web.unsa.org/signature/img/phone.png" class="border-0" style="border: none;block-size: 14px;margin-inline-end: .5em;">
+															<span id="phone" style="color: #666;">{{signature.phone}}</span>
 														</p>
-													</div>
-												</div>
-											</td>
-										</tr>
-									</table>
-								</section>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</section><br>
 							</td>
 							<td class="text-center align-middle">{{ signature.email }}</td>
 							<td class="text-center align-middle">{{ signature.createAT|date('d-m-Y') }}</td>
@@ -185,28 +184,28 @@
 
 	<script>
 		function openModal(url, title) {
-			var modal = document.getElementById('modal')
-			var modalTitle = modal.querySelector('.modal-title')
-			var modalBody = modal.querySelector('.modal-body')
+var modal = document.getElementById('modal')
+var modalTitle = modal.querySelector('.modal-title')
+var modalBody = modal.querySelector('.modal-body')
 
-			// Charger le contenu de l'URL dans la modal via une requête iframe
-			modalTitle.textContent = title
-			modalBody.innerHTML = '<iframe src="' + url + '" style="inline-size:100%; block-size:100%; border:none;"></iframe>'
+// Charger le contenu de l'URL dans la modal via une requête iframe
+modalTitle.textContent = title
+modalBody.innerHTML = '<iframe src="' + url + '" style="inline-size:100%; block-size:100%; border:none;"></iframe>'
 
-			modal.style.display = 'block'
-		}
+modal.style.display = 'block'
+}
 
-	function closeModal() {
-		var modal = document.getElementById('modal')
-		var modalTitle = modal.querySelector('.modal-title')
-		var modalBody = modal.querySelector('.modal-body')
-		
-		modalTitle.textContent = ''
-		modalBody.innerHTML = ''
-		
-		modal.style.display = 'none'
-		window.location.reload()
-	}
+function closeModal() {
+var modal = document.getElementById('modal')
+var modalTitle = modal.querySelector('.modal-title')
+var modalBody = modal.querySelector('.modal-body')
+
+modalTitle.textContent = ''
+modalBody.innerHTML = ''
+
+modal.style.display = 'none'
+window.location.reload()
+}
 	</script>
 
 {% endblock %}
