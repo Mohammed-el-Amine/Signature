@@ -130,43 +130,49 @@
 						<tr>
 							<td>
 								<section class="view_signature d-flex justify-content-center align-items-center mt-5">
-									<table class="w-100">
-										<tr>
-											<td class="align-middle" style="inline-size: 10%;">
-												<p>
-													<a href="https://www.unsa.org/"><img id="logoEdit" src="https://lab-web.unsa.org/signature{{signature.logo.path}}" class="border-0" style="inline-size: 120px;" alt="LOGO UNSA"></a>
-												</p>
-											</td>
-											<td>
-												<div style="display: flex;">
-													<div style="flex-grow: 1;">
-														<p>
-															<span id="nameEdit" class="font-weight-bold">{{signature.name}}</span><br>
-															<span id="roleEdit">
+									<div class="border p-3">
+										<table border="0" cellpadding="0" width="500">
+											<tbody>
+												<tr>
+													<td align="left" valign="middle" width="10">
+														<p style="padding-inline-end: 10px;font-size: 12px;line-height: 14px;">
+															<a href="https://www.unsa.org/"><img id="logoEdit" src="https://lab-web.unsa.org/signature{{signature.logo.path}}" class="border-0"
+															style="border: none;inline-size: 120px;" alt="LOGO UNSA"></a>
+														</p>
+													</td>
+													<td>
+														<p
+															style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;text-align: start;">
+															<span id="nameEdit" class="font-weight-bold"
+																style="color: #000;font-weight: bold;font-size: 14px;">{{signature.name}}</span><br>
+															<span id="role" style="color: #666;">
 																<i>{{signature.role}}</i>
 															</span><br>
-															<span id="organizationEdit">
+															<span id="organizationEdit" style="color: #666;">
 																<i>{{signature.organization}}</i>
 															</span><br>
 														</p>
-														<p>
-															<span id="addressEdit">{{signature.adress}}</span><br>
-															<span id="zipCodeEdit">{{signature.zipCode}}&nbsp;</span>
-															<span id="cityEdit">{{signature.city}}
-																CEDEX</span><br>
+														<p
+															style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
+															<span style="color: #000;" id="addressEdit">{{signature.adress}}</span><br>
+															<span style="color: #000;" id="zipCodeEdit">{{signature.zipCode}}&nbsp;</span>
+															<span style="color: #000;" id="cityEdit">{{signature.city}} CEDEX</span><br>
 														</p>
-														<p>
-															<img src="https://reseaux.unsa.org/signature/_mail.svg" class="border-0" style="block-size: 12px; margin-inline-end: .5em;">
-															<a id="emailEdit" href="mailto:${email}" style="color: #666; font-style: italic;">{{signature.email}}</a><br>
-															<img src="https://reseaux.unsa.org/signature/_phone.svg" class="border-0" style="block-size: 14px; margin-inline-end: .5em;">
+														<p
+															style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
+															<img src="https://lab-web.unsa.org/signature/img/mail.png" class="border-0"
+																style="border: none;block-size: 12px;margin-inline-end: .5em;">
+															<a id="emailEdit" href="mailto:${email}" style="color: #666;font-style: italic;">{{signature.email}}</a><br>
+															<img src="https://lab-web.unsa.org/signature/img/phone.png" class="border-0"
+																style="border: none;block-size: 14px;margin-inline-end: .5em;">
 															<span id="phoneEdit" style="color: #666;">{{signature.phone}}</span>
 														</p>
-													</div>
-												</div>
-											</td>
-										</tr>
-									</table>
-								</section>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</section><br>
 							</td>
 							<td class="text-center align-middle">{{ signature.email }}</td>
 							<td class="text-center align-middle">{{ signature.createAT|date('d-m-Y') }}</td>
@@ -247,33 +253,33 @@
 
 		<section class="view_signature d-flex justify-content-center align-items-center mt-5">
 			<div class="border p-3">
-				<table class="w-100">
+				<table border="0" cellpadding="0" width="500">
 					<tbody>
 						<tr>
-							<td class="align-middle" style="inline-size: 10%;">
-								<p>
-									<a href="https://www.unsa.org/"><img id="logo" src="" class="border-0" style="inline-size: 120px;" alt="LOGO UNSA"></a>
+							<td align="left" valign="middle" width="10">
+								<p style="padding-inline-end: 10px;font-size: 12px;line-height: 14px;">
+									<a href="https://www.unsa.org/"><img id="logo" src="" class="border-0" style="border: none;inline-size: 120px;" alt="LOGO UNSA"></a>
 								</p>
 							</td>
 							<td>
-								<p>
-									<span id="name" class="font-weight-bold">Nom et Prénom</span><br>
-									<span id="role">
+								<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;text-align: start;">
+									<span id="name" class="font-weight-bold" style="color: #000;font-weight: bold;font-size: 14px;">Nom et Prénom</span><br>
+									<span id="role" style="color: #666;">
 										<i>Mon poste</i>
 									</span><br>
-									<span id="organization">
+									<span id="organization" style="color: #666;">
 										<i>Mon entreprise</i>
 									</span><br>
 								</p>
-								<p>
-									<span id="address">Mon adresse</span><br>
-									<span id="zipCode">Code postal&nbsp;</span>
-									<span id="city">Ville CEDEX</span><br>
+								<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
+									<span style="color: #000;" id="address">Mon adresse</span><br>
+									<span style="color: #000;" id="zipCode">Code postal&nbsp;</span>
+									<span style="color: #000;" id="city">Ville CEDEX</span><br>
 								</p>
-								<p>
-									<img src="https://reseaux.unsa.org/signature/_mail.svg" class="border-0" style="block-size: 12px; margin-inline-end: .5em;">
-									<a id="previewEmail" href="mailto:${email}" style="color: #666; font-style: italic;">Adresse Email</a><br>
-									<img src="https://reseaux.unsa.org/signature/_phone.svg" class="border-0" style="block-size: 14px; margin-inline-end: .5em;">
+								<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
+									<img src="https://lab-web.unsa.org/signature/img/mail.png" class="border-0" style="border: none;block-size: 12px;margin-inline-end: .5em;">
+									<a id="previewEmail" href="mailto:${email}" style="color: #666;font-style: italic;">Adresse Email</a><br>
+									<img src="https://lab-web.unsa.org/signature/img/phone.png" class="border-0" style="border: none;block-size: 14px;margin-inline-end: .5em;">
 									<span id="phone" style="color: #666;">Numéro</span>
 								</p>
 							</td>
@@ -281,7 +287,7 @@
 					</tbody>
 				</table>
 			</div>
-		</section>
+		</section><br>
 
 		<div style="inline-size: 50%; float: inline-end; padding-block-start: 5%;">
 			<div class="Modal">
