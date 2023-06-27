@@ -82,7 +82,7 @@
 							<div class="input-group">
 								{{ form_row(userForm.password, {'attr': {'class': 'form-control', 'type': 'password'}}) }}
 								<div class="input-group-append">
-									<button class="btn btn-outline-secondary" type="button" id="showPasswordBtn" onclick="togglePasswordVisibility()">Afficher</button>
+									<button class="btn btn-outline-secondary" type="button" id="showPasswordBtn" onclick="togglePasswordVisibility('{{ userForm.password.vars.full_name }}')">Afficher</button>
 								</div>
 							</div>
 						</div>
@@ -400,18 +400,17 @@ previewPhone.textContent = phoneLandlineValue + " - " + phoneMobileValue;
 previewZipCode.textContent = zipCodeValue;
 }
 
-function togglePasswordVisibility() {
-var passwordField = document.querySelector('input[name=" {{ userForm.password.vars.full_name }}"]');
-var showPasswordBtn = document.getElementById("showPasswordBtn");
+function togglePasswordVisibility(fieldName) {
+  var passwordField = document.querySelector('input[name="'+fieldName+'"]');
+  var showPasswordBtn = document.getElementById("showPasswordBtn");
 
-if (passwordField.type === "password") {
-passwordField.type = "text";
-showPasswordBtn.textContent = "Cacher";
-} else {
-passwordField.type = "password";
-showPasswordBtn.textContent = "Afficher";
-}
-
+  if (passwordField.type === "password") {
+    passwordField.type = "text";
+    showPasswordBtn.textContent = "Cacher";
+  } else {
+    passwordField.type = "password";
+    showPasswordBtn.textContent = "Afficher";
+  }
 }
 function toggleInfoPerso() {
 var infoPersoFields = document.getElementById("infoPersoFields");
