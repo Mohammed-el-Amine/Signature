@@ -571,8 +571,10 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/logo/{id}/delete", name="admin_logo_delete", methods={"GET"})
      */
-    public function deleteLogo(Request $request, EntityManagerInterface $entityManager, Logo $logo): Response
+    public function deleteLogo(Request $request, EntityManagerInterface $entityManager, Logo $logo, SessionInterface $session, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator): Response
     {
+        
+        
         $entityManager->remove($logo);
         $entityManager->flush();
 
@@ -772,5 +774,18 @@ class AdminController extends AbstractController
         $html .= '</html>';
 
         return $html;
+    }
+
+    #[Route('/admin/delete-signature/{id}', name:"admin_delete_signature", methods:['GET'])]
+    /**
+     * @Route("/admin/delete-signature/{id}", name="admin_delete_signature", methods={"GET"})
+     */
+    public function deleteSignature( EntityManagerInterface $entityManager, Signature $signature, SessionInterface $session, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator)
+    {
+        $entityManager->remove($signature);
+        $entityManager->flush();
+        
+        return $this->redirectToRoute('admin_dashboard');
+
     }
 }

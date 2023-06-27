@@ -156,6 +156,7 @@
 							<td class="text-center align-middle">{{ signature.createAT|date('d-m-Y') }}</td>
 							<td class="text-center align-middle">
 								<button class="btn btn-warning" onclick="openModal('{{ path('edit_signature',{ id: signature.id }) }}')">Éditer</button>
+								<a class="btn btn-danger" href="{{ path('admin_delete_signature', {'id': signature.id}) }}" class="signature-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette signature ?')">Supprimer</a>
 								<button class="btn btn-secondary" onclick="">HTML</button>
 								<button class="btn btn-success" onclick="">PNG</button>
 							</td>
