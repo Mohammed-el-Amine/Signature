@@ -401,15 +401,15 @@ previewZipCode.textContent = zipCodeValue;
 
 function togglePasswordVisibility(fieldName) {
   var passwordField = document.querySelector('input[name="'+fieldName+'"]');
-  var showPasswordBtn = document.getElementById("showPasswordBtn");
+var showPasswordBtn = document.getElementById("showPasswordBtn");
 
-  if (passwordField.type === "password") {
-    passwordField.type = "text";
-    showPasswordBtn.textContent = "Cacher";
-  } else {
-    passwordField.type = "password";
-    showPasswordBtn.textContent = "Afficher";
-  }
+if (passwordField.type === "password") {
+passwordField.type = "text";
+showPasswordBtn.textContent = "Cacher";
+} else {
+passwordField.type = "password";
+showPasswordBtn.textContent = "Afficher";
+}
 }
 function toggleInfoPerso() {
 var infoPersoFields = document.getElementById("infoPersoFields");
