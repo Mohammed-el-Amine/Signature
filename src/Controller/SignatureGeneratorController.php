@@ -281,7 +281,7 @@ class SignatureGeneratorController extends AbstractController
         $html .= '<tr>';
         $html .= '<td align="left" valign="middle" width="10">';
         $html .= '<p style="padding-inline-end: 10px;font-size: 12px;line-height: 14px;">';
-        $html .= '<a href="https://www.unsa.org"><img id="LOGO"src="' . $data['logo']->getPath() . '" style="border: none;inline-size: 120px;"></a>';
+        $html .= '<a href="https://www.unsa.org"><img id="LOGO"src="' . 'https://lab-web.unsa.org/signature' . $data['logo']->getPath() . '" style="border: none;inline-size: 120px;"></a>';
         $html .= '</p>';
         $html .= '</td>';
         $html .= '<td>';
@@ -296,9 +296,9 @@ class SignatureGeneratorController extends AbstractController
         $html .= '<span style="color: #000;">' . $data['city'] . '</span><br>';
         $html .= '</p>';
         $html .= '<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">';
-        $html .= '<img id="LOGO-MAIL" src="/img/mail.png" style="border: none;block-size: 12px;margin-inline-end: .5em;">';
+        $html .= '<img id="LOGO-MAIL" src="https://lab-web.unsa.org/signature/img/mail.png" style="border: none;block-size: 12px;margin-inline-end: .5em;">';
         $html .= '<a href="mailto:' . $data['email'] . '" style="color: #666;font-style: italic;">' . $data['email'] . '</a><br>';
-        $html .= '<img id="LOGO-PHONE" src="/img/phone.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
+        $html .= '<img id="LOGO-PHONE" src="https://lab-web.unsa.org/signature/img/phone.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
         $html .= '<span style="color: #666;">' . $data['phone_landline'] . ' - ' . $data['phone_mobile'] . '</span>';
         $html .= '</p>';
         $html .= '</td>';
