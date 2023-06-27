@@ -135,11 +135,11 @@ var fullName = firstNameValue + ' ' + lastNameValue;
 // Récupère le contenu de la div signature
 var element = document.getElementById('signature').innerHTML;
 
-var updatedElement = element.replace(/(<img id="LOGO" src=")([^"]+)(" style="border: none;inline-size: 120px;">)/, '$1https://raw.githubusercontent.com/Mohammed-el-Amine/Signature/Amine/public$2$3');
+var updatedElement = element.replace(/(<img id="LOGO" src=")([^"]+)(" style="border: none;inline-size: 120px;">)/, '$1https://lab-web.unsa.org/signature$2$3');
 
-var updatedElementSecond = updatedElement.replace(/(<img id="LOGO-PHONE" src=")([^"]+)(" style="border: none;block-size: 14px;margin-inline-end: .5em;">)/, '$1https://raw.githubusercontent.com/Mohammed-el-Amine/Signature/Amine/public$2$3');
+var updatedElementSecond = updatedElement.replace(/(<img id="LOGO-PHONE" src=")([^"]+)(" style="border: none;block-size: 14px;margin-inline-end: .5em;">)/, '$1https://lab-web.unsa.org/signature$2$3');
 
-var updatedElementThird = updatedElementSecond.replace(/(<img id="LOGO-MAIL" src=")([^"]+)(" style="border: none;block-size: 12px;margin-inline-end: .5em;">)/, '$1https://raw.githubusercontent.com/Mohammed-el-Amine/Signature/Amine/public$2$3');
+var updatedElementThird = updatedElementSecond.replace(/(<img id="LOGO-MAIL" src=")([^"]+)(" style="border: none;block-size: 12px;margin-inline-end: .5em;">)/, '$1https://lab-web.unsa.org/signature$2$3');
 
 // Crée un fichier HTML avec le nom de la personne
 var filename = fullName + '.html';
@@ -194,7 +194,7 @@ var lastNameValue = document.getElementById('form_last_name').value;
 var emailValue = document.getElementById('form_email').value;
 var logoSelect = document.getElementById('form_logo');
 var selectedOption = logoSelect.options[logoSelect.selectedIndex];
-var logoValue = "https://raw.githubusercontent.com/Mohammed-el-Amine/Signature/Amine/public" + selectedOption.getAttribute('name');
+var logoValue = "https://lab-web.unsa.org/signature" + selectedOption.getAttribute('name');
 var organizationValue = document.getElementById('form_organization').value;
 var roleValue = document.getElementById('form_role').value;
 var addressValue = document.getElementById('form_adress').value;
