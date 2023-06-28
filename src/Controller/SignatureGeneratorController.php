@@ -522,4 +522,29 @@ class SignatureGeneratorController extends AbstractController
             'phoneMobile' => $phoneMobile,
         ]);
     }
+
+    #[Route('/signature-html/{id}', name: 'html_signature')]
+    /**
+     * @Route("/signature-html/{id}", name="html_signature")
+     */
+    public function htmlSignature(SignatureRepository $signatureRepository, $id): Response
+    {
+        $signature = $signatureRepository->find($id);
+        $nameParts = explode(' ', $signature->getName());
+        $phoneParts = explode('-', $signature->getPhone());
+
+        $phoneLandline = $phoneParts[0];
+        $phoneMobile = $phoneParts[1];
+        $firstName = $nameParts[0];
+        $lastName = $nameParts[1];
+
+            return $this->render('signature/html_signature.html.twig', [
+            'signature' => $signature,
+            'firstName' => $firstName,
+            'lastName' => $lastName,
+            'phoneLandline' => $phoneLandline,
+            'phoneMobile' => $phoneMobile,
+        ]);
+
+    }
 }
