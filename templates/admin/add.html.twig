@@ -88,7 +88,7 @@
 		{{ form_start(form) }}
 		<div class="mb-3">
 			{{ form_label(form.email, 'Email') }}
-			{{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+			{{ form_widget(form.email, {'attr': {'class': 'form-control', 'pattern': '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'}}) }}
 			{{ form_errors(form.email) }}
 		</div>
 		<div class="mb-3">
