@@ -158,7 +158,7 @@
 								<button class="btn btn-warning" onclick="openModal('{{ path('edit_signature',{ id: signature.id }) }}')">Éditer</button>
 								<a class="btn btn-danger" href="{{ path('admin_delete_signature', {'id': signature.id}) }}" class="signature-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette signature ?')">Supprimer</a>
 								<button class="btn btn-secondary" onclick="">HTML</button>
-								<button class="btn btn-success" onclick="">PNG</button>
+								<button class="btn btn-success" onclick="openModal('{{ path('png_signature',{id: signature.id}) }}')">PNG</button>
 							</td>
 						</tr>
 					{% endfor %}

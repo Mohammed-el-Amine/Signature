@@ -293,7 +293,7 @@ class SignatureGeneratorController extends AbstractController
         $html .= '<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">';
         $html .= '<span style="color: #000;">' . $data['adress'] . '</span><br>';
         $html .= '<span style="color: #000;">' . $data['zip_code'] . '&nbsp;</span>';
-        $html .= '<span style="color: #000;">' . $data['city'] . ' CEDEX'.' </span><br>';
+        $html .= '<span style="color: #000;">' . $data['city'] . ' CEDEX' . ' </span><br>';
         $html .= '</p>';
         $html .= '<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">';
         $html .= '<img id="LOGO-MAIL" src="/signature/img/mail.png" style="border: none;block-size: 12px;margin-inline-end: .5em;">';
@@ -474,7 +474,7 @@ class SignatureGeneratorController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // Récupérer les données modifiées à partir de la requête
             $newSignatureData = $form->getData();
-            
+
             // Appliquer les modifications à la signature existante
             $signature->setName($newSignatureData['first_name'] . ' ' . $newSignatureData['last_name']);
             $signature->setRole($newSignatureData['role']);
@@ -485,16 +485,41 @@ class SignatureGeneratorController extends AbstractController
             $signature->setEmail($newSignatureData['email']);
             $signature->setPhone($newSignatureData['phone_landline'] . ' - ' . $newSignatureData['phone_mobile']);
             $signature->setLogo($newSignatureData['logo']);
-            
+
             // Enregistrer les modifications dans la base de données
             $entityManager->flush();
-            
+
             // Rediriger vers une autre page ou afficher un message de succès
         }
 
         return $this->render('signature/edit_signature.html.twig', [
             'signature' => $signature,
             'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/signature-png/{id}', name: 'png_signature')]
+    /**
+     * @Route("/signature-png/{id}", name="png_signature")
+     */
+    public function pngSignature(SignatureRepository $signatureRepository, $id): Response
+    {
+        $signature = $signatureRepository->find($id);
+        $nameParts = explode(' ', $signature->getName());
+        $phoneParts = explode('-', $signature->getPhone());
+
+        $phoneLandline = $phoneParts[0];
+        $phoneMobile = $phoneParts[1];
+        $firstName = $nameParts[0];
+        $lastName = $nameParts[1];
+
+
+        return $this->render('signature/png_signature.html.twig', [
+            'signature' => $signature,
+            'firstName' => $firstName,
+            'lastName' => $lastName,
+            'phoneLandline' => $phoneLandline,
+            'phoneMobile' => $phoneMobile,
         ]);
     }
 }

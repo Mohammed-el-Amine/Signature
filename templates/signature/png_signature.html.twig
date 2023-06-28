@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PNG de la signature
+{% endblock %}
+
+{% block body %}
+    <div class="container"><br>
+		<div class="row justify-content-center">
+			<div class="col-lg-6">
+				<section class="view_signature d-flex justify-content-center align-items-center mt-5" id="signature-container">
+					<div class="border p-3">
+						<table border="0" cellpadding="0" width="500">
+							<tbody>
+								<tr>
+									<td align="left" valign="middle" width="10">
+										<p style="padding-inline-end: 10px;font-size: 12px;line-height: 14px;">
+											<a href="https://www.unsa.org/"><img id="logo" src="https://lab-web.unsa.org/signature{{signature.logo.path}}" class="border-0" style="border: none;inline-size: 120px;" alt="LOGO UNSA"></a>
+										</p>
+									</td>
+									<td>
+										<p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;text-align: start;">
+											<span id="name" class="font-weight-bold" style="color: #000;font-weight: bold;font-size: 14px;">{{signature.name}}</span><br>
+											<span id="role" style="color: #666;">
+												<i>{{signature.role}}</i>
+											</span><br>
+											<span id="organization" style="color: #666;">
+												<i>{{signature.organization}}</i>
+											</span><br>
+										</p>
+										<p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
+											<span id="address" style="color: #000;">{{signature.adress}}</span><br>
+											<span id="zipCode" style="color: #000;">{{signature.zipCode}}&nbsp;</span>
+											<span id="city" style="color: #000;">{{signature.city}}
+												CEDEX</span><br>
+										</p>
+										<p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
+											<img src="https://lab-web.unsa.org/signature/img/mail.png" class="border-0" style="border: none;block-size: 12px;margin-inline-end: .5em;">
+											<a id="previewEmail" href="mailto:${email}" style="color: #666; font-style: italic;">{{signature.email}}</a><br>
+											<img src="https://lab-web.unsa.org/signature/img/phone.png" class="border-0" style="border: none;block-size: 14px;margin-inline-end: .5em;">
+											<span id="phone" style="color: #666;">{{signature.phone}}</span>
+										</p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section><br>
+			</div>
+        </div>
+    </div><br>
+<button class="btn btn-success" onclick="downloadAsPNG()">Télécharger en PNG</button>
+<script>
+    function downloadAsPNG() {
+  html2canvas(document.querySelector("#signature-container")).then(function(canvas) {
+    var link = document.createElement("a");
+    document.body.appendChild(link);
+    link.download = "signature.png";
+    canvas.toBlob(function(blob) {
+      var url = URL.createObjectURL(blob);
+      link.href = url;
+      link.click();
+      URL.revokeObjectURL(url);
+    });
+    document.body.removeChild(link);
+  });
+}
+</script>
+{% endblock %}
+
+
+
+
