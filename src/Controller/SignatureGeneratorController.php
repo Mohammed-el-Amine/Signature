@@ -35,7 +35,7 @@ class SignatureGeneratorController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/signature', name: 'profile_signature')]
+    #[Route('/espace-perso', name: 'profile_signature')]
     public function generateSignature(Request $request, EntityManagerInterface $entityManager, SessionInterface $session, UrlGeneratorInterface $urlGenerator, UserRepository $userRepository, LogoRepository $logoRepository, SignatureRepository $signatureRepository, PaginatorInterface $paginator): Response
     {
         if (!$session->has('user_id')) {
@@ -321,8 +321,9 @@ class SignatureGeneratorController extends AbstractController
         return new RedirectResponse($urlGenerator->generate('app_home'));
     }
 
+    #[Route('/espace-perso', name: 'signature')]
     /**
-     * @Route("/signature", name="signature")
+     * @Route("/espace-perso", name="signature")
      */
     public function getSignature(SignatureRepository $signatureRepository)
     {
