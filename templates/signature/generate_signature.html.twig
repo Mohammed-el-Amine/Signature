@@ -179,8 +179,8 @@
 							{# <td class="text-center align-middle">{{ signature.updateAT|date('d-m-Y') }}</td> #}
 							<td class="text-center align-middle">
 								<button class="btn btn-warning" onclick="openModal('{{ path('edit_signature',{ id: signature.id }) }}')">Éditer</button>
-								<button class="btn btn-secondary" onclick="">HTML</button>
-								<button class="btn btn-success" onclick="">PNG</button>
+								<button class="btn btn-secondary" onclick="openModal('{{ path('html_signature',{id: signature.id}) }}')">HTML</button>
+								<button class="btn btn-success" onclick="openModal('{{ path('png_signature',{id: signature.id}) }}')">PNG</button>
 							</td>
 						</tr>
 					{% endfor %}
