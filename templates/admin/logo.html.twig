@@ -93,7 +93,7 @@
 					<tr>
 						<th>Id</th>
 						<th>Nom</th>
-						<th>Chemin</th>
+						<th>Apercus</th>
 						<th>Crée le</th>
 						<th>Modifier</th>
 						<th>Action</th>
@@ -108,8 +108,8 @@
 							<td>{{ logo.createAT|date('d-m-Y') }}</td>
 							<td>{{ logo.updateAt|date('d-m-Y') }}</td>
 							<td>
-								<a href="#" class="logo-edit" onclick="openModal('{{ path('admin_logo_edit', {'id': logo.id}) }}', 'Modifier le logo')">Modifier</a>
-								<a href="{{ path('admin_logo_delete', {'id': logo.id}) }}" class="logo-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce logo ?')">Supprimer</a>
+								<a href="#" class="logo-edit btn btn-warning" onclick="openModal('{{ path('admin_logo_edit', {'id': logo.id}) }}', 'Modifier le logo')">Modifier</a>
+								<a href="{{ path('admin_logo_delete', {'id': logo.id}) }}" class="logo-delete btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce logo ?')">Supprimer</a>
 							</td>
 						</tr>
 					{% endfor %}
