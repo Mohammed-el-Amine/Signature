@@ -19,7 +19,7 @@
 									</td>
 									<td>
 										<p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;text-align: start;">
-											<span id="name" class="font-weight-bold" style="color: #000;font-weight: bold;font-size: 14px;">{{signature.name}}</span><br>
+											<span id="nameEdit" class="font-weight-bold" style="color: #000;font-weight: bold;font-size: 14px;">{{signature.name}}</span><br>
 											<span id="role" style="color: #666;">
 												<i>{{signature.role}}</i>
 											</span><br>
@@ -56,10 +56,11 @@
         });
 
         function downloadAsPNG() {
+            var userName = document.getElementById('nameEdit').innerText;
             html2canvas(document.querySelector("#signature-container")).then(function(canvas) {
                 var link = document.createElement("a");
                 document.body.appendChild(link);
-                link.download = "signature.png";
+                link.download = userName + ".png";
                 canvas.toBlob(function(blob) {
                     var url = URL.createObjectURL(blob);
                     link.href = url;
