@@ -47,26 +47,27 @@
 				</section><br>
 			</div>
         </div>
+        <h1 class="text-center text-success">Téléchargement terminé avec succès !</h1>
     </div><br>
-<button class="btn btn-success" onclick="downloadAsPNG()">Télécharger en PNG</button>
-<script>
-    function downloadAsPNG() {
-  html2canvas(document.querySelector("#signature-container")).then(function(canvas) {
-    var link = document.createElement("a");
-    document.body.appendChild(link);
-    link.download = "signature.png";
-    canvas.toBlob(function(blob) {
-      var url = URL.createObjectURL(blob);
-      link.href = url;
-      link.click();
-      URL.revokeObjectURL(url);
-    });
-    document.body.removeChild(link);
-  });
-}
-</script>
+<button class="btn btn-success" style="visibility: collapse;" onclick="downloadAsPNG()">Télécharger en PNG</button>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            downloadAsPNG();
+        });
+
+        function downloadAsPNG() {
+            html2canvas(document.querySelector("#signature-container")).then(function(canvas) {
+                var link = document.createElement("a");
+                document.body.appendChild(link);
+                link.download = "signature.png";
+                canvas.toBlob(function(blob) {
+                    var url = URL.createObjectURL(blob);
+                    link.href = url;
+                    link.click();
+                    URL.revokeObjectURL(url);
+                });
+                document.body.removeChild(link);
+            });
+        }
+    </script>
 {% endblock %}
-
-
-
-
