@@ -64,9 +64,10 @@
 
 		{{ form_start(form) }}
 		<div class="mb-3">
-			{{ form_row(form.email, {'attr': {'class': 'form-control', 'style': 'max-inline-size: 300px;', 'pattern': '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'}}) }}
+			{{ form_row(form.email, {'attr': {'class': 'form-control', 'style': 'max-inline-size: 300px;', 'pattern': '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}', 'placeholder':'prénom.nom@unsa.org'}}) }}
 		</div>
 		<div class="mb-3">
+		À modifier par l'envoie de l'email !
 			{{ form_row(form.password, {'attr': {'class': 'form-control', 'style': 'max-inline-size: 300px;'}}) }}
 		</div>
 		<div class="mb-3">
