@@ -17,7 +17,6 @@ use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\Pagination\SlidingPagination;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Mailgun\Mailgun;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
@@ -36,12 +35,8 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Form\Extension\Core\DataTransformer\FileTransformer;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class AdminController extends AbstractController
 {
