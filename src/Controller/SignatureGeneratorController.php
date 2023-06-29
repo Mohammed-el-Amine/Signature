@@ -25,6 +25,8 @@ use Knp\Component\Pager\PaginatorInterface;
 use Knp\Component\Pager\Pagination\SlidingPagination;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use DateTimeImmutable;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SignatureGeneratorController extends AbstractController
 {
@@ -149,7 +151,13 @@ class SignatureGeneratorController extends AbstractController
                 'attr' => [
                     'placeholder' => 'Nouveau mot de passe',
                     'class' => 'form-control',
-                ],
+                ], 'constraints' => [
+                    new NotBlank(), // Vérifie que le champ n'est pas vide
+                    new Regex([
+                        'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]+$/',
+                        'message' => 'Le mot de passe doit contenir au moins une minuscule, une majuscule, un chiffre et un caractère spécial.'
+                    ]), // Vérifie que le mot de passe respecte le motif spécifié
+                ]
             ])
             ->add('userSubmit', SubmitType::class, [
                 'label' => 'Modifier le mot de passe',
@@ -538,13 +546,12 @@ class SignatureGeneratorController extends AbstractController
         $firstName = $nameParts[0];
         $lastName = $nameParts[1];
 
-            return $this->render('signature/html_signature.html.twig', [
+        return $this->render('signature/html_signature.html.twig', [
             'signature' => $signature,
             'firstName' => $firstName,
             'lastName' => $lastName,
             'phoneLandline' => $phoneLandline,
             'phoneMobile' => $phoneMobile,
         ]);
-
     }
 }

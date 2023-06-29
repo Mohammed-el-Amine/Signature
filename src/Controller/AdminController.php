@@ -34,6 +34,8 @@ use DateTimeImmutable;
 use App\Entity\Logo;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\DataTransformer\FileTransformer;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -345,6 +347,9 @@ class AdminController extends AbstractController
     }
 
     #[Route('user/create-password/{token}', name: 'create_password', methods: ['GET', 'POST'])]
+    /**
+     * @Route("/user/create-password/{token}", name="create_password", methods={"GET","POST"})
+     */
     public function createPassword(Request $request, EntityManagerInterface $entityManager, string $token)
     {
         $user = $entityManager->getRepository(User::class)->findOneBy(['token' => $token]);
@@ -361,6 +366,13 @@ class AdminController extends AbstractController
                 'required' => true,
                 'first_options' => ['label' => 'Nouveau mot de passe'],
                 'second_options' => ['label' => 'Confirmer le mot de passe'],
+                'constraints' => [
+                    new NotBlank(), // Vérifie que le champ n'est pas vide
+                    new Regex([
+                        'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]+$/',
+                        'message' => 'Le mot de passe doit contenir au moins une minuscule, une majuscule, un chiffre et un caractère spécial.'
+                    ]), // Vérifie que le mot de passe respecte le motif spécifié
+                ],
             ])
             ->getForm();
 
