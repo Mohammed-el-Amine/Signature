@@ -265,6 +265,10 @@ class SignatureGeneratorController extends AbstractController
             $itemsPerPage
         );
 
+        if (empty($signatureID)) {
+            $signatureID = null; // éviter une erreur si la variable n'est pas définie
+        }
+
         return $this->render('signature/generate_signature.html.twig', [
             'form' => $form->createView(),
             'signature' => $generatedSignature,
@@ -275,7 +279,6 @@ class SignatureGeneratorController extends AbstractController
             'userForm' => $userForm,
             'user' => $user,
             'signatureID' => $signatureID,
-
         ]);
     }
     private function generateEmailSignature(array $data): string
