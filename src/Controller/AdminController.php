@@ -840,6 +840,11 @@ class AdminController extends AbstractController
                 }
             }
         }
+        
+        if (empty($signatureID)) {
+            $signatureID = null; // éviter une erreur si la variable n'est pas définie
+        }
+
         return $this->render('admin/create_signature.html.twig', [
             'form' => $form->createView(),
             'signature' => $generatedSignature,
