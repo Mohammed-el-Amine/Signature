@@ -199,6 +199,7 @@ class SignatureGeneratorController extends AbstractController
                     $entityManager->flush();
                     // Générer la signature avec les données fournies
                     $generatedSignature = $this->generateEmailSignature($data);
+                    $signatureID = $signature->getId();
                 }
             }
 
@@ -273,6 +274,8 @@ class SignatureGeneratorController extends AbstractController
             'email' => $email,
             'userForm' => $userForm,
             'user' => $user,
+            'signatureID' => $signatureID,
+
         ]);
     }
     private function generateEmailSignature(array $data): string
@@ -284,7 +287,8 @@ class SignatureGeneratorController extends AbstractController
         $html .= '<title>UNSA Signature</title>';
         $html .= '</head>';
         $html .= '<body>';
-        $html .= '<table border="0" cellpadding="0" width="500">';
+        $html .= '<div class="border p-3">';
+        $html .= '<table border="0" cellpadding="0"';
         $html .= '<tbody>';
         $html .= '<tr>';
         $html .= '<td align="left" valign="middle" width="10">';
@@ -292,7 +296,7 @@ class SignatureGeneratorController extends AbstractController
         $html .= '<a href="https://www.unsa.org"><img id="LOGO"src="' . '/signature' . $data['logo']->getPath() . '" style="border: none;inline-size: 120px;"></a>';
         $html .= '</p>';
         $html .= '</td>';
-        $html .= '<td>';
+        $html .= '<td><br>';
         $html .= '<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;text-align: start;">';
         $html .= '<span style="color: #000;font-weight: bold;font-size: 14px;">' . $data['first_name'] . ' ' . $data['last_name'] . '</span><br>';
         $html .= '<span style="color: #666;"><i>' . $data['role'] . '</i></span><br>';
@@ -301,7 +305,7 @@ class SignatureGeneratorController extends AbstractController
         $html .= '<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">';
         $html .= '<span style="color: #000;">' . $data['adress'] . '</span><br>';
         $html .= '<span style="color: #000;">' . $data['zip_code'] . '&nbsp;</span>';
-        $html .= '<span style="color: #000;">' . $data['city'] . ' CEDEX' . ' </span><br>';
+        $html .= '<span style="color: #000;">' . $data['city'] . ' CEDEX' . '</span><br>';
         $html .= '</p>';
         $html .= '<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">';
         $html .= '<img id="LOGO-MAIL" src="/signature/img/mail.png" style="border: none;block-size: 12px;margin-inline-end: .5em;">';
@@ -313,6 +317,7 @@ class SignatureGeneratorController extends AbstractController
         $html .= '</tr>';
         $html .= '</tbody>';
         $html .= '</table>';
+        $html .= '</div>';
         $html .= '</body>';
         $html .= '</html>';
 

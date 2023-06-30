@@ -836,12 +836,14 @@ class AdminController extends AbstractController
                     $entityManager->flush();
                     // Générer la signature avec les données fournies
                     $generatedSignature = $this->generateEmailSignature($data);
+                    $signatureID = $signature->getId();
                 }
             }
         }
         return $this->render('admin/create_signature.html.twig', [
             'form' => $form->createView(),
             'signature' => $generatedSignature,
+            'signatureID' => $signatureID,
         ]);
     }
 
@@ -854,7 +856,8 @@ class AdminController extends AbstractController
         $html .= '<title>UNSA Signature</title>';
         $html .= '</head>';
         $html .= '<body>';
-        $html .= '<table border="0" cellpadding="0" width="500">';
+        $html .= '<div class="border p-3">';
+        $html .= '<table border="0" cellpadding="0"';
         $html .= '<tbody>';
         $html .= '<tr>';
         $html .= '<td align="left" valign="middle" width="10">';
@@ -862,7 +865,7 @@ class AdminController extends AbstractController
         $html .= '<a href="https://www.unsa.org"><img id="LOGO"src="' . '/signature' . $data['logo']->getPath() . '" style="border: none;inline-size: 120px;"></a>';
         $html .= '</p>';
         $html .= '</td>';
-        $html .= '<td>';
+        $html .= '<td><br>';
         $html .= '<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;text-align: start;">';
         $html .= '<span style="color: #000;font-weight: bold;font-size: 14px;">' . $data['first_name'] . ' ' . $data['last_name'] . '</span><br>';
         $html .= '<span style="color: #666;"><i>' . $data['role'] . '</i></span><br>';
@@ -883,6 +886,7 @@ class AdminController extends AbstractController
         $html .= '</tr>';
         $html .= '</tbody>';
         $html .= '</table>';
+        $html .= '</div>';
         $html .= '</body>';
         $html .= '</html>';
 
