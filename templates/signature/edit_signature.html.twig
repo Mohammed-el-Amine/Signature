@@ -65,11 +65,11 @@
 						</div>
 
 						<div class="form-group">
-							{{ form_row(form.phone_landline, {'attr': {'class': 'form-control', 'id': 'form_phone_landline', 'oninput': 'updatePreview()', 'pattern': '^[0-9 ]+$'}}) }}
+							{{ form_row(form.phone_landline, {'attr': {'class': 'form-control', 'id': 'form_phone_landline', 'oninput': 'updatePreview()', 'pattern': '[0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2}'}}) }}
 						</div>
 
 						<div class="form-group">
-							{{ form_row(form.phone_mobile, {'attr': {'class': 'form-control', 'id': 'form_phone_mobile', 'oninput': 'updatePreview()', 'pattern': '^[0-9 ]+$'}}) }}
+							{{ form_row(form.phone_mobile, {'attr': {'class': 'form-control', 'id': 'form_phone_mobile', 'oninput': 'updatePreview()', 'pattern': '[0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2}'}}) }}
 						</div>
 
 						<div class="form-group">
