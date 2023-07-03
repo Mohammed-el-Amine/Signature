@@ -924,7 +924,7 @@ class AdminController extends AbstractController
                 'label' => 'Générer la signature',
                 'attr' => [
                     'class' => 'btn btn-primary',
-                    'name' => 'signatureSubmit', // Ajout de l'attribut name
+                    'name' => 'signatureSubmit',
                 ],
             ])
             ->getForm();
