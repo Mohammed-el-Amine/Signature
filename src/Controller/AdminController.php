@@ -560,7 +560,6 @@ class AdminController extends AbstractController
                         'message' => 'Veuillez saisir un nom contenant au moins 4 caractères et au maximum 24 caractères.',
                     ]),
                 ],
-
             ])
             ->add('path', FileType::class, [
                 'label' => 'Chemin du logo :',
@@ -653,7 +652,15 @@ class AdminController extends AbstractController
                 'label' => 'Nom :',
                 'required' => true,
                 'attr' => ['placeholder' => 'Nouveau nom de logo'],
-
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir un nom',
+                    ]),
+                    new Regex([
+                        'pattern' => '/^(?=.*).{4,24}$/i',
+                        'message' => 'Veuillez saisir un nom contenant au moins 4 caractères et au maximum 24 caractères.',
+                    ]),
+                ],
             ])
             ->add('path', FileType::class, [
                 'label' => 'Chemin du logo :',
