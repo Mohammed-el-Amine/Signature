@@ -551,6 +551,15 @@ class AdminController extends AbstractController
                 'label' => 'Nom :',
                 'required' => true,
                 'attr' => ['placeholder' => 'Nom du logo'],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir un nom',
+                    ]),
+                    new Regex([
+                        'pattern' => '/^(?=.*).{4,24}$/i',
+                        'message' => 'Veuillez saisir un nom contenant au moins 4 caractères et au maximum 24 caractères.',
+                    ]),
+                ],
 
             ])
             ->add('path', FileType::class, [
