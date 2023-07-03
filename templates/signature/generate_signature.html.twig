@@ -156,7 +156,7 @@
 															style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
 															<span style="color: #000;" id="addressEdit">{{signature.adress}}</span><br>
 															<span style="color: #000;" id="zipCodeEdit">{{signature.zipCode}}&nbsp;</span>
-															<span style="color: #000;" id="cityEdit">{{signature.city}} CEDEX</span><br>
+															<span style="color: #000;" id="cityEdit">{{signature.city}}</span><br>
 														</p>
 														<p
 															style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
@@ -274,7 +274,7 @@
 								<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
 									<span style="color: #000;" id="address">Mon adresse</span><br>
 									<span style="color: #000;" id="zipCode">Code postal&nbsp;</span>
-									<span style="color: #000;" id="city">Ville CEDEX</span><br>
+									<span style="color: #000;" id="city">Ville</span><br>
 								</p>
 								<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
 									<img src="https://lab-web.unsa.org/signature/img/mail.png" class="border-0" style="border: none;block-size: 12px;margin-inline-end: .5em;">
@@ -400,7 +400,7 @@ previewLogo.src = logoValue;
 previewOrganization.textContent = organizationValue;
 previewRole.textContent = roleValue;
 previewAdress.textContent = addressValue;
-previewCity.textContent = cityValue + " CEDEX";
+previewCity.textContent = cityValue;
 previewPhone.textContent = phoneLandlineValue + " - " + phoneMobileValue; // " - " + phoneMobileValue;
 previewZipCode.textContent = zipCodeValue;
 }
