@@ -38,6 +38,9 @@ class SignatureGeneratorController extends AbstractController
     }
 
     #[Route('/espace-perso', name: 'profile_signature')]
+    /**
+     * @Route("/espace-perso", name="profile_signature")
+     */
     public function generateSignature(Request $request, EntityManagerInterface $entityManager, SessionInterface $session, UrlGeneratorInterface $urlGenerator, UserRepository $userRepository, LogoRepository $logoRepository, SignatureRepository $signatureRepository, PaginatorInterface $paginator): Response
     {
         if (!$session->has('user_id')) {
@@ -241,7 +244,8 @@ class SignatureGeneratorController extends AbstractController
                 'attr' => [
                     'placeholder' => 'Nouveau mot de passe',
                     'class' => 'form-control',
-                ], 'constraints' => [
+                ],
+                'constraints' => [
                     new NotBlank(),
                     new Regex([
                         'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&]).+$/',
@@ -253,7 +257,8 @@ class SignatureGeneratorController extends AbstractController
                 'label' => 'Modifier le mot de passe',
                 'attr' => [
                     'class' => 'btn btn-primary',
-                    'name' => 'userSubmit', // Ajout de l'attribut name
+                    'name' => 'userSubmit',
+                    // Ajout de l'attribut name
                 ],
             ])
             ->getForm();
