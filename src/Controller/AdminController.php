@@ -73,7 +73,7 @@ class AdminController extends AbstractController
         $signatureQuery = $signatureRepository->createQueryBuilder('s');
 
         if ($createAt) {
-            $startDate = new \DateTime($createAt);
+            $startDate = new DateTime($createAt);
             $endDate = clone $startDate;
             // Ajouter 1 jour à la date de fin pour inclure les signatures du jour de fin
             $endDate->modify('+1 day');
