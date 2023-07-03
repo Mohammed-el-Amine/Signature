@@ -242,11 +242,11 @@ class SignatureGeneratorController extends AbstractController
                     'placeholder' => 'Nouveau mot de passe',
                     'class' => 'form-control',
                 ], 'constraints' => [
-                    new NotBlank(), // Vérifie que le champ n'est pas vide
+                    new NotBlank(),
                     new Regex([
-                        'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]+$/',
-                        'message' => 'Le mot de passe doit contenir au moins une minuscule, une majuscule, un chiffre et un caractère spécial.'
-                    ]), // Vérifie que le mot de passe respecte le motif spécifié
+                        'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&]).+$/',
+                        'message' => 'Le mot de passe doit contenir au moins 8 caractères, une minuscule, une majuscule, un chiffre et un caractère spécial.'
+                    ]),
                 ]
             ])
             ->add('userSubmit', SubmitType::class, [
