@@ -195,158 +195,147 @@
 
 	<script>
 
-		function DownloadHTML() { // Récupère le nom de la personne
-var firstNameValue = document.getElementById('form_first_name').value;
-var lastNameValue = document.getElementById('form_last_name').value;
-var fullName = firstNameValue + ' ' + lastNameValue;
+	function DownloadHTML() { // Récupère le nom de la personne
+		var firstNameValue = document.getElementById('form_first_name').value;
+		var lastNameValue = document.getElementById('form_last_name').value;
+		var fullName = firstNameValue + ' ' + lastNameValue;
 
-// Récupère le contenu de la div signature
-var element = document.getElementById('signature').innerHTML;
+		var element = document.getElementById('signature').innerHTML;
+		var updatedElement = element.replace(/(<img id="LOGO" src=")([^"]+)(" style="border: none;inline-size: 120px;">)/, '$1https://lab-web.unsa.org/$2$3');
+		var updatedElementSecond = updatedElement.replace(/(<img id="LOGO-PHONE" src=")([^"]+)(" style="border: none;block-size: 14px;margin-inline-end: .5em;">)/, '$1https://lab-web.unsa.org$2$3');
+		var updatedElementThird = updatedElementSecond.replace(/(<img id="LOGO-MAIL" src=")([^"]+)(" style="border: none;block-size: 12px;margin-inline-end: .5em;">)/, '$1https://lab-web.unsa.org$2$3');
+		var filename = fullName + '.html';
+		
+		var link = document.createElement('a');
+		link.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(updatedElementThird));
+		// Ajoute le nom du fichier
+		link.setAttribute('download', filename);
+		link.style.display = 'none';
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+	}
 
-var updatedElement = element.replace(/(<img id="LOGO" src=")([^"]+)(" style="border: none;inline-size: 120px;">)/, '$1https://lab-web.unsa.org/$2$3');
+	function DownloadPNG() { // Récupère le nom de la personne
+		var firstNameValue = document.getElementById('form_first_name').value;
+		var lastNameValue = document.getElementById('form_last_name').value;
+		var fullName = firstNameValue + ' ' + lastNameValue;
 
-var updatedElementSecond = updatedElement.replace(/(<img id="LOGO-PHONE" src=")([^"]+)(" style="border: none;block-size: 14px;margin-inline-end: .5em;">)/, '$1https://lab-web.unsa.org$2$3');
+		// Récupère l'élément de la signature
+		var element = document.getElementById('signature');
+		// Utilise html2canvas pour capturer l'élément en tant qu'image
+		html2canvas(element).then(function (canvas) { // Convertit le canevas en une URL de données d'image PNG
+			var dataURL = canvas.toDataURL('image/png');
 
-var updatedElementThird = updatedElementSecond.replace(/(<img id="LOGO-MAIL" src=")([^"]+)(" style="border: none;block-size: 12px;margin-inline-end: .5em;">)/, '$1https://lab-web.unsa.org$2$3');
+			var link = document.createElement('a');
+			link.href = dataURL;
+			link.download = fullName + '.png';
+			link.style.display = 'none';
 
-// Crée un fichier HTML avec le nom de la personne
-var filename = fullName + '.html';
-// Crée et ajoute un lien de téléchargement
-var link = document.createElement('a');
-link.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(updatedElementThird));
-// Ajoute le nom du fichier
-link.setAttribute('download', filename);
-link.style.display = 'none';
-document.body.appendChild(link);
-link.click();
-document.body.removeChild(link);
-}
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+		});
+	}
 
-function DownloadPNG() { // Récupère le nom de la personne
-var firstNameValue = document.getElementById('form_first_name').value;
-var lastNameValue = document.getElementById('form_last_name').value;
-var fullName = firstNameValue + ' ' + lastNameValue;
+	function updatePreview() {
+		var previewName = document.getElementById('name');
+		var previewEmail = document.getElementById('previewEmail');
+		var previewLogo = document.getElementById('logo');
+		var previewOrganization = document.getElementById('organization');
+		var previewRole = document.getElementById('role');
+		var previewAdress = document.getElementById('address');
+		var previewZipCode = document.getElementById('zipCode');
+		var previewCity = document.getElementById('city');
+		var previewPhone = document.getElementById('phone');
 
-// Récupère l'élément de la signature
-var element = document.getElementById('signature');
-// Utilise html2canvas pour capturer l'élément en tant qu'image
-html2canvas(element).then(function (canvas) { // Convertit le canevas en une URL de données d'image PNG
-var dataURL = canvas.toDataURL('image/png');
+		var firstNameValue = document.getElementById('form_first_name').value;
+		var lastNameValue = document.getElementById('form_last_name').value;
+		var emailValue = document.getElementById('form_email').value;
+		var logoSelect = document.getElementById('form_logo');
+		var selectedOption = logoSelect.options[logoSelect.selectedIndex];
+		var logoValue = "https://lab-web.unsa.org/signature" + selectedOption.getAttribute('name');
+		var organizationValue = document.getElementById('form_organization').value;
+		var roleValue = document.getElementById('form_role').value;
+		var addressValue = document.getElementById('form_adress').value;
+		var cityValue = document.getElementById('form_city').value;
+		var phoneLandlineValue = document.getElementById('form_phone_landline').value;
+		var phoneMobileValue = document.getElementById('form_phone_mobile').value;
+		var zipCodeValue = document.getElementById('form_zip_code').value;		
+		var fullName = firstNameValue + ' ' + lastNameValue;
 
-// Crée et ajoute un lien de téléchargement
-var link = document.createElement('a');
-link.href = dataURL;
-link.download = fullName + '.png';
-link.style.display = 'none';
+		previewName.textContent = fullName;
+		previewEmail.innerHTML = emailValue;
+		previewLogo.src = logoValue;
+		previewOrganization.textContent = organizationValue;
+		previewRole.textContent = roleValue;
+		previewAdress.textContent = addressValue;
+		previewCity.textContent = cityValue;
+		previewPhone.textContent = phoneLandlineValue + " - " + phoneMobileValue;
+		previewZipCode.textContent = zipCodeValue;
+	}
 
-document.body.appendChild(link);
-link.click();
-document.body.removeChild(link);
-});
-}
+	function toggleInfoPerso() {
+		var infoPersoFields = document.getElementById("infoPersoFields");
+		var infoPersoBtn = document.getElementById("infoPersoBtn");
 
-function updatePreview() { // Sélectionnez l'élément de prévisualisation "name"
-var previewName = document.getElementById('name');
-var previewEmail = document.getElementById('previewEmail');
-var previewLogo = document.getElementById('logo');
-var previewOrganization = document.getElementById('organization');
-var previewRole = document.getElementById('role');
-var previewAdress = document.getElementById('address');
-var previewZipCode = document.getElementById('zipCode');
-var previewCity = document.getElementById('city');
-var previewPhone = document.getElementById('phone');
+		if (infoPersoFields.style.display === "none") {
+			infoPersoFields.style.display = "block";
+		} else {
+			infoPersoFields.style.display = "none";
+		}	
+	}
 
-// Sélectionnez la valeur du champ "name"
-var firstNameValue = document.getElementById('form_first_name').value;
-var lastNameValue = document.getElementById('form_last_name').value;
-var emailValue = document.getElementById('form_email').value;
-var logoSelect = document.getElementById('form_logo');
-var selectedOption = logoSelect.options[logoSelect.selectedIndex];
-var logoValue = "https://lab-web.unsa.org/signature" + selectedOption.getAttribute('name');
-var organizationValue = document.getElementById('form_organization').value;
-var roleValue = document.getElementById('form_role').value;
-var addressValue = document.getElementById('form_adress').value;
-var cityValue = document.getElementById('form_city').value;
-var phoneLandlineValue = document.getElementById('form_phone_landline').value;
-var phoneMobileValue = document.getElementById('form_phone_mobile').value;
-var zipCodeValue = document.getElementById('form_zip_code').value;
+	function toggleInfoEntreprise() {
+		var infoPersoFields = document.getElementById("infoEntrepriseFields");
+		var infoPersoBtn = document.getElementById("infoEntrepriseBtn");
 
-// Mettez à jour le contenu de la prévisualisation avec la valeur du champ "name"
-var fullName = firstNameValue + ' ' + lastNameValue;
-previewName.textContent = fullName;
-previewEmail.innerHTML = emailValue;
-previewLogo.src = logoValue;
-previewOrganization.textContent = organizationValue;
-previewRole.textContent = roleValue;
-previewAdress.textContent = addressValue;
-previewCity.textContent = cityValue;
-previewPhone.textContent = phoneLandlineValue + " - " + phoneMobileValue;
-previewZipCode.textContent = zipCodeValue;
-}
+		if (infoPersoFields.style.display === "none") {
+			infoPersoFields.style.display = "block";
+		} else {
+			infoPersoFields.style.display = "none";
+		}
+	}
 
-function toggleInfoPerso() {
-var infoPersoFields = document.getElementById("infoPersoFields");
-var infoPersoBtn = document.getElementById("infoPersoBtn");
+	function toggleInfoTheme() {
+		var infoPersoFields = document.getElementById("infoThemeFields");
+		var infoPersoBtn = document.getElementById("infoThemeBtn");
 
-if (infoPersoFields.style.display === "none") {
-infoPersoFields.style.display = "block";
-} else {
-infoPersoFields.style.display = "none";
-}
+		if (infoPersoFields.style.display === "none") {
+			infoPersoFields.style.display = "block";
+		} else {
+			infoPersoFields.style.display = "none";
+		}
+	}
 
-}
+	function openModal(url, title) {
+		var modal = document.getElementById('modal')
+		var modalTitle = modal.querySelector('.modal-title')
+		var modalBody = modal.querySelector('.modal-body')
 
-function toggleInfoEntreprise() {
-var infoPersoFields = document.getElementById("infoEntrepriseFields");
-var infoPersoBtn = document.getElementById("infoEntrepriseBtn");
+		// Charger le contenu de l'URL dans la modal via une requête iframe
+		modalTitle.textContent = title
+		modalBody.innerHTML = '<iframe src="' + url + '" style="inline-size:100%; block-size:100%; border:none;"></iframe>'
 
-if (infoPersoFields.style.display === "none") {
-infoPersoFields.style.display = "block";
-} else {
-infoPersoFields.style.display = "none";
-}
-}
+		modal.style.display = 'block'
 
-function toggleInfoTheme() {
-var infoPersoFields = document.getElementById("infoThemeFields");
-var infoPersoBtn = document.getElementById("infoThemeBtn");
+		setTimeout(function () {
+			closeModal();
+		}, 1000);
+	}
 
-if (infoPersoFields.style.display === "none") {
-infoPersoFields.style.display = "block";
-} else {
-infoPersoFields.style.display = "none";
-}
-}
+	function closeModal() {
+		var modal = document.getElementById('modal')
+		var modalTitle = modal.querySelector('.modal-title')
+		var modalBody = modal.querySelector('.modal-body')
 
-function openModal(url, title) {
-var modal = document.getElementById('modal')
-var modalTitle = modal.querySelector('.modal-title')
-var modalBody = modal.querySelector('.modal-body')
+		modalTitle.textContent = ''
+		modalBody.innerHTML = ''
 
-// Charger le contenu de l'URL dans la modal via une requête iframe
-modalTitle.textContent = title
-modalBody.innerHTML = '<iframe src="' + url + '" style="inline-size:100%; block-size:100%; border:none;"></iframe>'
+		modal.style.display = 'none'
+	}
 
-modal.style.display = 'block'
-
-setTimeout(function () {
-closeModal();
-}, 3000);
-
-}
-
-function closeModal() {
-var modal = document.getElementById('modal')
-var modalTitle = modal.querySelector('.modal-title')
-var modalBody = modal.querySelector('.modal-body')
-
-modalTitle.textContent = ''
-modalBody.innerHTML = ''
-
-modal.style.display = 'none'
-}
-
-window.requestAnimationFrame(updatePreview);
+	window.requestAnimationFrame(updatePreview);
 	</script>
 
 {% endblock %}
