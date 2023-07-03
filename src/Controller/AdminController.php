@@ -201,7 +201,17 @@ class AdminController extends AbstractController
         $defaultPassword = "unsa_white_knight_pass_word_very_long";
 
         $form = $this->createFormBuilder($user)
-            ->add('email', EmailType::class)
+            ->add('email', EmailType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Ce champ ne doit pas être vide.'
+                    ]),
+                    new Regex([
+                        'pattern' => '/^[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,}$/i',
+                        'message' => 'L\'adresse email doit être valide. Elle doit suivre le format standard nom_utilisateur@domaine.com.'
+                    ]),
+                ],
+            ])
             ->add('password', HiddenType::class, [
                 'data' => $defaultPassword,
             ])
@@ -840,7 +850,7 @@ class AdminController extends AbstractController
                 }
             }
         }
-        
+
         if (empty($signatureID)) {
             $signatureID = null; // éviter une erreur si la variable n'est pas définie
         }
