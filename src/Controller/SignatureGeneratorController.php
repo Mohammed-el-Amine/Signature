@@ -479,11 +479,29 @@ class SignatureGeneratorController extends AbstractController
                 'attr' => [
                     'placeholder' => 'Prénom',
                 ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir votre prénom.',
+                    ]),
+                    new Regex([
+                        'pattern' => '/^(?=.*[A-Za-zÀ-ÿ -]).{2,58}$/u',
+                        'message' => 'Veuillez saisir un prénom contenant uniquement des lettres, des espaces, des tirets et ayant une longueur de 2 à 58 caractères.',
+                    ]),
+                ],
             ])
             ->add('last_name', TextType::class, [
                 'label' => 'Nom : ',
                 'attr' => [
                     'placeholder' => 'Nom',
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir votre nom.',
+                    ]),
+                    new Regex([
+                        'pattern' => '/^(?=.*[A-Za-zÀ-ÿ-09 -]).{2,58}$/u',
+                        'message' => 'Veuillez saisir un nom contenant uniquement des lettres, des espaces, des tirets et ayant une longueur de 2 à 58 caractères.',
+                    ]),
                 ],
             ])
             ->add('role', TextType::class, [
@@ -491,11 +509,29 @@ class SignatureGeneratorController extends AbstractController
                 'attr' => [
                     'placeholder' => 'Poste dans l\'entreprise',
                 ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir votre rôle dans l\'entreprise.',
+                    ]),
+                    new Regex([
+                        'pattern' => '/^(?=.*[A-Za-zÀ-ÿ -]).{2,64}$/u',
+                        'message' => 'Veuillez saisir un rôle contenant uniquement des lettres, des espaces, des tirets et ayant une longueur de 2 à 64 caractères.',
+                    ]),
+                ],
             ])
             ->add('organization', TextType::class, [
                 'label' => 'Organisation : ',
                 'attr' => [
                     'placeholder' => 'Nom de l\'entreprise'
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir le nom de votre entreprise.',
+                    ]),
+                    new Regex([
+                        'pattern' => '/^(?=.*[A-Za-zÀ-ÿ-09 -]).{2,64}$/u',
+                        'message' => 'Veuillez saisir un nom d\'entreprise contenant uniquement des lettres, des espaces, des tirets et ayant une longueur de 2 à 64 caractères.',
+                    ]),
                 ],
             ])
             ->add('adress', TextType::class, [
@@ -503,11 +539,29 @@ class SignatureGeneratorController extends AbstractController
                 'attr' => [
                     'placeholder' => 'Addresse',
                 ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir votre adresse.',
+                    ]),
+                    new Regex([
+                        'pattern' => '/^(?=.*[A-Za-zÀ-ÿ-09 -]).{2,24}$/u',
+                        'message' => 'Veuillez saisir une adresse contenant uniquement des lettres, des espaces, des tirets et ayant une longueur de 2 à 24 caractères.',
+                    ]),
+                ],
             ])
             ->add('zip_code', TextType::class, [
                 'label' => 'Code postal : ',
                 'attr' => [
                     'placeholder' => 'Code Postal',
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir votre code postal.',
+                    ]),
+                    new Regex([
+                        'pattern' => '/^(?=.*[0-9]).{5,5}$/u',
+                        'message' => 'Veuillez saisir un code postal contenant uniquement des chiffres et ayant une longueur de 5 caractères.',
+                    ]),
                 ],
             ])
             ->add('city', TextType::class, [
@@ -515,11 +569,29 @@ class SignatureGeneratorController extends AbstractController
                 'attr' => [
                     'placeholder' => 'Ville',
                 ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir votre ville.',
+                    ]),
+                    new Regex([
+                        'pattern' => '/^(?=.*[A-Za-zÀ-ÿ -]).{2,24}$/u',
+                        'message' => 'Veuillez saisir une ville contenant uniquement des lettres, des espaces, des tirets et ayant une longueur de 2 à 24 caractères.',
+                    ]),
+                ],
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Email : ',
                 'attr' => [
                     'placeholder' => 'Email',
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir votre adresse email.'
+                    ]),
+                    new Regex([
+                        'pattern' => '/^[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,}$/i',
+                        'message' => 'L\'adresse email doit être valide. Elle doit suivre le format standard nom_utilisateur@domaine.com.'
+                    ]),
                 ],
             ])
             ->add('phone_landline', TelType::class, [
@@ -527,11 +599,29 @@ class SignatureGeneratorController extends AbstractController
                 'attr' => [
                     'placeholder' => 'Tél fixe',
                 ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir votre numéro de téléphone fixe.'
+                    ]),
+                    new Regex([
+                        'pattern' => '/^(?=.*[0-9])[0-9]{2}([ .])[0-9]{2}(?:\1[0-9]{2}){3}$/',
+                        'message' => 'Veuillez saisir un numéro de téléphone fixe contenant uniquement des chiffres et ayant un format valide (ex : 01 42 42 42 42 ou 01.42.42.42.42).'
+                    ]),
+                ],
             ])
             ->add('phone_mobile', TelType::class, [
                 'label' => 'Téléphone portable : ',
                 'attr' => [
                     'placeholder' => 'Tél portable',
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir votre numéro de téléphone portable.'
+                    ]),
+                    new Regex([
+                        'pattern' => '/^(?=.*[0-9])[0-9]{2}([ .])[0-9]{2}(?:\1[0-9]{2}){3}$/',
+                        'message' => 'Veuillez saisir un numéro de téléphone portable contenant uniquement des chiffres et ayant un format valide (ex : 06 42 42 42 42 ou 06.42.42.42.42).'
+                    ]),
                 ],
             ])
             ->add('logo', EntityType::class, [
@@ -545,13 +635,14 @@ class SignatureGeneratorController extends AbstractController
                 'required' => false,
             ])
             ->add('signatureSubmit', SubmitType::class, [
-                'label' => 'Mettre à jour la signature',
+                'label' => 'Générer la signature',
                 'attr' => [
                     'class' => 'btn btn-primary',
-                    'name' => 'signatureSubmit', // Ajout de l'attribut name
+                    'name' => 'signatureSubmit',
                 ],
             ])
             ->getForm();
+
         $nameParts = explode(' ', $signature->getName());
         $phoneParts = explode('-', $signature->getPhone());
 
