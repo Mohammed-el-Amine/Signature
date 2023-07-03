@@ -650,7 +650,7 @@ class AdminController extends AbstractController
         $form = $this->createFormBuilder($newLogo)
             ->add('name', TextType::class, [
                 'label' => 'Nom :',
-                'required' => true,
+                'required' => false,
                 'attr' => ['placeholder' => 'Nouveau nom de logo'],
                 'constraints' => [
                     new NotBlank([
@@ -664,7 +664,7 @@ class AdminController extends AbstractController
             ])
             ->add('path', FileType::class, [
                 'label' => 'Chemin du logo :',
-                'required' => true,
+                'required' => false,
                 'constraints' => [
                     new File([
                         'maxSize' => '1M',
@@ -699,7 +699,7 @@ class AdminController extends AbstractController
             }
 
             $logo->setName($form->get('name')->getData());
-            $logo->setUpdateAt(new \DateTimeImmutable());
+            $logo->setUpdateAt(new DateTimeImmutable());
 
             $entityManager->flush();
 
