@@ -430,11 +430,20 @@ class AdminController extends AbstractController
         $form = $this->createFormBuilder($editUser)
             ->add('email', EmailType::class, [
                 'data' => $currentEmail,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir une adresse email',
+                    ]),
+                    new Regex([
+                        'pattern' => '/^[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,}$/i',
+                        'message' => 'Veuillez saisir une adresse email valide',
+                    ]),
+                ],
             ])
             ->add('password', PasswordType::class, [
                 'required' => false,
                 'empty_data' => '',
-            ])
+            ])//Changer par l'envoie de l'email automatique donc pas de validation de formulaire
             ->add('role', ChoiceType::class, [
                 'choices' => [
                     'Admin' => 'admin',
@@ -497,7 +506,6 @@ class AdminController extends AbstractController
                 $hashedPassword = hash('sha256', $newPassword);
                 $editUser->setPassword($hashedPassword);
             } else {
-                // Aucun nouveau mot de passe fourni, on ne l'actualise pas
                 $editUser->setPassword($currentPassword);
             }
 
