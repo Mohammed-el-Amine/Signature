@@ -136,15 +136,12 @@
 												<tr>
 													<td align="left" valign="middle" width="10">
 														<p style="padding-inline-end: 10px;font-size: 12px;line-height: 14px;">
-															<a href="https://www.unsa.org/"><img id="logoEdit" src="https://lab-web.unsa.org/signature{{signature.logo.path}}" class="border-0"
-															style="border: none;inline-size: 120px;" alt="LOGO UNSA"></a>
+															<a href="https://www.unsa.org/"><img id="logoEdit" src="https://lab-web.unsa.org/signature{{signature.logo.path}}" class="border-0" style="border: none;inline-size: 120px;" alt="LOGO UNSA"></a>
 														</p>
 													</td>
 													<td><br>
-														<p
-															style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;text-align: start;">
-															<span id="nameEdit" class="font-weight-bold"
-																style="color: #000;font-weight: bold;font-size: 14px;">{{signature.name}}</span><br>
+														<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;text-align: start;">
+															<span id="nameEdit" class="font-weight-bold" style="color: #000;font-weight: bold;font-size: 14px;">{{signature.name}}</span><br>
 															<span id="roleEdit" style="color: #666;">
 																<i>{{signature.role}}</i>
 															</span><br>
@@ -152,19 +149,15 @@
 																<i>{{signature.organization}}</i>
 															</span><br>
 														</p>
-														<p
-															style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
+														<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
 															<span style="color: #000;" id="addressEdit">{{signature.adress}}</span><br>
 															<span style="color: #000;" id="zipCodeEdit">{{signature.zipCode}}&nbsp;</span>
 															<span style="color: #000;" id="cityEdit">{{signature.city}}</span><br>
 														</p>
-														<p
-															style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
-															<img src="https://lab-web.unsa.org/signature/img/mail.png" class="border-0"
-																style="border: none;block-size: 12px;margin-inline-end: .5em;">
+														<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
+															<img src="https://lab-web.unsa.org/signature/img/mail.png" class="border-0" style="border: none;block-size: 12px;margin-inline-end: .5em;">
 															<a id="emailEdit" href="mailto:${email}" style="color: #666;font-style: italic;">{{signature.email}}</a><br>
-															<img src="https://lab-web.unsa.org/signature/img/phone.png" class="border-0"
-																style="border: none;block-size: 14px;margin-inline-end: .5em;">
+															<img src="https://lab-web.unsa.org/signature/img/phone.png" class="border-0" style="border: none;block-size: 14px;margin-inline-end: .5em;">
 															<span id="phoneEdit" style="color: #666;">{{signature.phone}}</span>
 														</p>
 													</td>
@@ -204,25 +197,25 @@
 				<a id="infoPersoBtn" class="btn btn-outline-warning" onclick="toggleInfoPerso()">Information personnelle</a><br><br>
 				<div id="infoPersoFields" style="display: none;">
 					<div class="form-group">
-					  {{ form_row(form.last_name, {'attr': {'class': 'form-control', 'id': 'form_last_name', 'oninput': 'updatePreview()'}}) }}
+						{{ form_row(form.last_name, {'attr': {'class': 'form-control', 'id': 'form_last_name', 'oninput': 'updatePreview()'}}) }}
 					</div>
 					<div class="form-group">
 						{{ form_row(form.first_name, {'attr': {'class': 'form-control', 'id': 'form_first_name', 'oninput': 'updatePreview()'}}) }}
 					</div>
 					<div class="form-group">
-					  {{ form_row(form.email, {'attr': {'class': 'form-control', 'id': 'form_email', 'oninput': 'updatePreview()'}}) }}
+						{{ form_row(form.email, {'attr': {'class': 'form-control', 'id': 'form_email', 'oninput': 'updatePreview()'}}) }}
 					</div>
 					<div class="form-group">
-					  {{ form_row(form.phone_landline, {'attr': {'class': 'form-control', 'id': 'form_phone_landline', 'oninput': 'updatePreview()'}}) }}
+						{{ form_row(form.phone_landline, {'attr': {'class': 'form-control', 'id': 'form_phone_landline', 'oninput': 'updatePreview()'}}) }}
 					</div>
 					<div class="form-group">
-					  {{ form_row(form.phone_mobile, {'attr': {'class': 'form-control', 'id': 'form_phone_mobile', 'oninput': 'updatePreview()'}}) }}
+						{{ form_row(form.phone_mobile, {'attr': {'class': 'form-control', 'id': 'form_phone_mobile', 'oninput': 'updatePreview()'}}) }}
 					</div>
 				</div>
 
 				<a id="infoEntrepriseBtn" class="btn btn-outline-warning" onclick="toggleInfoEntreprise()">Information entreprise</a><br>
 				<div id="infoEntrepriseFields" style="display: none;">
-				<div class="form-group">
+					<div class="form-group">
 						{{ form_row(form.organization, {'attr': {'class': 'form-control', 'id': 'form_organization', 'oninput': 'updatePreview()'}}) }}
 					</div>
 					<div class="form-group">
@@ -232,10 +225,10 @@
 						{{ form_row(form.adress, {'attr': {'class': 'form-control', 'id': 'form_address', 'oninput': 'updatePreview()'}}) }}
 					</div>
 					<div class="form-group">
-					  {{ form_row(form.zip_code, {'attr': {'class': 'form-control', 'id': 'form_zip_code', 'oninput': 'updatePreview()'}}) }}
+						{{ form_row(form.zip_code, {'attr': {'class': 'form-control', 'id': 'form_zip_code', 'oninput': 'updatePreview()'}}) }}
 					</div>
 					<div class="form-group">
-					  {{ form_row(form.city, {'attr': {'class': 'form-control', 'id': 'form_city', 'oninput': 'updatePreview()'}}) }}
+						{{ form_row(form.city, {'attr': {'class': 'form-control', 'id': 'form_city', 'oninput': 'updatePreview()'}}) }}
 					</div>
 				</div><br>
 
@@ -310,170 +303,162 @@
 			</div>
 		</div>
 	</div>
-</div>{% endblock %}{% block javascripts %}
+{% endblock %}
+{% block javascripts %}
 {{ parent() }}
+	<script>
 
-<script>
+		function DownloadHTML() {
+			var firstNameValue = document.getElementById('form_first_name').value;
+			var lastNameValue = document.getElementById('form_last_name').value;
+			var fullName = firstNameValue + ' ' + lastNameValue;
 
-	function DownloadHTML() { // Récupère le nom de la personne
-var firstNameValue = document.getElementById('form_first_name').value;
-var lastNameValue = document.getElementById('form_last_name').value;
-var fullName = firstNameValue + ' ' + lastNameValue;
+			var element = document.getElementById('signature').innerHTML;
+			var updatedElement = element.replace(/(<img id="LOGO" src=")([^"]+)(" style="border: none;inline-size: 120px;">)/, '$1https://lab-web.unsa.org$2$3');
+			var updatedElementSecond = updatedElement.replace(/(<img id="LOGO-PHONE" src=")([^"]+)(" style="border: none;block-size: 14px;margin-inline-end: .5em;">)/, '$1https://lab-web.unsa.org$2$3');
+			var updatedElementThird = updatedElementSecond.replace(/(<img id="LOGO-MAIL" src=")([^"]+)(" style="border: none;block-size: 12px;margin-inline-end: .5em;">)/, '$1https://lab-web.unsa.org$2$3');
+			var filename = fullName + '.html';
+			var link = document.createElement('a');
+			link.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(updatedElementThird));
 
-// Récupère le contenu de la div signature
-var element = document.getElementById('signature').innerHTML;
+			link.setAttribute('download', filename);
+			link.style.display = 'none';
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+		}
 
-var updatedElement = element.replace(/(<img id="LOGO" src=")([^"]+)(" style="border: none;inline-size: 120px;">)/, '$1https://lab-web.unsa.org$2$3');
+		function DownloadPNG() { 
+			var firstNameValue = document.getElementById('form_first_name').value;
+			var lastNameValue = document.getElementById('form_last_name').value;
+			var fullName = firstNameValue + ' ' + lastNameValue;
 
-var updatedElementSecond = updatedElement.replace(/(<img id="LOGO-PHONE" src=")([^"]+)(" style="border: none;block-size: 14px;margin-inline-end: .5em;">)/, '$1https://lab-web.unsa.org$2$3');
+			var element = document.getElementById('signature');
 
-var updatedElementThird = updatedElementSecond.replace(/(<img id="LOGO-MAIL" src=")([^"]+)(" style="border: none;block-size: 12px;margin-inline-end: .5em;">)/, '$1https://lab-web.unsa.org$2$3');
+			html2canvas(element).then(function (canvas) {
+				var dataURL = canvas.toDataURL('image/png');
 
-// Crée un fichier HTML avec le nom de la personne
-var filename = fullName + '.html';
-// Crée et ajoute un lien de téléchargement
-var link = document.createElement('a');
-link.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(updatedElementThird));
-// Ajoute le nom du fichier
-link.setAttribute('download', filename);
-link.style.display = 'none';
-document.body.appendChild(link);
-link.click();
-document.body.removeChild(link);
-}
+				// Crée et ajoute un lien de téléchargement
+				var link = document.createElement('a');
+				link.href = dataURL;
+				link.download = fullName + '.png';
+				link.style.display = 'none';
 
-function DownloadPNG() { // Récupère le nom de la personne
-var firstNameValue = document.getElementById('form_first_name').value;
-var lastNameValue = document.getElementById('form_last_name').value;
-var fullName = firstNameValue + ' ' + lastNameValue;
+				document.body.appendChild(link);
+				link.click();
+				document.body.removeChild(link);
+			});
+		}
 
-// Récupère l'élément de la signature
-var element = document.getElementById('signature');
+		function updatePreview() { // Sélectionnez l'élément de prévisualisation "name"
+			var previewName = document.getElementById('name');
+			var previewEmail = document.getElementById('previewEmail');
+			var previewLogo = document.getElementById('logo');
+			var previewOrganization = document.getElementById('organization');
+			var previewRole = document.getElementById('role');
+			var previewAdress = document.getElementById('address');
+			var previewZipCode = document.getElementById('zipCode');
+			var previewCity = document.getElementById('city');
+			var previewPhone = document.getElementById('phone');
 
-// Utilise html2canvas pour capturer l'élément en tant qu'image
-html2canvas(element).then(function (canvas) { // Convertit le canevas en une URL de données d'image PNG
-var dataURL = canvas.toDataURL('image/png');
+			// Sélectionnez la valeur du champ "name"
+			var firstNameValue = document.getElementById('form_first_name').value;
+			var lastNameValue = document.getElementById('form_last_name').value;
+			var emailValue = document.getElementById('form_email').value;
+			var logoSelect = document.getElementById('form_logo');
+			var selectedOption = logoSelect.options[logoSelect.selectedIndex];
+			var logoValue = "https://lab-web.unsa.org/signature" + selectedOption.getAttribute('name');
+			var organizationValue = document.getElementById('form_organization').value;
+			var roleValue = document.getElementById('form_role').value;
+			var addressValue = document.getElementById('form_adress').value;
+			var cityValue = document.getElementById('form_city').value;
+			var phoneLandlineValue = document.getElementById('form_phone_landline').value;
+			var phoneMobileValue = document.getElementById('form_phone_mobile').value;
+			var zipCodeValue = document.getElementById('form_zip_code').value;
 
-// Crée et ajoute un lien de téléchargement
-var link = document.createElement('a');
-link.href = dataURL;
-link.download = fullName + '.png';
-link.style.display = 'none';
+			// Mettez à jour le contenu de la prévisualisation avec la valeur du champ "name"
+			var fullName = firstNameValue + ' ' + lastNameValue;
+			previewName.textContent = fullName;
+			previewEmail.innerHTML = emailValue;
+			previewLogo.src = logoValue;
+			previewOrganization.textContent = organizationValue;
+			previewRole.textContent = roleValue;
+			previewAdress.textContent = addressValue;
+			previewCity.textContent = cityValue;
+			previewPhone.textContent = phoneLandlineValue + " - " + phoneMobileValue; // " - " + phoneMobileValue;
+			previewZipCode.textContent = zipCodeValue;
+		}
 
-document.body.appendChild(link);
-link.click();
-document.body.removeChild(link);
-});
-}
+		function togglePasswordVisibility(fieldName) {
+			var passwordField = document.querySelector('input[name="' + fieldName + '"]');
+			var showPasswordBtn = document.getElementById("showPasswordBtn");
 
-function updatePreview() { // Sélectionnez l'élément de prévisualisation "name"
-var previewName = document.getElementById('name');
-var previewEmail = document.getElementById('previewEmail');
-var previewLogo = document.getElementById('logo');
-var previewOrganization = document.getElementById('organization');
-var previewRole = document.getElementById('role');
-var previewAdress = document.getElementById('address');
-var previewZipCode = document.getElementById('zipCode');
-var previewCity = document.getElementById('city');
-var previewPhone = document.getElementById('phone');
+			if (passwordField.type === "password") {
+				passwordField.type = "text";
+				showPasswordBtn.textContent = "Cacher";
+			} else {
+				passwordField.type = "password";
+				showPasswordBtn.textContent = "Afficher";
+			}
+		}
 
-// Sélectionnez la valeur du champ "name"
-var firstNameValue = document.getElementById('form_first_name').value;
-var lastNameValue = document.getElementById('form_last_name').value;
-var emailValue = document.getElementById('form_email').value;
-var logoSelect = document.getElementById('form_logo');
-var selectedOption = logoSelect.options[logoSelect.selectedIndex];
-var logoValue = "https://lab-web.unsa.org/signature" + selectedOption.getAttribute('name');
-var organizationValue = document.getElementById('form_organization').value;
-var roleValue = document.getElementById('form_role').value;
-var addressValue = document.getElementById('form_adress').value;
-var cityValue = document.getElementById('form_city').value;
-var phoneLandlineValue = document.getElementById('form_phone_landline').value;
-var phoneMobileValue = document.getElementById('form_phone_mobile').value;
-var zipCodeValue = document.getElementById('form_zip_code').value;
+		function toggleInfoPerso() {
+			var infoPersoFields = document.getElementById("infoPersoFields");
+			var infoPersoBtn = document.getElementById("infoPersoBtn");
 
-// Mettez à jour le contenu de la prévisualisation avec la valeur du champ "name"
-var fullName = firstNameValue + ' ' + lastNameValue;
-previewName.textContent = fullName;
-previewEmail.innerHTML = emailValue;
-previewLogo.src = logoValue;
-previewOrganization.textContent = organizationValue;
-previewRole.textContent = roleValue;
-previewAdress.textContent = addressValue;
-previewCity.textContent = cityValue;
-previewPhone.textContent = phoneLandlineValue + " - " + phoneMobileValue; // " - " + phoneMobileValue;
-previewZipCode.textContent = zipCodeValue;
-}
+			if (infoPersoFields.style.display === "none") {
+				infoPersoFields.style.display = "block";
+			} else {
+				infoPersoFields.style.display = "none";
+			}
+		}
 
-function togglePasswordVisibility(fieldName) {
-  var passwordField = document.querySelector('input[name="'+fieldName+'"]');
-var showPasswordBtn = document.getElementById("showPasswordBtn");
+		function toggleInfoEntreprise() {
+			var infoPersoFields = document.getElementById("infoEntrepriseFields");
+			var infoPersoBtn = document.getElementById("infoEntrepriseBtn");
 
-if (passwordField.type === "password") {
-passwordField.type = "text";
-showPasswordBtn.textContent = "Cacher";
-} else {
-passwordField.type = "password";
-showPasswordBtn.textContent = "Afficher";
-}
-}
-function toggleInfoPerso() {
-var infoPersoFields = document.getElementById("infoPersoFields");
-var infoPersoBtn = document.getElementById("infoPersoBtn");
+			if (infoPersoFields.style.display === "none") {
+				infoPersoFields.style.display = "block";
+			} else {
+				infoPersoFields.style.display = "none";
+			}
+		}
 
-if (infoPersoFields.style.display === "none") {
-infoPersoFields.style.display = "block";
-} else {
-infoPersoFields.style.display = "none";
-}
+		function toggleInfoTheme() {
+			var infoPersoFields = document.getElementById("infoThemeFields");
+			var infoPersoBtn = document.getElementById("infoThemeBtn");
 
-}
+			if (infoPersoFields.style.display === "none") {
+				infoPersoFields.style.display = "block";
+			} else {
+				infoPersoFields.style.display = "none";
+			}
+		}
 
-function toggleInfoEntreprise() {
-var infoPersoFields = document.getElementById("infoEntrepriseFields");
-var infoPersoBtn = document.getElementById("infoEntrepriseBtn");
+		function openModal(url, title) {
+			var modal = document.getElementById('modal')
+			var modalTitle = modal.querySelector('.modal-title')
+			var modalBody = modal.querySelector('.modal-body')
 
-if (infoPersoFields.style.display === "none") {
-infoPersoFields.style.display = "block";
-} else {
-infoPersoFields.style.display = "none";
-}
-}
+			// Charger le contenu de l'URL dans la modal via une requête iframe
+			modalTitle.textContent = title
+			modalBody.innerHTML = '<iframe src="' + url + '" style="inline-size:100%; block-size:100%; border:none;"></iframe>'
 
-function toggleInfoTheme() {
-var infoPersoFields = document.getElementById("infoThemeFields");
-var infoPersoBtn = document.getElementById("infoThemeBtn");
+			modal.style.display = 'block'
+		}
 
-if (infoPersoFields.style.display === "none") {
-infoPersoFields.style.display = "block";
-} else {
-infoPersoFields.style.display = "none";
-}
-}
+		function closeModal() {
+			var modal = document.getElementById('modal')
+			var modalTitle = modal.querySelector('.modal-title')
+			var modalBody = modal.querySelector('.modal-body')
 
-function openModal(url, title) {
-var modal = document.getElementById('modal')
-var modalTitle = modal.querySelector('.modal-title')
-var modalBody = modal.querySelector('.modal-body')
+			modalTitle.textContent = ''
+			modalBody.innerHTML = ''
 
-// Charger le contenu de l'URL dans la modal via une requête iframe
-modalTitle.textContent = title
-modalBody.innerHTML = '<iframe src="' + url + '" style="inline-size:100%; block-size:100%; border:none;"></iframe>'
+			modal.style.display = 'none'
+			window.location.reload()
+		}
 
-modal.style.display = 'block'
-}
-
-function closeModal() {
-var modal = document.getElementById('modal')
-var modalTitle = modal.querySelector('.modal-title')
-var modalBody = modal.querySelector('.modal-body')
-
-modalTitle.textContent = ''
-modalBody.innerHTML = ''
-
-modal.style.display = 'none'
-window.location.reload()
-}
-
-window.requestAnimationFrame(updatePreview);
-</script>{% endblock %}
+		window.requestAnimationFrame(updatePreview);
+	</script>
+{% endblock %}

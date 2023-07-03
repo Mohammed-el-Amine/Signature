@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container"><br>
+	<div class="container"><br>
 		<div class="row justify-content-center">
 			<div class="col-lg-6">
 				<section class="view_signature d-flex justify-content-center align-items-center mt-5" id="signature-container">
@@ -45,29 +45,30 @@
 					</div>
 				</section><br><br><br>
 			</div>
-        </div>
-        <h1 class="text-center text-success">Téléchargement terminé avec succès !</h1>
-    </div><br>
-<button class="btn btn-success" style="visibility: collapse;" onclick="downloadAsPNG()">Télécharger en PNG</button>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            downloadAsPNG();
-        });
+		</div>
+		<h1 class="text-center text-success">Téléchargement terminé avec succès !</h1>
+	</div><br>
+	<button class="btn btn-success" style="visibility: collapse;" onclick="downloadAsPNG()">Télécharger en PNG</button>
+	
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			downloadAsPNG();
+		});
 
-        function downloadAsPNG() {
-            var userName = document.getElementById('nameEdit').innerText;
-            html2canvas(document.querySelector("#signature-container")).then(function(canvas) {
-                var link = document.createElement("a");
-                document.body.appendChild(link);
-                link.download = userName + ".png";
-                canvas.toBlob(function(blob) {
-                    var url = URL.createObjectURL(blob);
-                    link.href = url;
-                    link.click();
-                    URL.revokeObjectURL(url);
-                });
-                document.body.removeChild(link);
-            });
-        }
-    </script>
+	function downloadAsPNG() {
+		var userName = document.getElementById('nameEdit').innerText;
+		html2canvas(document.querySelector("#signature-container")).then(function (canvas) {
+		var link = document.createElement("a");
+		document.body.appendChild(link);
+		link.download = userName + ".png";
+		canvas.toBlob(function (blob) {
+				var url = URL.createObjectURL(blob);
+				link.href = url;
+				link.click();
+				URL.revokeObjectURL(url);
+			});
+			document.body.removeChild(link);
+		});
+	}
+	</script>
 {% endblock %}
