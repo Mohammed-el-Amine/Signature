@@ -213,5 +213,11 @@ window.location.reload()
 function logout() {
 window.location.href = "{{ path('logout') }}"
 }
+
+window.addEventListener('message', function(event) {
+    		if (event.data === 'closeModal') {
+      			closeModal();
+    		}
+ 		});
 	</script>
 {% endblock %}
