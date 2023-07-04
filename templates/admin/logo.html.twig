@@ -94,6 +94,7 @@
 						<th>Id</th>
 						<th>Nom</th>
 						<th>Apercus</th>
+						<th>Lien internet</th>
 						<th>Crée le</th>
 						<th>Modifier</th>
 						<th>Action</th>
@@ -105,6 +106,7 @@
 							<td>{{ logo.id }}</td>
 							<td>{{ logo.name }}</td>
 							<td><img src="https://lab-web.unsa.org/signature{{ logo.path }}" class="border-0" style="border: none;inline-size: 120px;" alt="LOGO UNSA"/></td>
+							<td>{{ logo.refLink }}</td>
 							<td>{{ logo.createAT|date('d-m-Y') }}</td>
 							<td>{{ logo.updateAt|date('d-m-Y') }}</td>
 							<td>
@@ -124,6 +126,11 @@
 				{{ form_label(form.name) }}
 				{{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
 				{{ form_errors(form.name) }}<br>
+			</div>
+			<div>
+				{{ form_label(form.refLink) }}
+				{{ form_widget(form.refLink, {'attr': {'class': 'form-control'}}) }}
+				{{ form_errors(form.refLink) }}<br>
 			</div>
 			<div>
 				{{ form_label(form.path) }}
