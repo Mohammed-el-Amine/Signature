@@ -121,7 +121,6 @@
 						<th>Nom et Prénom</th>
 						<th>Adresse email</th>
 						<th>Date de création</th>
-						{# <th>Date de modification</th> #}
 						<th>Actions</th>
 					</tr>
 				</thead>
@@ -169,7 +168,6 @@
 							</td>
 							<td class="text-center align-middle">{{ signature.email }}</td>
 							<td class="text-center align-middle">{{ signature.createAT|date('d-m-Y') }}</td>
-							{# <td class="text-center align-middle">{{ signature.updateAT|date('d-m-Y') }}</td> #}
 							<td class="text-center align-middle">
 								<button class="btn btn-warning" onclick="openModal('{{ path('edit_signature',{ id: signature.id }) }}')">Éditer</button>
 								<button class="btn btn-secondary" onclick="openModal('{{ path('html_signature',{id: signature.id}) }}')">HTML</button>
@@ -180,7 +178,6 @@
 				</tbody>
 			</table>
 
-			{# Afficher les liens de pagination #}
 			<div class="pagination">
 				{{ knp_pagination_render(pagination) }}
 			</div>
@@ -287,8 +284,8 @@
 				{% if signature is not empty %}
 					<h1>Ma signature :</h1>
 					<div id="signature">{{ signature|raw }}</div>
-					<button class="btn btn-secondary" onclick="DownloadHTML()">Format HTML</button>
-					<button class="btn btn-success" onclick="DownloadPNG()">Format PNG</button>
+					<button class="btn btn-secondary" onclick="openModal('{{ path('html_signature', {id: signatureID}) }}')">Format HTML</button>
+					<button class="btn btn-success" onclick="openModal('{{ path('png_signature', {id: signatureID}) }}')">Format PNG</button>
 				{% endif %}
 
 			</div>
@@ -308,49 +305,7 @@
 {{ parent() }}
 	<script>
 
-		function DownloadHTML() {
-			var firstNameValue = document.getElementById('form_first_name').value;
-			var lastNameValue = document.getElementById('form_last_name').value;
-			var fullName = firstNameValue + ' ' + lastNameValue;
-
-			var element = document.getElementById('signature').innerHTML;
-			var updatedElement = element.replace(/(<img id="LOGO" src=")([^"]+)(" style="border: none;inline-size: 120px;">)/, '$1https://lab-web.unsa.org$2$3');
-			var updatedElementSecond = updatedElement.replace(/(<img id="LOGO-PHONE" src=")([^"]+)(" style="border: none;block-size: 14px;margin-inline-end: .5em;">)/, '$1https://lab-web.unsa.org$2$3');
-			var updatedElementThird = updatedElementSecond.replace(/(<img id="LOGO-MAIL" src=")([^"]+)(" style="border: none;block-size: 12px;margin-inline-end: .5em;">)/, '$1https://lab-web.unsa.org$2$3');
-			var filename = fullName + '.html';
-			var link = document.createElement('a');
-			link.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(updatedElementThird));
-
-			link.setAttribute('download', filename);
-			link.style.display = 'none';
-			document.body.appendChild(link);
-			link.click();
-			document.body.removeChild(link);
-		}
-
-		function DownloadPNG() { 
-			var firstNameValue = document.getElementById('form_first_name').value;
-			var lastNameValue = document.getElementById('form_last_name').value;
-			var fullName = firstNameValue + ' ' + lastNameValue;
-
-			var element = document.getElementById('signature');
-
-			html2canvas(element).then(function (canvas) {
-				var dataURL = canvas.toDataURL('image/png');
-
-				// Crée et ajoute un lien de téléchargement
-				var link = document.createElement('a');
-				link.href = dataURL;
-				link.download = fullName + '.png';
-				link.style.display = 'none';
-
-				document.body.appendChild(link);
-				link.click();
-				document.body.removeChild(link);
-			});
-		}
-
-		function updatePreview() { // Sélectionnez l'élément de prévisualisation "name"
+		function updatePreview() { 
 			var previewName = document.getElementById('name');
 			var previewEmail = document.getElementById('previewEmail');
 			var previewLogo = document.getElementById('logo');
@@ -361,7 +316,6 @@
 			var previewCity = document.getElementById('city');
 			var previewPhone = document.getElementById('phone');
 
-			// Sélectionnez la valeur du champ "name"
 			var firstNameValue = document.getElementById('form_first_name').value;
 			var lastNameValue = document.getElementById('form_last_name').value;
 			var emailValue = document.getElementById('form_email').value;
@@ -376,7 +330,6 @@
 			var phoneMobileValue = document.getElementById('form_phone_mobile').value;
 			var zipCodeValue = document.getElementById('form_zip_code').value;
 
-			// Mettez à jour le contenu de la prévisualisation avec la valeur du champ "name"
 			var fullName = firstNameValue + ' ' + lastNameValue;
 			previewName.textContent = fullName;
 			previewEmail.innerHTML = emailValue;
@@ -385,7 +338,7 @@
 			previewRole.textContent = roleValue;
 			previewAdress.textContent = addressValue;
 			previewCity.textContent = cityValue;
-			previewPhone.textContent = phoneLandlineValue + " - " + phoneMobileValue; // " - " + phoneMobileValue;
+			previewPhone.textContent = phoneLandlineValue + " - " + phoneMobileValue;
 			previewZipCode.textContent = zipCodeValue;
 		}
 
@@ -456,7 +409,6 @@
 			modalBody.innerHTML = ''
 
 			modal.style.display = 'none'
-			window.location.reload()
 		}
 
 		window.requestAnimationFrame(updatePreview);
