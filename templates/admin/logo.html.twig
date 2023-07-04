@@ -160,43 +160,49 @@
 	{{ parent() }}
 	<script>
 		function openModal(url, title) {
-var modal = document.getElementById('modal');
-var modalTitle = modal.querySelector('.modal-title');
-var modalBody = modal.querySelector('.modal-body');
-modalTitle.textContent = title;
-modalBody.innerHTML = '<iframe src="' + url + '" style="inline-size:100%; block-size:100%; border:none;"></iframe>';
-modal.style.display = 'block';
-}
+			var modal = document.getElementById('modal');
+			var modalTitle = modal.querySelector('.modal-title');
+			var modalBody = modal.querySelector('.modal-body');
+			modalTitle.textContent = title;
+			modalBody.innerHTML = '<iframe src="' + url + '" style="inline-size:100%; block-size:100%; border:none;"></iframe>';
+			modal.style.display = 'block';
+		}
 
-function closeModal() {
-var modal = document.getElementById('modal');
-var modalTitle = modal.querySelector('.modal-title');
-var modalBody = modal.querySelector('.modal-body');
-modalTitle.textContent = '';
-modalBody.innerHTML = '';
-modal.style.display = 'none';
-window.location.reload();
-}
+		function closeModal() {
+			var modal = document.getElementById('modal');
+			var modalTitle = modal.querySelector('.modal-title');
+			var modalBody = modal.querySelector('.modal-body');
+			modalTitle.textContent = '';
+			modalBody.innerHTML = '';
+			modal.style.display = 'none';
+			window.location.reload();
+		}
 
-var deleteLinks = document.getElementsByClassName('logo-delete');
-for (var i = 0; i < deleteLinks.length; i++) {
-deleteLinks[i].addEventListener('click', function (event) {
-event.preventDefault();
-var confirmation = confirm("Êtes-vous sûr de vouloir supprimer ce logo ?");
-if (confirmation) {
-window.location.href = this.getAttribute('href');
-}
-});
-}
+			var deleteLinks = document.getElementsByClassName('logo-delete');
+				for (var i = 0; i < deleteLinks.length; i++) {
+					deleteLinks[i].addEventListener('click', function (event) {
+					event.preventDefault();
+					var confirmation = confirm("Êtes-vous sûr de vouloir supprimer ce logo ?");
+						if (confirmation) {
+							window.location.href = this.getAttribute('href');
+						}
+					});
+			}
 
-var editLinks = document.getElementsByClassName('logo-edit');
-for (var i = 0; i < editLinks.length; i++) {
-editLinks[i].addEventListener('click', function (event) {
-event.preventDefault();
-var url = this.getAttribute('href');
-var title = 'Modifier le logo ';
-openModal(url, title);
-});
-}
+			var editLinks = document.getElementsByClassName('logo-edit');
+			for (var i = 0; i < editLinks.length; i++) {
+					editLinks[i].addEventListener('click', function (event) {
+						event.preventDefault();
+						var url = this.getAttribute('href');
+						var title = 'Modifier le logo ';
+						openModal(url, title);
+					});
+				}
+
+  window.addEventListener('message', function(event) {
+    if (event.data === 'closeModal') {
+      closeModal();
+    }
+  });
 	</script>
 {% endblock %}
