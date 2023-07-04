@@ -67,6 +67,11 @@
 			document.body.appendChild(link);
 			link.click();
 			document.body.removeChild(link);
+			setTimeout(function () {
+				var parentWindow = window.parent;
+				parentWindow.postMessage('closeModal', '*');
+			}, 1000);
 		}
+	
 	</script>
 {% endblock %}
