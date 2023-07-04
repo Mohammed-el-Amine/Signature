@@ -140,7 +140,7 @@
 															<span id="city" style="color: #000;">{{signature.city}}</span><br>
 														</p>
 														<p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
-															<img src="https://lab-web.unsa.org/signature/img/mail.png" class="border-0"  style="border: none;block-size: 12px;margin-inline-end: .5em;">
+															<img src="https://lab-web.unsa.org/signature/img/mail.png" class="border-0" style="border: none;block-size: 12px;margin-inline-end: .5em;">
 															<a id="previewEmail" href="mailto:${email}" style="color: #666; font-style: italic;">{{signature.email}}</a><br>
 															<img src="https://lab-web.unsa.org/signature/img/phone.png" class="border-0" style="border: none;block-size: 14px;margin-inline-end: .5em;">
 															<span id="phone" style="color: #666;">{{signature.phone}}</span>
@@ -185,28 +185,28 @@
 
 	<script>
 		function openModal(url, title) {
-var modal = document.getElementById('modal')
-var modalTitle = modal.querySelector('.modal-title')
-var modalBody = modal.querySelector('.modal-body')
+			var modal = document.getElementById('modal')
+			var modalTitle = modal.querySelector('.modal-title')
+			var modalBody = modal.querySelector('.modal-body')
 
-// Charger le contenu de l'URL dans la modal via une requête iframe
-modalTitle.textContent = title
-modalBody.innerHTML = '<iframe src="' + url + '" style="inline-size:100%; block-size:100%; border:none;"></iframe>'
+			// Charger le contenu de l'URL dans la modal via une requête iframe
+			modalTitle.textContent = title
+			modalBody.innerHTML = '<iframe src="' + url + '" style="inline-size:100%; block-size:100%; border:none;"></iframe>'
 
-modal.style.display = 'block'
-}
+			modal.style.display = 'block'
+		}
 
-function closeModal() {
-var modal = document.getElementById('modal')
-var modalTitle = modal.querySelector('.modal-title')
-var modalBody = modal.querySelector('.modal-body')
+		function closeModal() {
+			var modal = document.getElementById('modal')
+			var modalTitle = modal.querySelector('.modal-title')
+			var modalBody = modal.querySelector('.modal-body')
 
-modalTitle.textContent = ''
-modalBody.innerHTML = ''
+			modalTitle.textContent = ''
+			modalBody.innerHTML = ''
 
-modal.style.display = 'none'
-window.location.reload()
-}
+			modal.style.display = 'none'
+			window.location.reload()
+		}
 	</script>
 
 {% endblock %}
