@@ -19,6 +19,9 @@ class Logo
     #[ORM\Column(length: 255)]
     private ?string $path = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $refLink = null;
+
     #[ORM\Column]
     private ?\DateTimeImmutable $create_at = null;
 
@@ -50,6 +53,18 @@ class Logo
     public function setPath(string $path): static
     {
         $this->path = $path;
+
+        return $this;
+    }
+
+    public function getRefLink(): ?string
+    {
+        return $this->refLink;
+    }
+
+    public function setRefLink(?string $refLink): self
+    {
+        $this->refLink = $refLink;
 
         return $this;
     }
