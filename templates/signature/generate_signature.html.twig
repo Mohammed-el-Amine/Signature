@@ -412,5 +412,11 @@
 		}
 
 		window.requestAnimationFrame(updatePreview);
+
+		window.addEventListener('message', function(event) {
+    		if (event.data === 'closeModal') {
+      			closeModal();
+    		}
+ 		});
 	</script>
 {% endblock %}

@@ -31,11 +31,22 @@
 		document.querySelector('form[name="form"]').addEventListener('submit', function(event) {
 	    event.preventDefault();
 		var form = event.target;
-      	form.submit();
 
-        // Envoyer loe postMessage au parent window pour fermer la modal
-		var parentWindow = window.parent;
-            parentWindow.postMessage('closeModal', '*');
+		// Créer un objet FormData avec les données du formulaire
+		var formData = new FormData(form);
+
+		// Envoyer les données du formulaire en utilisant une requête AJAX
+		var xhr = new XMLHttpRequest();
+		xhr.open(form.method, form.action);
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+				// Le formulaire a été soumis avec succès
+				// Envoyer un message au parent window pour fermer la modal
+				var parentWindow = window.parent;
+				parentWindow.postMessage('closeModal', '*');
+			}
+		};
+		xhr.send(formData);
     });
 	</script>
 {% endblock %}

@@ -678,7 +678,7 @@ class AdminController extends AbstractController
             ])
             ->add('refLink', TextType::class, [
                 'label' => 'Adresse du site :',
-                'required' => true,
+                'required' => false,
                 'attr' => ['placeholder' => 'Chemin du site'],
                 'constraints' => [
                     new NotBlank([
@@ -686,7 +686,7 @@ class AdminController extends AbstractController
                     ]),
                     new Regex([
                         'pattern' => '/^(https?:\/\/)?(www\.)?.{1,255}$/i',
-                        'message' => 'Veuillez saisir une URL valide commençant par www., http://www. ou https://www., et ayant entre 1 et 255 caractères.',
+                        'message' => 'Veuillez saisir une URL valide commençant par www. ou http://www. ou https://www., et ayant entre 1 et 255 caractères.',
                     ]),                    
                 ],
             ])

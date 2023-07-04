@@ -207,6 +207,12 @@
 			modal.style.display = 'none'
 			window.location.reload()
 		}
+
+		window.addEventListener('message', function(event) {
+    		if (event.data === 'closeModal') {
+      			closeModal();
+    		}
+ 		});
 	</script>
 
 {% endblock %}
