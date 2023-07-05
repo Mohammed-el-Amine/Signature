@@ -243,6 +243,7 @@
 
 		<section class="view_signature d-flex justify-content-center align-items-center mt-5">
 			<div class="border p-3">
+			<h4 class="text-center">previsualisation <h4>
 				<table border="0" cellpadding="0" width="500">
 					<tbody>
 						<tr>
@@ -283,11 +284,11 @@
 			<div class="Modal">
 				{% if signature is not empty %}
 					<h1>Ma signature :</h1>
-					<div id="signature">{{ signature|raw }}</div>
+					<div id="signature">{{ signature|raw }}</div><br><br>
 					<button class="btn btn-secondary" onclick="openModal('{{ path('html_signature', {id: signatureID}) }}')">Format HTML</button>
 					<button class="btn btn-success" onclick="openModal('{{ path('png_signature', {id: signatureID}) }}')">Format PNG</button>
 				{% endif %}
-
+				<br><br><br><br>
 			</div>
 		</div>
 		<div id="modal" class="modal">
