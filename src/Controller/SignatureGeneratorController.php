@@ -295,6 +295,7 @@ class SignatureGeneratorController extends AbstractController
                     // Générer la signature avec les données fournies
                     $generatedSignature = $this->generateEmailSignature($data);
                     $signatureID = $signature->getId();
+                    $srcLogo = $signature->getLogo()->getRefLink();
                 }
             }
 
@@ -364,6 +365,10 @@ class SignatureGeneratorController extends AbstractController
             $signatureID = null; // éviter une erreur si la variable n'est pas définie
         }
 
+        if (empty($srcLogo)) {
+            $srcLogo = null; // éviter une erreur si la variable n'est pas définie
+        }
+
         return $this->render('signature/generate_signature.html.twig', [
             'form' => $form->createView(),
             'signature' => $generatedSignature,
@@ -374,6 +379,7 @@ class SignatureGeneratorController extends AbstractController
             'userForm' => $userForm,
             'user' => $user,
             'signatureID' => $signatureID,
+            'srcLogo' => $srcLogo,
         ]);
     }
     private function generateEmailSignature(array $data): string
@@ -436,8 +442,20 @@ class SignatureGeneratorController extends AbstractController
     /**
      * @Route("/espace-perso", name="signature")
      */
-    public function getSignature(SignatureRepository $signatureRepository)
+    public function getSignature(SignatureRepository $signatureRepository, SessionInterface $session, UrlGeneratorInterface $urlGenerator, UserRepository $userRepository)
     {
+        if (!$session->has('user_id')) {
+            return new RedirectResponse($urlGenerator->generate('app_home'));
+        }
+
+        $userId = $session->get('user_id');
+
+        if ($userId) {
+            $user = $userRepository->find($userId);
+        } else {
+            throw $this->createAccessDeniedException('Access Denied');
+        }
+
         $allSignature = $signatureRepository->findAll();
         return $this->render('signature/generate_signature.html.twig', []);
     }
