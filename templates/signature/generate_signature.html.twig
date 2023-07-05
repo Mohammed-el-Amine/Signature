@@ -306,42 +306,47 @@
 {{ parent() }}
 	<script>
 
-		function updatePreview() { 
-			var previewName = document.getElementById('name');
-			var previewEmail = document.getElementById('previewEmail');
-			var previewLogo = document.getElementById('logo');
-			var previewOrganization = document.getElementById('organization');
-			var previewRole = document.getElementById('role');
-			var previewAdress = document.getElementById('address');
-			var previewZipCode = document.getElementById('zipCode');
-			var previewCity = document.getElementById('city');
-			var previewPhone = document.getElementById('phone');
+	function updatePreview() {
 
-			var firstNameValue = document.getElementById('form_first_name').value;
-			var lastNameValue = document.getElementById('form_last_name').value;
-			var emailValue = document.getElementById('form_email').value;
-			var logoSelect = document.getElementById('form_logo');
-			var selectedOption = logoSelect.options[logoSelect.selectedIndex];
-			var logoValue = "https://lab-web.unsa.org/signature" + selectedOption.getAttribute('name');
-			var organizationValue = document.getElementById('form_organization').value;
-			var roleValue = document.getElementById('form_role').value;
-			var addressValue = document.getElementById('form_adress').value;
-			var cityValue = document.getElementById('form_city').value;
-			var phoneLandlineValue = document.getElementById('form_phone_landline').value;
-			var phoneMobileValue = document.getElementById('form_phone_mobile').value;
-			var zipCodeValue = document.getElementById('form_zip_code').value;
+		var previewName = document.getElementById('name');
+		var previewEmail = document.getElementById('previewEmail');
+		var previewLogo = document.getElementById('logo');
+		var previewOrganization = document.getElementById('organization');
+		var previewRole = document.getElementById('role');
+		var previewAdress = document.getElementById('address');
+		var previewZipCode = document.getElementById('zipCode');
+		var previewCity = document.getElementById('city');
+		var previewPhone = document.getElementById('phone');
 
-			var fullName = firstNameValue + ' ' + lastNameValue;
-			previewName.textContent = fullName;
-			previewEmail.innerHTML = emailValue;
-			previewLogo.src = logoValue;
-			previewOrganization.textContent = organizationValue;
-			previewRole.textContent = roleValue;
-			previewAdress.textContent = addressValue;
-			previewCity.textContent = cityValue;
-			previewPhone.textContent = phoneLandlineValue + " - " + phoneMobileValue;
-			previewZipCode.textContent = zipCodeValue;
-		}
+		var firstNameValue = document.getElementById('form_first_name').value;
+		var lastNameValue = document.getElementById('form_last_name').value;
+		var emailValue = document.getElementById('form_email').value;
+		var logoSelect = document.getElementById('form_logo');
+		var selectedOption = logoSelect.options[logoSelect.selectedIndex];
+		var logoValue = "https://lab-web.unsa.org/signature" + selectedOption.getAttribute('name');
+		var organizationValue = document.getElementById('form_organization').value;
+		var roleValue = document.getElementById('form_role').value;
+		var addressValue = document.getElementById('form_adress').value;
+		var cityValue = document.getElementById('form_city').value;
+		var phoneLandlineValue = document.getElementById('form_phone_landline').value;
+		var phoneMobileValue = document.getElementById('form_phone_mobile').value;
+		var zipCodeValue = document.getElementById('form_zip_code').value;		
+		var fullName = firstNameValue + ' ' + lastNameValue;
+
+		var imgElement = document.createElement("img");
+		imgElement.src = "https://lab-web.unsa.org/signature/img/mobile.png";
+		var phoneContent = phoneLandlineValue + "&ensp;&ensp; " + imgElement.outerHTML + " &ensp; " + phoneMobileValue;
+
+		previewName.textContent = fullName;
+		previewEmail.innerHTML = emailValue;
+		previewLogo.src = logoValue;
+		previewOrganization.textContent = organizationValue;
+		previewRole.textContent = roleValue;
+		previewAdress.textContent = addressValue;
+		previewCity.textContent = cityValue;
+		previewPhone.innerHTML = phoneContent;
+		previewZipCode.textContent = zipCodeValue;
+	}
 
 		function togglePasswordVisibility(fieldName) {
 			var passwordField = document.querySelector('input[name="' + fieldName + '"]');

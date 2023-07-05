@@ -240,6 +240,7 @@
 	}
 
 	function updatePreview() {
+
 		var previewName = document.getElementById('name');
 		var previewEmail = document.getElementById('previewEmail');
 		var previewLogo = document.getElementById('logo');
@@ -265,6 +266,10 @@
 		var zipCodeValue = document.getElementById('form_zip_code').value;		
 		var fullName = firstNameValue + ' ' + lastNameValue;
 
+		var imgElement = document.createElement("img");
+		imgElement.src = "https://lab-web.unsa.org/signature/img/mobile.png";
+		var phoneContent = phoneLandlineValue + "&ensp;&ensp; " + imgElement.outerHTML + " &ensp; " + phoneMobileValue;
+
 		previewName.textContent = fullName;
 		previewEmail.innerHTML = emailValue;
 		previewLogo.src = logoValue;
@@ -272,7 +277,7 @@
 		previewRole.textContent = roleValue;
 		previewAdress.textContent = addressValue;
 		previewCity.textContent = cityValue;
-		previewPhone.textContent = phoneLandlineValue + " - " + phoneMobileValue;
+		previewPhone.innerHTML = phoneContent;
 		previewZipCode.textContent = zipCodeValue;
 	}
 
