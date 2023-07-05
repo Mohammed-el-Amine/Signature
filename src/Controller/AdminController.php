@@ -572,7 +572,7 @@ class AdminController extends AbstractController
                     new Regex([
                         'pattern' => '/^(https?:\/\/)?(www\.)?.{1,255}$/i',
                         'message' => 'Veuillez saisir une URL valide commençant par www., http://www. ou https://www., et ayant entre 1 et 255 caractères.',
-                    ]),                    
+                    ]),
                 ],
             ])
             ->add('path', FileType::class, [
@@ -687,7 +687,7 @@ class AdminController extends AbstractController
                     new Regex([
                         'pattern' => '/^(https?:\/\/)?(www\.)?.{1,255}$/i',
                         'message' => 'Veuillez saisir une URL valide commençant par www. ou http://www. ou https://www., et ayant entre 1 et 255 caractères.',
-                    ]),                    
+                    ]),
                 ],
             ])
             ->add('path', FileType::class, [
@@ -989,18 +989,24 @@ class AdminController extends AbstractController
                     // Générer la signature avec les données fournies
                     $generatedSignature = $this->generateEmailSignature($data);
                     $signatureID = $signature->getId();
+                    $srcLogo = $signature->getLogo()->getRefLink();
                 }
             }
         }
 
         if (empty($signatureID)) {
-            $signatureID = null; // éviter une erreur si la variable n'est pas définie
+            $signatureID = null; 
         }
 
+        if (empty($srcLogo)) {
+            $srcLogo = null; 
+        }
+        
         return $this->render('admin/create_signature.html.twig', [
             'form' => $form->createView(),
             'signature' => $generatedSignature,
             'signatureID' => $signatureID,
+            'srcLogo' => $srcLogo,
         ]);
     }
 
@@ -1019,7 +1025,7 @@ class AdminController extends AbstractController
         $html .= '<tr>';
         $html .= '<td align="left" valign="middle" width="10">';
         $html .= '<p style="padding-inline-end: 10px;font-size: 12px;line-height: 14px;">';
-        $html .= '<a href="https://www.unsa.org"><img id="LOGO"src="' . '/signature' . $data['logo']->getPath() . '" style="border: none;inline-size: 120px;"></a>';
+        $html .= '<a href="' . $data['logo']->getRefLink() . '"><img id="LOGO"src="' . '/signature' . $data['logo']->getPath() . '" style="border: none;inline-size: 120px;"></a>';
         $html .= '</p>';
         $html .= '</td>';
         $html .= '<td><br>';
