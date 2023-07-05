@@ -332,7 +332,7 @@ class AdminController extends AbstractController
                       <tr>
                         <td class="em_grey" align="center" valign="top"
                           style="font-family: Arial, sans-serif; font-size: 16px; line-height: 26px; color:#434343;">Si vous n\'avez pas
-                          demandé de réinitialisation de mot de passe, vous n\'avez rien à faire.<br class="em_hide" />
+                          demandé de création de mot de passe ou de compte, vous n\'avez rien à faire.<br class="em_hide" />
                           Ignorez simplement cet e-mail comme votre chat vous ignore.</td>
                       </tr>
                       <tr>
@@ -451,10 +451,6 @@ class AdminController extends AbstractController
                     ]),
                 ],
             ])
-            ->add('password', PasswordType::class, [
-                'required' => false,
-                'empty_data' => '',
-            ]) //Changer par l'envoie de l'email automatique donc pas de validation de formulaire
             ->add('role', ChoiceType::class, [
                 'choices' => [
                     'Admin' => 'admin',
@@ -471,38 +467,6 @@ class AdminController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-
-            ##Envoie de l'email de confirmation de changement de mot de passe
-
-            // $token = Uuid::v4();
-            // $tokenExpiration = new DateTime();
-            // $tokenExpiration->modify('+24 hours');
-
-            // $tokenWithExpiration = $token . '-' . str_replace([' ', ':'], '-', $tokenExpiration->format('d-m-Y H:i:s'));
-
-            // $user->setToken($tokenWithExpiration);
-
-            // $to = $email;
-            // $subject = 'Configuration de votre mot de passe .';
-            // $message = '<html>
-            //     <head>
-            //         <title>Modification de votre mot de passe</title>
-            //     </head>
-            //     <body>
-            //         <p>Veuillez cliquer sur le lien suivant pour créer votre mot de passe :</p>
-            //         <a href="' . $this->generateUrl('create_password', ['token' => $user->getToken()], UrlGeneratorInterface::ABSOLUTE_URL) . '">Créer un mot de passe</a>
-            //     </body>
-            // </html>';
-
-            // $headers = 'From: support@signature_unsa.org' . "\r\n" .
-            //     'Reply-To: amine.djellal@unsa.org' . "\r\n" .
-            //     'X-Mailer: PHP/' . phpversion();
-            // $headers .= 'MIME-Version: 1.0' . "\r\n";
-            // $headers .= 'Content-Type: text/html; charset=UTF-8' . "\r\n";
-
-
-            // mail($to, $subject, $message, $headers);
-
             $editUser->setEmail($currentEmail);
             $editUser->setRole($currentRole);
 
@@ -510,15 +474,6 @@ class AdminController extends AbstractController
             $editUser->setEmail($newEmail);
             $newRole = $form->get('role')->getData();
             $editUser->setRole($newRole);
-
-            $newPassword = $editUser->getPassword();
-
-            if (!empty($newPassword)) {
-                $hashedPassword = hash('sha256', $newPassword);
-                $editUser->setPassword($hashedPassword);
-            } else {
-                $editUser->setPassword($currentPassword);
-            }
 
             $entityManager->flush();
 
@@ -1105,5 +1060,136 @@ class AdminController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('admin_dashboard');
+    }
+
+    #[Route('/admin-send-password/{id}', name: "admin_send_password", methods: ['GET', 'POST'])]
+    /**
+     * @Route("/admin-send-password/{id}", name="admin_send_password", methods={"GET", "POST"})
+     */
+    public function  sendPassword(UrlGeneratorInterface $urlGenerator, SessionInterface $session, UserRepository $userRepository, User $user, EntityManagerInterface $entityManager)
+    {
+        if (!$session->has('user_id')) {
+            return new RedirectResponse($urlGenerator->generate('app_home'));
+        }
+        $userId = $session->get('user_id');
+
+        if ($userId) {
+            $currentUser = $userRepository->find($userId);
+
+            if ($currentUser && $currentUser->getRole() !== 'admin') {
+                throw $this->createAccessDeniedException('Access Denied');
+            }
+        } else {
+            throw $this->createAccessDeniedException('Access Denied');
+        }
+
+        $id = $user->getId();
+        $token = $user->getToken();
+
+        if (!$token) {
+            $Newtoken = Uuid::v4();
+            $tokenExpiration = new DateTime();
+            $tokenExpiration->modify('+24 hours');
+
+            $tokenWithExpiration = $Newtoken . '-' . str_replace([' ', ':'], '-', $tokenExpiration->format('d-m-Y H:i:s'));
+            $user->setToken($tokenWithExpiration);
+            $entityManager->flush();
+            
+        }else {
+            $tokenWithExpiration = $token;
+        }
+
+        $to = $user->getEmail();
+            $subject = '[UNSA SIGNATURE] ' . mb_encode_mimeheader('MODIFICATION DE MOT DE PASSE', 'UTF-8'); //encode le sujet en UTF-8 pour les caractères spéciaux
+
+            $message = '
+                <!DOCTYPE html
+                  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+                <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
+                  xmlns:o="urn:schemas-microsoft-com:office:office">
+                        
+                <head>
+                  <!--[if gte mso 9]><xml>
+                <o:OfficeDocumentSettings>
+                <o:AllowPNG/>
+                <o:PixelsPerInch>96</o:PixelsPerInch>
+                </o:OfficeDocumentSettings>
+                </xml><![endif]-->
+                  <title>Mot de passe</title>
+                  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+                  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                  <meta name="viewport" content="width=device-width, initial-scale=1.0 " />
+                  <meta name="format-detection" content="telephone=no" />
+                  <!--[if !mso]><!-->
+                  <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,700,700i,900,900i" rel="stylesheet" />
+                  <!--<![endif]-->
+                        
+                        
+                </head>
+                        
+                <body class="em_body" style="margin:0px auto; padding:0px;" bgcolor="#efefef">
+                  <td align="center" valign="top" style="padding:0 25px; background-color:#ffffff;" class="em_aside10">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                      <tr>
+                        <td height="45" style="block-size:45px;" class="em_h20">&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td class="em_blue em_font_22" align="center" valign="top"
+                          style="font-family: Arial, sans-serif; font-size: 26px; line-height: 29px; color:#264780; font-weight:bold;">
+                          Création de votre compte</td>
+                      </tr>
+                      <tr>
+                        <td height="14" style="block-size:14px; font-size:0px; line-height:0px;">&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td class="em_grey" align="center" valign="top"
+                          style="font-family: Arial, sans-serif; font-size: 16px; line-height: 26px; color:#434343;">Veuillez créer
+                          votre nouveau mot de passe en suivant le lien ci-dessous pour la connexion à votre espace personnel :</td>
+                      </tr>
+                      <tr>
+                        <td height="26" style="block-size:26px;" class="em_h20">&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td align="center" valign="top">
+                          <table width="250" style="inline-size:250px; background-color:#6bafb2; border-radius:4px;" border="0"
+                            cellspacing="0" cellpadding="0" align="center">
+                            <tr>
+                              <td class="em_white" height="42" align="center" valign="middle"
+                                style="font-family: Arial, sans-serif; font-size: 16px; color:#ffffff; font-weight:bold; block-size:42px;">
+                                <a href="' . $this->generateUrl('create_password', ['token' => $user->getToken()], UrlGeneratorInterface::ABSOLUTE_URL) . '"
+                                  target="_blank" style="text-decoration:none; color:#ffffff; line-height:42px; display:block;">Modifier votre mot de passe</a>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td height="25" style="block-size:25px;" class="em_h20">&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td class="em_grey" align="center" valign="top"
+                          style="font-family: Arial, sans-serif; font-size: 16px; line-height: 26px; color:#434343;">Si vous n\'avez pas
+                          demandé de réinitialisation de mot de passe, vous n\'avez rien à faire.<br class="em_hide" />
+                          Ignorez simplement cet e-mail comme votre chat vous ignore.</td>
+                      </tr>
+                      <tr>
+                        <td height="44" style="block-size:44px;" class="em_h20">&nbsp;</td>
+                      </tr>
+                    </table>
+                  </td>
+                </body>
+                        
+                </html>';
+
+            $headers = 'From: support@signature_unsa.org' . "\r\n" .
+                'Reply-To: amine.djellal@unsa.org' . "\r\n" .
+                'X-Mailer: PHP/' . phpversion();
+            $headers .= 'MIME-Version: 1.0' . "\r\n";
+            $headers .= 'Content-Type: text/html; charset=UTF-8' . "\r\n";
+
+
+            mail($to, $subject, $message, $headers);
+
+            return new Response();
     }
 }
