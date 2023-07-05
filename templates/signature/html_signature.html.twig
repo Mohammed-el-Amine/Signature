@@ -37,7 +37,7 @@
 											<a id="previewEmail" href="mailto:${{signature.email}}" style="color: #666; font-style: italic;">{{signature.email}}</a><br>
 											<img src="https://lab-web.unsa.org/signature/img/phone.png" class="border-0" style="border: none; block-size: 14px; margin-inline-end: .5em;">
 											{% set phoneNumbers = signature.phone|split(' - ') %}
-											{{ phoneNumbers[0] }} &ensp;&ensp;<img src="https://lab-web.unsa.org/signature/img/mobile.png"> &ensp;{{ phoneNumbers[1] }}
+											{{ phoneNumbers[0] }} &ensp;&ensp;<img src="https://lab-web.unsa.org/signature/img/mobile.png" class="border-0" style="border: none; block-size: 14px; margin-inline-end: .5em;"> &ensp;{{ phoneNumbers[1] }}
 										</p>
 									</td>
 								</tr>
