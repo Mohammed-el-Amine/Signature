@@ -82,5 +82,25 @@
 			<div class="alert alert-success mt-4" role="alert">{{ flashMessage }}</div>
 		{% endfor %}
 	</div>
+	<script>
+	document.addEventListener('DOMContentLoaded', function() {
+  	document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    var form = event.target;
+    var formData = new FormData(form);
+    var xhr = new XMLHttpRequest();
+    xhr.open(form.method, form.action, true);
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        var parentWindow = window.parent;
+        parentWindow.postMessage('closeModal', '*');
+      } else {
+        console.log('pas de transmission de données');
+      }
+    };
+    xhr.send(formData);
+  });
+});
+</script>
 
 {% endblock %}
