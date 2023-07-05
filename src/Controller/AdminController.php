@@ -156,6 +156,17 @@ class AdminController extends AbstractController
         if (!$session->has('user_id')) {
             return new RedirectResponse($urlGenerator->generate('app_home'));
         }
+        $userId = $session->get('user_id');
+
+        if ($userId) {
+            $currentUser = $userRepository->find($userId);
+
+            if ($currentUser && $currentUser->getRole() !== 'admin') {
+                throw $this->createAccessDeniedException('Access Denied');
+            }
+        } else {
+            throw $this->createAccessDeniedException('Access Denied');
+        }
 
         $adminId = $session->get('user_id');
 
@@ -748,7 +759,20 @@ class AdminController extends AbstractController
      */
     public function deleteLogo(Request $request, EntityManagerInterface $entityManager, Logo $logo, SessionInterface $session, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator): Response
     {
+        if (!$session->has('user_id')) {
+            return new RedirectResponse($urlGenerator->generate('app_home'));
+        }
+        $userId = $session->get('user_id');
 
+        if ($userId) {
+            $currentUser = $userRepository->find($userId);
+
+            if ($currentUser && $currentUser->getRole() !== 'admin') {
+                throw $this->createAccessDeniedException('Access Denied');
+            }
+        } else {
+            throw $this->createAccessDeniedException('Access Denied');
+        }
 
         $entityManager->remove($logo);
         $entityManager->flush();
@@ -995,13 +1019,13 @@ class AdminController extends AbstractController
         }
 
         if (empty($signatureID)) {
-            $signatureID = null; 
+            $signatureID = null;
         }
 
         if (empty($srcLogo)) {
-            $srcLogo = null; 
+            $srcLogo = null;
         }
-        
+
         return $this->render('admin/create_signature.html.twig', [
             'form' => $form->createView(),
             'signature' => $generatedSignature,
@@ -1062,6 +1086,21 @@ class AdminController extends AbstractController
      */
     public function deleteSignature(EntityManagerInterface $entityManager, Signature $signature, SessionInterface $session, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator)
     {
+        if (!$session->has('user_id')) {
+            return new RedirectResponse($urlGenerator->generate('app_home'));
+        }
+        $userId = $session->get('user_id');
+
+        if ($userId) {
+            $currentUser = $userRepository->find($userId);
+
+            if ($currentUser && $currentUser->getRole() !== 'admin') {
+                throw $this->createAccessDeniedException('Access Denied');
+            }
+        } else {
+            throw $this->createAccessDeniedException('Access Denied');
+        }
+
         $entityManager->remove($signature);
         $entityManager->flush();
 
