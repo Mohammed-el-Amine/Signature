@@ -373,6 +373,16 @@ class AdminController extends AbstractController
         if (!$user) {
             throw $this->createNotFoundException('Utilisateur non trouvé');
         }
+        $userToken = $user->getToken();
+        $today = new DateTime('now');
+
+        $tokenCreationDate = DateTime::createFromFormat('d-m-Y-H-i-s', substr($userToken, -19));
+
+        $diff = $tokenCreationDate->diff($today);
+
+        if ($diff->h >= 24 || $diff->d > 0) {
+            throw $this->createNotFoundException('Le lien de création de mot de passe a expiré');
+        }
 
         $form = $this->createFormBuilder($user)
             ->add('password', RepeatedType::class, [
@@ -1066,7 +1076,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin-send-password/{id}", name="admin_send_password", methods={"GET", "POST"})
      */
-    public function  sendPassword(UrlGeneratorInterface $urlGenerator, SessionInterface $session, UserRepository $userRepository, User $user, EntityManagerInterface $entityManager)
+    public function sendPassword(UrlGeneratorInterface $urlGenerator, SessionInterface $session, UserRepository $userRepository, User $user, EntityManagerInterface $entityManager)
     {
         if (!$session->has('user_id')) {
             return new RedirectResponse($urlGenerator->generate('app_home'));
@@ -1094,15 +1104,15 @@ class AdminController extends AbstractController
             $tokenWithExpiration = $Newtoken . '-' . str_replace([' ', ':'], '-', $tokenExpiration->format('d-m-Y H:i:s'));
             $user->setToken($tokenWithExpiration);
             $entityManager->flush();
-            
-        }else {
+
+        } else {
             $tokenWithExpiration = $token;
         }
 
         $to = $user->getEmail();
-            $subject = '[UNSA SIGNATURE] ' . mb_encode_mimeheader('MODIFICATION DE MOT DE PASSE', 'UTF-8'); //encode le sujet en UTF-8 pour les caractères spéciaux
+        $subject = '[UNSA SIGNATURE] ' . mb_encode_mimeheader('MODIFICATION DE MOT DE PASSE', 'UTF-8'); //encode le sujet en UTF-8 pour les caractères spéciaux
 
-            $message = '
+        $message = '
                 <!DOCTYPE html
                   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
                 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
@@ -1136,7 +1146,7 @@ class AdminController extends AbstractController
                       <tr>
                         <td class="em_blue em_font_22" align="center" valign="top"
                           style="font-family: Arial, sans-serif; font-size: 26px; line-height: 29px; color:#264780; font-weight:bold;">
-                          Création de votre compte</td>
+                          Création de votre nouveau mot de passe</td>
                       </tr>
                       <tr>
                         <td height="14" style="block-size:14px; font-size:0px; line-height:0px;">&nbsp;</td>
@@ -1181,15 +1191,15 @@ class AdminController extends AbstractController
                         
                 </html>';
 
-            $headers = 'From: support@signature_unsa.org' . "\r\n" .
-                'Reply-To: amine.djellal@unsa.org' . "\r\n" .
-                'X-Mailer: PHP/' . phpversion();
-            $headers .= 'MIME-Version: 1.0' . "\r\n";
-            $headers .= 'Content-Type: text/html; charset=UTF-8' . "\r\n";
+        $headers = 'From: support@signature_unsa.org' . "\r\n" .
+            'Reply-To: amine.djellal@unsa.org' . "\r\n" .
+            'X-Mailer: PHP/' . phpversion();
+        $headers .= 'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-Type: text/html; charset=UTF-8' . "\r\n";
 
 
-            mail($to, $subject, $message, $headers);
+        mail($to, $subject, $message, $headers);
 
-            return new Response();
+        return new Response();
     }
 }

@@ -72,18 +72,19 @@
 
 		<button type="submit" class="btn btn-primary">Enregistrer</button>
 
-		{{ form_end(form) }}
+		{{ form_end(form) }}<br><br>
 
-		<form action="{{ path('admin_send_password', { 'id': user.id }) }}" method="post">
-    <!-- Bouton -->
-    <button type="submit">Envoyer le mot de passe</button>
-</form>
+		<h2 class="mt-4 text-center">Renvoyer un lien de changement de mot de passe ?</h2><br>
+		<form name="form" id="send-password-form" action="{{ path('admin_send_password', { 'id': user.id }) }}" method="post">
+   			<button type="submit" >Renouveller</button>
+		</form>
 
 
 		{% for flashMessage in app.flashes('success') %}
 			<div class="alert alert-success mt-4" role="alert">{{ flashMessage }}</div>
 		{% endfor %}
 	</div>
+
 	<script>
 	document.addEventListener('DOMContentLoaded', function() {
   	document.querySelector('form').addEventListener('submit', function(event) {
@@ -103,6 +104,24 @@
     xhr.send(formData);
   });
 });
+document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('#send-password-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var form = event.target;
+            var formData = new FormData(form);
+            var xhr = new XMLHttpRequest();
+            xhr.open(form.method, form.action, true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var parentWindow = window.parent;
+                    parentWindow.postMessage('closeModal', '*');
+                } else {
+                    console.log('pas de transmission de données');
+                }
+            };
+            xhr.send(formData);
+        });
+    });
 </script>
 
 {% endblock %}
