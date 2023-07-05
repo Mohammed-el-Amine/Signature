@@ -153,11 +153,12 @@
 															<span style="color: #000;" id="zipCodeEdit">{{signature.zipCode}}&nbsp;</span>
 															<span style="color: #000;" id="cityEdit">{{signature.city}}</span><br>
 														</p>
-														<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
+														<p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
 															<img src="https://lab-web.unsa.org/signature/img/mail.png" class="border-0" style="border: none;block-size: 12px;margin-inline-end: .5em;">
-															<a id="emailEdit" href="mailto:${email}" style="color: #666;font-style: italic;">{{signature.email}}</a><br>
-															<img src="https://lab-web.unsa.org/signature/img/phone.png" class="border-0" style="border: none;block-size: 14px;margin-inline-end: .5em;">
-															<span id="phoneEdit" style="color: #666;">{{signature.phone}}</span>
+															<a id="emailEdit" href="mailto:${{signature.email}}" style="color: #666; font-style: italic;">{{signature.email}}</a><br>
+															<img src="https://lab-web.unsa.org/signature/img/phone.png" class="border-0" style="border: none; block-size: 14px; margin-inline-end: .5em;">
+															{% set phoneNumbers = signature.phone|split(' - ') %}
+															{{ phoneNumbers[0] }} &ensp;&ensp;<img src="https://lab-web.unsa.org/signature/img/mobile.png"> &ensp;{{ phoneNumbers[1] }}
 														</p>
 													</td>
 												</tr>
