@@ -1096,6 +1096,12 @@ class AdminController extends AbstractController
         $id = $user->getId();
         $token = $user->getToken();
 
+        $today = new DateTime('now');
+
+        $tokenCreationDate = DateTime::createFromFormat('d-m-Y-H-i-s', substr($token, -19));
+
+        $diff = $tokenCreationDate->diff($today);
+
         if (!$token) {
             $Newtoken = Uuid::v4();
             $tokenExpiration = new DateTime();
@@ -1105,7 +1111,15 @@ class AdminController extends AbstractController
             $user->setToken($tokenWithExpiration);
             $entityManager->flush();
 
-        } else {
+        } else if ($diff->h >= 24 || $diff->d > 0 ) {
+                $Newtoken = Uuid::v4();
+                $tokenExpiration = new DateTime();
+                $tokenExpiration->modify('+24 hours');
+    
+                $tokenWithExpiration = $Newtoken . '-' . str_replace([' ', ':'], '-', $tokenExpiration->format('d-m-Y H:i:s'));
+                $user->setToken($tokenWithExpiration);
+                $entityManager->flush();
+            
             $tokenWithExpiration = $token;
         }
 
