@@ -44,11 +44,11 @@
 							</tbody>
 						</table>
 					</div><br>
-				</section><br><br><br>
+				</section>
 			</div>
 		</div>
 		<h1 class="text-center text-success">Téléchargement terminé avec succès !</h1>
-	</div><br>
+	</div>
 	<button class="btn btn-success" style="visibility: collapse;" onclick="downloadAsPNG()">Télécharger en PNG</button>
 	
 	<script>
@@ -58,22 +58,31 @@
 
 	function downloadAsPNG() {
 		var userName = document.getElementById('nameEdit').innerText;
-		html2canvas(document.querySelector("#signature-container")).then(function (canvas) {
-		var link = document.createElement("a");
-		document.body.appendChild(link);
-		link.download = userName + ".png";
-		canvas.toBlob(function (blob) {
-				var url = URL.createObjectURL(blob);
-				link.href = url;
-				link.click();
-				URL.revokeObjectURL(url);
-			});
-			document.body.removeChild(link);
-		});
-		setTimeout(function () {
-				var parentWindow = window.parent;
-				parentWindow.postMessage('closeModal', '*');
-			}, 500);
+		var scale = 1; // Facteur d'échelle pour ajuster la taille de l'image (modifier selon vos besoins)
+  		var width = 440; // Largeur souhaitée de l'image en pixels
+  		var height = 205; // Hauteur souhaitée de l'image en pixels
+
+	html2canvas(document.querySelector("#signature-container"), {
+	    scale: scale,
+	    width: width,
+	    height: height
+	  }).then(function (canvas) {
+	    var link = document.createElement("a");
+	    document.body.appendChild(link);
+	    link.download = userName + ".png";
+	    canvas.toBlob(function (blob) {
+	      var url = URL.createObjectURL(blob);
+	      link.href = url;
+	      link.click();
+	      URL.revokeObjectURL(url);
+	    });
+	    document.body.removeChild(link);
+	  });
+
+	  setTimeout(function () {
+	    var parentWindow = window.parent;
+	    parentWindow.postMessage('closeModal', '*');
+	  }, 500);
 	}
 	</script>
 {% endblock %}
