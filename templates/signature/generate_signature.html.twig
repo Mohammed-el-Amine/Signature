@@ -59,6 +59,14 @@
 			color: black;
 			text-decoration: none;
 		}
+
+		#signate-container {
+  		/* Vos styles personnalisés ici */
+  		/* Par exemple : */
+  		border: 1px solid #ccc;
+  		padding: 10px;
+  		/* Ajoutez d'autres styles selon vos besoins */
+}
 	</style>
 {% endblock %}
 
@@ -185,138 +193,142 @@
 
 		</section><br><hr><br>
 
-		<h1>Générer une signature</h1><br><br>
+		<h1 class="text-center">Générer une signature</h1><br><br>
 
-		<section class="generate_signature" style="inline-size: 33%; float: inline-start;">
+		<div id"signate-container" class="container border" style="display: flex;padding:5%;">
+			<div style="flex-grow: 1;">
+				<section class="generate_signature" >
 
-			<form class="form" method="post">
-				{{ form_start(form) }}
+					<form class="form" method="post">
+						{{ form_start(form) }}
 
-				<a id="infoPersoBtn" class="btn btn-outline-warning" onclick="toggleInfoPerso()">Information personnelle</a><br><br>
-				<div id="infoPersoFields" style="display: none;">
-					<div class="form-row">
-						<div class="col">
+						<br><br><br><div style="inline-size:516px;"><a id="infoPersoBtn" class="btn btn-outline-warning" onclick="toggleInfoPerso()">Information personnelle</a></div><br>
+						<div id="infoPersoFields" style="display: none;">
+							<div class="form-row">
+								<div class="col">
+									<div class="form-group">
+										{{ form_row(form.last_name, {'attr': {'class': 'form-control', 'id': 'form_last_name', 'oninput': 'updatePreview()'}}) }}
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-group">
+										{{ form_row(form.first_name, {'attr': {'class': 'form-control', 'id': 'form_first_name', 'oninput': 'updatePreview()'}}) }}
+									</div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="col">
+									<div class="form-group">
+										{{ form_row(form.phone_landline, {'attr': {'class': 'form-control', 'id': 'form_phone_landline', 'oninput': 'updatePreview()'}}) }}
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-group">
+										{{ form_row(form.phone_mobile, {'attr': {'class': 'form-control', 'id': 'form_phone_mobile', 'oninput': 'updatePreview()'}}) }}
+									</div>
+								</div>
+							</div>
 							<div class="form-group">
-								{{ form_row(form.last_name, {'attr': {'class': 'form-control', 'id': 'form_last_name', 'oninput': 'updatePreview()'}}) }}
+								{{ form_row(form.email, {'attr': {'class': 'form-control', 'id': 'form_email', 'oninput': 'updatePreview()'}}) }}
 							</div>
 						</div>
-						<div class="col">
-							<div class="form-group">
-								{{ form_row(form.first_name, {'attr': {'class': 'form-control', 'id': 'form_first_name', 'oninput': 'updatePreview()'}}) }}
-							</div>
-						</div>
-					</div>
-					<div class="form-row">
-						<div class="col">
-							<div class="form-group">
-								{{ form_row(form.phone_landline, {'attr': {'class': 'form-control', 'id': 'form_phone_landline', 'oninput': 'updatePreview()'}}) }}
-							</div>
-						</div>
-						<div class="col">
-							<div class="form-group">
-								{{ form_row(form.phone_mobile, {'attr': {'class': 'form-control', 'id': 'form_phone_mobile', 'oninput': 'updatePreview()'}}) }}
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						{{ form_row(form.email, {'attr': {'class': 'form-control', 'id': 'form_email', 'oninput': 'updatePreview()'}}) }}
-					</div>
-				</div>
 
-				<a id="infoEntrepriseBtn" class="btn btn-outline-warning" onclick="toggleInfoEntreprise()">Information entreprise</a><br>
-				<div id="infoEntrepriseFields" style="display: none;"><br>
-					<div class="form-row">
-						<div class="col">
+						<a id="infoEntrepriseBtn" class="btn btn-outline-warning" onclick="toggleInfoEntreprise()">Information entreprise</a><br>
+						<div id="infoEntrepriseFields" style="display: none;"><br>
+							<div class="form-row">
+								<div class="col">
+									<div class="form-group">
+										{{ form_row(form.organization, {'attr': {'class': 'form-control', 'id': 'form_organization', 'oninput': 'updatePreview()'}}) }}
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-group">
+										{{ form_row(form.role, {'attr': {'class': 'form-control', 'id': 'form_role', 'oninput': 'updatePreview()'}}) }}
+									</div>
+								</div>
+							</div>
+								<div class="form-group">
+									{{ form_row(form.adress, {'attr': {'class': 'form-control', 'id': 'form_address', 'oninput': 'updatePreview()'}}) }}
+								</div>
+
+							<div class="form-row">
+								<div class="col">
+									<div class="form-group">
+										{{ form_row(form.zip_code, {'attr': {'class': 'form-control', 'id': 'form_zip_code', 'oninput': 'updatePreview()'}}) }}
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-group">
+										{{ form_row(form.city, {'attr': {'class': 'form-control', 'id': 'form_city', 'oninput': 'updatePreview()'}}) }}
+									</div>
+								</div>
+							</div>
+						</div><br>
+
+						<a id="infoThemeBtn" class="btn btn-outline-warning" onclick="toggleInfoTheme()">Information theme</a><br><br>
+						<div id="infoThemeFields" style="display: none;">
 							<div class="form-group">
-								{{ form_row(form.organization, {'attr': {'class': 'form-control', 'id': 'form_organization', 'oninput': 'updatePreview()'}}) }}
+								{{ form_row(form.logo, {'attr': {'class': 'form-control', 'id': 'form_logo', 'oninput': 'updatePreview()','required': 'required'}}) }}
 							</div>
 						</div>
-						<div class="col">
-							<div class="form-group">
-								{{ form_row(form.role, {'attr': {'class': 'form-control', 'id': 'form_role', 'oninput': 'updatePreview()'}}) }}
-							</div>
-						</div>
-					</div>
-						<div class="form-group">
-							{{ form_row(form.adress, {'attr': {'class': 'form-control', 'id': 'form_address', 'oninput': 'updatePreview()'}}) }}
-						</div>
 
-					<div class="form-row">
-						<div class="col">
-							<div class="form-group">
-								{{ form_row(form.zip_code, {'attr': {'class': 'form-control', 'id': 'form_zip_code', 'oninput': 'updatePreview()'}}) }}
-							</div>
-						</div>
-						<div class="col">
-							<div class="form-group">
-								{{ form_row(form.city, {'attr': {'class': 'form-control', 'id': 'form_city', 'oninput': 'updatePreview()'}}) }}
-							</div>
-						</div>
-					</div>
-				</div><br>
+						{{ form_end(form) }}
+					</form>
 
-				<a id="infoThemeBtn" class="btn btn-outline-warning" onclick="toggleInfoTheme()">Information theme</a><br><br>
-				<div id="infoThemeFields" style="display: none;">
-					<div class="form-group">
-						{{ form_row(form.logo, {'attr': {'class': 'form-control', 'id': 'form_logo', 'oninput': 'updatePreview()','required': 'required'}}) }}
-					</div>
-				</div>
-
-				{{ form_end(form) }}<br>
-			</form>
-
-		</section><br>
-
-		<section class="view_signature d-flex justify-content-center align-items-center mt-5">
-			<div class="border p-3">
-			<h4 class="text-center">Prévisualisation <h4>
-				<table border="0" cellpadding="0" width="500">
-					<tbody>
-						<tr>
-							<td align="left" valign="middle" width="10">
-								<p style="padding-inline-end: 10px;font-size: 12px;line-height: 14px;">
-									<a href="{{srcLogo}}"><img id="logo" src="" class="border-0" style="border: none;inline-size: 120px;" alt="LOGO UNSA"></a>
-								</p>
-							</td>
-							<td><br>
-								<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;text-align: start;">
-									<span id="name" class="font-weight-bold" style="color: #000;font-weight: bold;font-size: 14px;">Nom et Prénom</span><br>
-									<span id="role" style="color: #666;">
-										<i>Mon poste</i>
-									</span><br>
-									<span id="organization" style="color: #666;">
-										<i>Mon entreprise</i>
-									</span><br>
-								</p>
-								<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
-									<span style="color: #000;" id="address">Mon adresse</span><br>
-									<span style="color: #000;" id="zipCode">Code postal&nbsp;</span>
-									<span style="color: #000;" id="city">Ville</span><br>
-								</p>
-								<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
-									<img src="https://lab-web.unsa.org/signature/img/mail.png" class="border-0" style="border: none;block-size: 12px;margin-inline-end: .5em;">
-									<a id="previewEmail" href="mailto:${email}" style="color: #666;font-style: italic;">Adresse Email</a><br>
-									<img src="https://lab-web.unsa.org/signature/img/phone.png" class="border-0" style="border: none;block-size: 14px;margin-inline-end: .5em;">
-									<span id="phone" style="color: #666;">Numéro</span>
-								</p>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+				</section>
 			</div>
-		</section><br>
-
-		<div style="inline-size: 50%; float: inline-end; padding-block-start: 5%;">
-			<div class="Modal">
-				{% if signature is not empty %}
-					<h1>Ma signature :</h1>
-					<div id="signature">{{ signature|raw }}</div><br><br>
-					<button class="btn btn-secondary" onclick="openModal('{{ path('html_signature', {id: signatureID}) }}')">Format HTML</button>
-					<button class="btn btn-success" onclick="openModal('{{ path('png_signature', {id: signatureID}) }}')">Format PNG</button>
-				{% endif %}
-				<br><br><br><br>
+			<div style="flex-grow: 1; position: sticky; inset-block-start: 0;">
+				<section class="view_signature d-flex justify-content-center align-items-center mt-5">
+					<div class=" p-3">
+					<h4 class="text-center">Prévisualisation :<h4><br>
+						<table border="0" cellpadding="0" width="500">
+							<tbody>
+								<tr>
+									<td align="left" valign="middle" width="10">
+										<p style="padding-inline-end: 10px;font-size: 12px;line-height: 14px;">
+											<a href="{{srcLogo}}"><img id="logo" src="" class="border-0" style="border: none;inline-size: 120px;" alt="LOGO UNSA"></a>
+										</p>
+									</td>
+									<td><br>
+										<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;text-align: start;">
+											<span id="name" class="font-weight-bold" style="color: #000;font-weight: bold;font-size: 14px;">Nom et Prénom</span><br>
+											<span id="role" style="color: #666;">
+												<i>Mon poste</i>
+											</span><br>
+											<span id="organization" style="color: #666;">
+												<i>Mon entreprise</i>
+											</span><br>
+										</p>
+										<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
+											<span style="color: #000;" id="address">Mon adresse</span><br>
+											<span style="color: #000;" id="zipCode">Code postal&nbsp;</span>
+											<span style="color: #000;" id="city">Ville</span><br>
+										</p>
+										<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
+											<img src="https://lab-web.unsa.org/signature/img/mail.png" class="border-0" style="border: none;block-size: 12px;margin-inline-end: .5em;">
+											<a id="previewEmail" href="mailto:${email}" style="color: #666;font-style: italic;">Adresse Email</a><br>
+											<img src="https://lab-web.unsa.org/signature/img/phone.png" class="border-0" style="border: none;block-size: 14px;margin-inline-end: .5em;">
+											<span id="phone" style="color: #666;">Numéro</span>
+										</p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+			
+				<div class="container">
+					{% if signature is not empty %}
+						<h1>Ma signature :</h1>
+						<div id="signature">{{ signature|raw }}</div><br><br>
+						<button class="btn btn-secondary" onclick="openModal('{{ path('html_signature', {id: signatureID}) }}')">Format HTML</button>
+						<button class="btn btn-success" onclick="openModal('{{ path('png_signature', {id: signatureID}) }}')">Format PNG</button>
+					{% endif %}
+				</div>
 			</div>
-		</div>
+		</div><br><br>
+
+		
 		<div id="modal" class="modal">
 			<div class="modal-content">
 				<div class="modal-header">
