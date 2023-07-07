@@ -71,7 +71,7 @@
 			<a href="{{ path('logout') }}" class="btn btn-danger">Déconnexion</a>
 		</div>
 
-		<h1 class="display-4 text-center">Admin Dashboard</h1>
+		<h1 class="display-4 text-center">Bienvenue {{user.email}}</h1>
 		<a class="btn btn-outline-info" href="{{ path('admin_index') }}">Utilisateurs</a>
 		<a class="btn btn-outline-info" href="{{ path('admin_logo') }}">Logo</a>
 		<a class="btn btn-outline-info" href="{{path('admin_create_signature')}}">Crée une signature</a>
