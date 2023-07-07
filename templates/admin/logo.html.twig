@@ -65,29 +65,30 @@
 
 {% block body %}
 	<br><br>
-	<div class="container border"><br><br>
-		<div class="d-flex justify-content-end">
-			<a href="{{ path('logout') }}" class="btn btn-danger">Déconnexion</a>
-		</div><br>
-		<a class="btn btn-outline-info" href="{{ path('admin_dashboard') }}">Dashboard</a>
-		<a class="btn btn-outline-info" href="{{ path('admin_index') }}">Utilisateurs</a>
-		<a class="btn btn-outline-info" href="{{ path('admin_create_signature') }}">Crée une signature</a><br><br>
+<div class="container border"><br><br>
+	<div class="d-flex justify-content-end">
+		<a href="{{ path('logout') }}" class="btn btn-danger">Déconnexion</a>
+	</div><br>
+	<a class="btn btn-outline-info" href="{{ path('admin_dashboard') }}">Dashboard</a>
+	<a class="btn btn-outline-info" href="{{ path('admin_index') }}">Utilisateurs</a>
+	<a class="btn btn-outline-info" href="{{ path('admin_create_signature') }}">Crée une signature</a><br><br>
 
-		<div class="listeLogo border">
-			<h1 class="text-center">Liste des logos</h1><br>
+	<div class="listeLogo border">
+		<h1 class="text-center">Liste des logos</h1><br>
 
-			{% for message in app.flashes('error') %}
-				<div class="alert alert-danger">
-					{{ message }}
-				</div>
-			{% endfor %}
+		{% for message in app.flashes('error') %}
+			<div class="alert alert-danger">
+				{{ message }}
+			</div>
+		{% endfor %}
 
-			{% for message in app.flashes('success') %}
-				<div class="alert alert-success">
-					{{ message }}
-				</div>
-			{% endfor %}
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success">
+				{{ message }}
+			</div>
+		{% endfor %}
 
+		<div class="table-responsive">
 			<table class="table">
 				<thead>
 					<tr>
@@ -105,7 +106,7 @@
 						<tr>
 							<td>{{ logo.id }}</td>
 							<td>{{ logo.name }}</td>
-							<td><img src="https://lab-web.unsa.org/signature{{ logo.path }}" class="border-0" style="border: none;inline-size: 120px;" alt="LOGO UNSA"/></td>
+							<td><img src="https://lab-web.unsa.org/signature{{ logo.path }}" class="border-0" style="border: none; max-width: 120px;" alt="LOGO UNSA"/></td>
 							<td>{{ logo.refLink }}</td>
 							<td>{{ logo.createAT|date('d-m-Y') }}</td>
 							<td>{{ logo.updateAt|date('d-m-Y') }}</td>
@@ -117,31 +118,32 @@
 					{% endfor %}
 				</tbody>
 			</table>
-		</div><br><br>
-
-		<div class="allLogos">
-			<h4>Ajouter un logo ?</h4><br>
-			{{ form_start(form) }}
-			<div>
-				{{ form_label(form.name) }}
-				{{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
-				{{ form_errors(form.name) }}<br>
-			</div>
-			<div>
-				{{ form_label(form.refLink) }}
-				{{ form_widget(form.refLink, {'attr': {'class': 'form-control'}}) }}
-				{{ form_errors(form.refLink) }}<br>
-			</div>
-			<div>
-				{{ form_label(form.path) }}
-				{{ form_widget(form.path, {'attr': {'class': 'form-control'}}) }}
-				{{ form_errors(form.path) }}<br>
-			</div>
-			{{ form_end(form) }}
-			<br><br>
 		</div>
+	</div><br><br>
+
+	<div class="allLogos">
+		<h4>Ajouter un logo ?</h4><br>
+		{{ form_start(form) }}
+		<div class="form-group">
+			{{ form_label(form.name) }}
+			{{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+			{{ form_errors(form.name) }}<br>
+		</div>
+		<div class="form-group">
+			{{ form_label(form.refLink) }}
+			{{ form_widget(form.refLink, {'attr': {'class': 'form-control'}}) }}
+			{{ form_errors(form.refLink) }}<br>
+		</div>
+		<div class="form-group">
+			{{ form_label(form.path) }}
+			{{ form_widget(form.path, {'attr': {'class': 'form-control'}}) }}
+			{{ form_errors(form.path) }}<br>
+		</div>
+		{{ form_end(form) }}
+		<br><br>
 	</div>
-	<br><br>
+</div>
+<br><br>
 	<div id="modal" style="display: none;">
 		<div class="modal-content">
 			<div class="modal-header">
