@@ -56,10 +56,10 @@ class AdminController extends AbstractController
             $user = $userRepository->find($userId);
 
             if ($user && $user->getRole() !== 'admin') {
-                throw $this->createAccessDeniedException('Access Denied');
+                return $this->redirectToRoute('app_home');
             }
         } else {
-            throw $this->createAccessDeniedException('Access Denied');
+            return $this->redirectToRoute('app_home');
         }
 
         $createAt = $request->query->get('date');
@@ -134,10 +134,10 @@ class AdminController extends AbstractController
             $user = $userRepository->find($userId);
 
             if ($user && $user->getRole() !== 'admin') {
-                throw $this->createAccessDeniedException('Access Denied');
+                return $this->redirectToRoute('app_home');
             }
         } else {
-            throw $this->createAccessDeniedException('Access Denied');
+            return $this->redirectToRoute('app_home');
         }
 
         $users = $userRepository->findAll();
@@ -162,10 +162,10 @@ class AdminController extends AbstractController
             $currentUser = $userRepository->find($userId);
 
             if ($currentUser && $currentUser->getRole() !== 'admin') {
-                throw $this->createAccessDeniedException('Access Denied');
+                return $this->redirectToRoute('app_home');
             }
         } else {
-            throw $this->createAccessDeniedException('Access Denied');
+            return $this->redirectToRoute('app_home');
         }
 
         $adminId = $session->get('user_id');
@@ -174,10 +174,10 @@ class AdminController extends AbstractController
             $adminUser = $userRepository->find($adminId);
 
             if ($adminUser && $adminUser->getRole() !== 'admin') {
-                throw $this->createAccessDeniedException('Access Denied');
+                return $this->redirectToRoute('app_home');
             }
         } else {
-            throw $this->createAccessDeniedException('Access Denied');
+            return $this->redirectToRoute('app_home');
         }
 
         $entityManager->remove($userToDelete);
@@ -202,10 +202,10 @@ class AdminController extends AbstractController
             $user = $userRepository->find($userId);
 
             if ($user && $user->getRole() !== 'admin') {
-                throw $this->createAccessDeniedException('Access Denied');
+                return $this->redirectToRoute('app_home');
             }
         } else {
-            throw $this->createAccessDeniedException('Access Denied');
+            return $this->redirectToRoute('app_home');
         }
 
         $user = new User();
@@ -439,10 +439,10 @@ class AdminController extends AbstractController
             $currentUser = $userRepository->find($userId);
 
             if ($currentUser && $currentUser->getRole() !== 'admin') {
-                throw $this->createAccessDeniedException('Access Denied');
+                return $this->redirectToRoute('app_home');
             }
         } else {
-            throw $this->createAccessDeniedException('Access Denied');
+            return $this->redirectToRoute('app_home');
         }
 
         $currentEmail = $editUser->getEmail();
@@ -511,10 +511,10 @@ class AdminController extends AbstractController
             $currentUser = $userRepository->find($userId);
 
             if ($currentUser && $currentUser->getRole() !== 'admin') {
-                throw $this->createAccessDeniedException('Access Denied');
+                return $this->redirectToRoute('app_home');
             }
         } else {
-            throw $this->createAccessDeniedException('Access Denied');
+            return $this->redirectToRoute('app_home');
         }
 
         $currentDateTime = new DateTimeImmutable();
@@ -620,10 +620,10 @@ class AdminController extends AbstractController
             $currentUser = $userRepository->find($userId);
 
             if ($currentUser && $currentUser->getRole() !== 'admin') {
-                throw $this->createAccessDeniedException('Access Denied');
+                return $this->redirectToRoute('app_home');
             }
         } else {
-            throw $this->createAccessDeniedException('Access Denied');
+            return $this->redirectToRoute('app_home');
         }
 
         $logo = $entityManager->getRepository(Logo::class)->find($id);
@@ -734,10 +734,10 @@ class AdminController extends AbstractController
             $currentUser = $userRepository->find($userId);
 
             if ($currentUser && $currentUser->getRole() !== 'admin') {
-                throw $this->createAccessDeniedException('Access Denied');
+                return $this->redirectToRoute('app_home');
             }
         } else {
-            throw $this->createAccessDeniedException('Access Denied');
+            return $this->redirectToRoute('app_home');
         }
 
         $entityManager->remove($logo);
@@ -761,10 +761,10 @@ class AdminController extends AbstractController
         if ($userId) {
             $currentUser = $userRepository->find($userId);
             if ($currentUser && $currentUser->getRole() !== 'admin') {
-                throw $this->createAccessDeniedException('Access Denied');
+                return $this->redirectToRoute('app_home');
             }
         } else {
-            throw $this->createAccessDeniedException('Access Denied');
+            return $this->redirectToRoute('app_home');
         }
 
         $generatedSignature = '';
@@ -1061,10 +1061,10 @@ class AdminController extends AbstractController
             $currentUser = $userRepository->find($userId);
 
             if ($currentUser && $currentUser->getRole() !== 'admin') {
-                throw $this->createAccessDeniedException('Access Denied');
+                return $this->redirectToRoute('app_home');
             }
         } else {
-            throw $this->createAccessDeniedException('Access Denied');
+            return $this->redirectToRoute('app_home');
         }
 
         $entityManager->remove($signature);
@@ -1088,10 +1088,10 @@ class AdminController extends AbstractController
             $currentUser = $userRepository->find($userId);
 
             if ($currentUser && $currentUser->getRole() !== 'admin') {
-                throw $this->createAccessDeniedException('Access Denied');
+                return $this->redirectToRoute('app_home');
             }
         } else {
-            throw $this->createAccessDeniedException('Access Denied');
+            return $this->redirectToRoute('app_home');
         }
 
         $id = $user->getId();

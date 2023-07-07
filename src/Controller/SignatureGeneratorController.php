@@ -52,7 +52,7 @@ class SignatureGeneratorController extends AbstractController
         if ($userId) {
             $user = $userRepository->find($userId);
         } else {
-            throw $this->createAccessDeniedException('Access Denied');
+            return $this->redirectToRoute('app_home');
         }
 
         $generatedSignature = '';
@@ -453,7 +453,7 @@ class SignatureGeneratorController extends AbstractController
         if ($userId) {
             $user = $userRepository->find($userId);
         } else {
-            throw $this->createAccessDeniedException('Access Denied');
+            return $this->redirectToRoute('app_home');
         }
 
         $allSignature = $signatureRepository->findAll();
@@ -475,7 +475,7 @@ class SignatureGeneratorController extends AbstractController
         if ($userId) {
             $user = $userRepository->find($userId);
         } else {
-            throw $this->createAccessDeniedException('Access Denied');
+            return $this->redirectToRoute('app_home');
         }
         // Récupérer l'ID de la signature à modifier à partir de la route
         $signatureId = $id;
