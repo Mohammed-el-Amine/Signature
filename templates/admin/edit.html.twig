@@ -85,25 +85,25 @@
 		{% endfor %}
 	</div>
 
-<script>
-	document.addEventListener('DOMContentLoaded', function() {
-		document.querySelector('form').addEventListener('submit', function(event) {
-			event.preventDefault();
-			var form = event.target;
-			var formData = new FormData(form);
-			var xhr = new XMLHttpRequest();
-			xhr.open(form.method, form.action, true);
-			xhr.onload = function() {
-				if (xhr.status === 200) {
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			document.querySelector('form').addEventListener('submit', function(event) {
+				event.preventDefault();
+				var form = event.target;
+				var formData = new FormData(form);
+				var xhr = new XMLHttpRequest();
+				xhr.open(form.method, form.action, true);
+				xhr.onload = function() {
+					if (xhr.status === 200) {
 					var parentWindow = window.parent;
 					parentWindow.postMessage('closeModal', '*');
-				} else {
-					console.log('pas de transmission de données');
-				}
-			};
-			xhr.send(formData);
+					} else {
+						console.log('pas de transmission de données');
+					}
+				};
+				xhr.send(formData);
+			});
 		});
-	});
 	document.addEventListener('DOMContentLoaded', function() {
 			document.querySelector('#send-password-form').addEventListener('submit', function(event) {
 				event.preventDefault();
@@ -121,7 +121,7 @@
 				};
 				xhr.send(formData);
 			});
-		});
-</script>
+    	});
+	</script>
 
 {% endblock %}

@@ -371,8 +371,9 @@ class AdminController extends AbstractController
         $user = $entityManager->getRepository(User::class)->findOneBy(['token' => $token]);
 
         if (!$user) {
-            throw $this->createNotFoundException('Utilisateur non trouvé');
+            return $this->redirectToRoute('app_home');;
         }
+
         $userToken = $user->getToken();
         $today = new DateTime('now');
 
@@ -1099,9 +1100,6 @@ class AdminController extends AbstractController
         $today = new DateTime('now');
 
         $tokenCreationDate = DateTime::createFromFormat('d-m-Y-H-i-s', substr($token, -19));
-
-        $diff = $tokenCreationDate->diff($today);
-
         if (!$token) {
             $Newtoken = Uuid::v4();
             $tokenExpiration = new DateTime();
@@ -1111,7 +1109,11 @@ class AdminController extends AbstractController
             $user->setToken($tokenWithExpiration);
             $entityManager->flush();
 
-        } else if ($diff->h >= 24 || $diff->d > 0 ) {
+        } else
+
+        $diff = $tokenCreationDate->diff($today);
+        
+        if ($diff->h >= 24 || $diff->d > 0 ) {
                 $Newtoken = Uuid::v4();
                 $tokenExpiration = new DateTime();
                 $tokenExpiration->modify('+24 hours');
