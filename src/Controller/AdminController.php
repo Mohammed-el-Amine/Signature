@@ -771,16 +771,22 @@ class AdminController extends AbstractController
         $generatedSignature = '';
         $logos = $logoRepository->findAll();
         $logoChoices = [];
+        $logo2Choices = [];
 
         foreach ($logos as $logo) {
             $name = $logo->getName();
             $path = $logo->getPath();
             $logoChoices[$name] = $logo;
         }
+        foreach ($logos as $logo2) {
+            $name = $logo2->getName();
+            $path = $logo2->getPath();
+            $logo2Choices[$name] = $logo2;
+        }
 
         $form = $this->createFormBuilder()
             ->add('first_name', TextType::class, [
-                'label' => 'Prénom : ',
+                'label' => 'Prénom(*) : ',
                 'attr' => [
                     'placeholder' => 'Prénom',
                 ],
@@ -795,7 +801,7 @@ class AdminController extends AbstractController
                 ],
             ])
             ->add('last_name', TextType::class, [
-                'label' => 'Nom : ',
+                'label' => 'Nom(*) : ',
                 'attr' => [
                     'placeholder' => 'Nom',
                 ],
@@ -810,7 +816,7 @@ class AdminController extends AbstractController
                 ],
             ])
             ->add('role', TextType::class, [
-                'label' => 'Rôle : ',
+                'label' => 'Rôle(*) : ',
                 'attr' => [
                     'placeholder' => 'Poste dans l\'entreprise',
                 ],
@@ -825,7 +831,7 @@ class AdminController extends AbstractController
                 ],
             ])
             ->add('organization', TextType::class, [
-                'label' => 'Organisation : ',
+                'label' => 'Organisation(*) : ',
                 'attr' => [
                     'placeholder' => 'Nom de l\'entreprise'
                 ],
@@ -840,7 +846,7 @@ class AdminController extends AbstractController
                 ],
             ])
             ->add('adress', TextType::class, [
-                'label' => 'Adresse : ',
+                'label' => 'Adresse(*) : ',
                 'attr' => [
                     'placeholder' => 'Addresse',
                 ],
@@ -855,7 +861,7 @@ class AdminController extends AbstractController
                 ],
             ])
             ->add('zip_code', TextType::class, [
-                'label' => 'Code postal : ',
+                'label' => 'Code postal(*) : ',
                 'attr' => [
                     'placeholder' => 'Code Postal',
                 ],
@@ -870,7 +876,7 @@ class AdminController extends AbstractController
                 ],
             ])
             ->add('city', TextType::class, [
-                'label' => 'Ville : ',
+                'label' => 'Ville(*) : ',
                 'attr' => [
                     'placeholder' => 'Ville',
                 ],
@@ -885,7 +891,7 @@ class AdminController extends AbstractController
                 ],
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Email : ',
+                'label' => 'Email(*) : ',
                 'attr' => [
                     'placeholder' => 'Email',
                 ],
@@ -930,7 +936,7 @@ class AdminController extends AbstractController
                 ],
             ])
             ->add('logo', EntityType::class, [
-                'label' => 'Logo : ',
+                'label' => 'Logo(*) : ',
                 'class' => Logo::class,
                 'choice_label' => 'name',
                 'choice_attr' => function ($key) {
@@ -938,6 +944,28 @@ class AdminController extends AbstractController
                 },
                 'choices' => $logoChoices,
                 'required' => false,
+                'placeholder' => 'Choisir un logo',
+            ])
+            ->add('logo_2', EntityType::class, [
+                'label' => 'Logo supplémentaire ?',
+                'class' => Logo::class,
+                'choice_label' => 'name',
+                'choice_attr' => function ($key) {
+                    return ['name' => $key->getPath()];
+                },
+                'choices' => $logo2Choices,
+                'required' => false,
+                'placeholder' => 'Choisir un logo ',
+            ])
+            ->add('disclaimer', ChoiceType::class, [
+                'label' => 'Ajouter le disclaimer ?',
+                'choices' => [
+                    'Oui' => true,
+                    'Non' => false,
+                ],
+                'expanded' => true,
+                'multiple' => false,
+                'required' => true, 
             ])
             ->add('signatureSubmit', SubmitType::class, [
                 'label' => 'Générer la signature',
@@ -967,6 +995,13 @@ class AdminController extends AbstractController
                     $signature->setEmail($data['email']);
                     $signature->setPhone($data['phone_landline'] . ' - ' . $data['phone_mobile']);
                     $signature->setLogo($data['logo']);
+                    $signature->setLogo2($data['logo_2']);
+                    $disclaimerResponse = $data['disclaimer'];
+                    if ($disclaimerResponse === true){
+                        $signature->setDisclaimer('<p>Avant d\'imprimer, pensez à l\'environnement. N\'imprimez cette page que si nécessaire.</p>');
+                    }else{
+                        $signature->setDisclaimer('non');
+                    }
                     $signature->setUserId($session->get('user_id'));
                     // Définir la date de création
                     $createAt = new DateTimeImmutable();
@@ -981,6 +1016,11 @@ class AdminController extends AbstractController
                     $generatedSignature = $this->generateEmailSignature($data);
                     $signatureID = $signature->getId();
                     $srcLogo = $signature->getLogo()->getRefLink();
+                    if ($signature->getLogo2()) {
+                        $srcLogo2 = $signature->getLogo2()->getRefLink();
+                    } else {
+                        $srcLogo2 = ''; 
+                    }
                 }
             }
         }
@@ -993,11 +1033,17 @@ class AdminController extends AbstractController
             $srcLogo = null;
         }
 
+        if (empty($srcLogo2)) {
+            $srcLogo2 = null;
+        }
+
         return $this->render('admin/create_signature.html.twig', [
             'form' => $form->createView(),
             'signature' => $generatedSignature,
             'signatureID' => $signatureID,
             'srcLogo' => $srcLogo,
+            'srcLogo2' => $srcLogo2,
+            'logo2' => $logo2,
         ]);
     }
 
@@ -1034,9 +1080,18 @@ class AdminController extends AbstractController
         $html .= '<img id="LOGO-MAIL" src="/signature/img/mail.png" style="border: none;block-size: 12px;margin-inline-end: .5em;">';
         $html .= '<a href="mailto:' . $data['email'] . '" style="color: #666;font-style: italic;">' . $data['email'] . '</a><br>';
         $html .= '<img id="LOGO-PHONE" src="/signature/img/phone.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
-        $html .= '<span style="color: #666;">' . $data['phone_landline'] . ' - ' . $data['phone_mobile'] . '</span>';
+        $html .= '<span style="color: #666;">' . $data['phone_landline'] . ' - ' . $data['phone_mobile'] . '</span>&ensp;&ensp;';
         $html .= '</p>';
-        $html .= '</td>';
+        $html .= '</td> ';
+
+        if ($data['logo_2'] !== null) {
+            $html .= '<td align="right" valign="middle" width="10">';
+            $html .= '<p style="padding-inline-end: 10px;font-size: 12px;line-height: 14px;">';
+            $html .= '<a href="' . $data['logo_2']->getRefLink() . '"><img id="LOGO" src="' . '/signature' . $data['logo_2']->getPath() . '" style="border: none; inline-size: 120px; "></a>';
+            $html .= '</p>';
+            $html .= '</td>';
+        }
+
         $html .= '</tr>';
         $html .= '</tbody>';
         $html .= '</table>';

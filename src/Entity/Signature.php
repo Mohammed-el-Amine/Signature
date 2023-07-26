@@ -40,6 +40,12 @@ class Signature
     #[ORM\ManyToOne]
     private ?Logo $logo = null;
 
+    #[ORM\ManyToOne] 
+    private ?Logo $logo_2 = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $disclaimer = null;
+
     #[ORM\Column]
     private ?\DateTimeImmutable $createAt = null;
 
@@ -161,6 +167,31 @@ class Signature
 
         return $this;
     }
+    
+    public function getLogo2(): ?Logo
+    {
+        return $this->logo_2;
+    }
+
+    public function setLogo2(?Logo $logo_2): static
+    {
+        $this->logo_2 = $logo_2;
+
+        return $this;
+    }
+
+    public function getDisclaimer(): ?string
+    {
+        return $this->disclaimer;
+    }
+
+    public function setDisclaimer(?string $disclaimer): static
+    {
+        $this->disclaimer = $disclaimer;
+
+        return $this;
+    }
+
 
     public function getCreateAt(): ?\DateTimeImmutable
     {

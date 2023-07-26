@@ -9,12 +9,12 @@
 		<div class="row justify-content-center">
 			<div class="col-lg-6">
 				<section class="view_signature d-flex justify-content-center align-items-center mt-5">
-					<div class="border p-3">
-						<table border="0" cellpadding="0" width="500">
+					<div class=" p-3">
+						<table border="0" cellpadding="0" width="480">
 							<tbody>
 								<tr>
 									<td align="left" valign="middle" width="10">
-										<p style="padding-inline-end: 10px;font-size: 12px;line-height: 14px;">
+											<p style="padding-inline-end: 10px;font-size: 12px;line-height: 14px;">
 											<a href="https://www.unsa.org/"><img id="logo" src="https://lab-web.unsa.org/signature{{signature.logo.path}}" class="border-0" style="border: none;inline-size: 120px;" alt="LOGO UNSA"></a>
 										</p>
 									</td>
@@ -40,6 +40,13 @@
 											<img src="https://lab-web.unsa.org/signature/img/phone.png" class="border-0" style="border: none;block-size: 14px;margin-inline-end: .5em;">
 											<span id="phone" style="color: #666;">{{signature.phone}}</span>
 										</p>
+										{% if signature.logo2 is not null %}
+											<td align="right" valign="middle" width="10">
+												<p style="padding-inline-end: 10px; font-size: 12px; line-height: 14px;">
+													<a href="https://unsa.org/"><img id="logo_2" src="https://lab-web.unsa.org/signature{{signature.logo2.path}}" style="border: none; inline-size: 120px;"></a>
+												</p>
+											</td>
+										{% endif %}
 									</td>
 								</tr>
 							</tbody>
@@ -114,9 +121,26 @@
 							</div>
 						</div>
 						
-						<div class="form-group">
-							{{ form_row(form.logo, {'attr': {'class': 'form-control', 'id': 'form_logo', 'oninput': 'updatePreview()','required': 'required'}}) }}
+						<div class="form-row">
+							<div class="col">
+								 <div class="form-group">
+									{{ form_row(form.logo, {'attr': {'class': 'form-control', 'id': 'form_logo', 'oninput': 'updatePreview()','required': 'required'}}) }}
+								</div>
+							</div>
+
+							<div class="col">
+								 <div class="form-group">
+									{{ form_row(form.logo_2, {'attr': {'class': 'form-control', 'id': 'f', 'oninput': 'updatePreview()'}}) }}
+								</div>
+							</div>
+
 						</div>
+
+						{# <div id="disclaimer-container">
+							{{ form_row(form.disclaimer, {'attr': {'class': '','id':'disclaimer'}})}}
+						</div> #}
+						
+						<p>Merci de bien vouloir renseignez tout les champs obligatoire <br>contenant une astérix (*).</p>
 
 						{{ form_end(form) }}<br>
 					</form>

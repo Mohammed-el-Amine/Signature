@@ -74,303 +74,331 @@
 
 		<h1 class="text-center">Générer une signature</h1><br><br>
 
-	<div id"signate-container" class="container border" style="display: flex;padding:5%;">
-		<div style="flex-grow: 1;">
-			<section class="generate_signature">
+		<div id"signate-container" class="container border" style="display: flex;padding:5%;">
+			<div style="flex-grow: 1;">
+				<section class="generate_signature">
 
-				<form class="form" method="post">
-					{{ form_start(form) }}
+					<form class="form" method="post">
+						{{ form_start(form) }}
 
-					<br><br><br><div style="inline-size:516px;"><a id="infoPersoBtn" class="btn btn-outline-warning" onclick="toggleInfoPerso()">Information personnelle</a></div><br>
-					<div id="infoPersoFields" style="display: none;">
-						<div class="form-row">
-						<div class="col">
-							<div class="form-group">
-							{{ form_row(form.last_name, {'attr': {'class': 'form-control', 'id': 'form_last_name', 'oninput': 'updatePreview()','placeholder' : 'Nom'}}) }}
-							</div>
-						</div>
-						<div class="col">
-							<div class="form-group">
-							{{ form_row(form.first_name, {'attr': {'class': 'form-control', 'id': 'form_first_name', 'oninput': 'updatePreview()', 'placeholder' : 'Prénom'}}) }}
-							</div>
-						</div>
-						</div>
-
-						<div class="form-row">
-						<div class="col">
-							<div class="form-group">
-								{{ form_row(form.phone_landline, {'attr': {'class': 'form-control', 'id': 'form_phone_landline', 'oninput': 'updatePreview()', 'placeholder' : '01 42 42 42 42'}}) }}
-							</div>
-						</div>
-						<div class="col">
-							<div class="form-group">
-								{{ form_row(form.phone_mobile, {'attr': {'class': 'form-control', 'id': 'form_phone_mobile', 'oninput': 'updatePreview()', 'placeholder' : '06 42 42 42 42'}}) }}
-							</div>
-						</div>
-						</div>
-
-						<div class="form-group">
-							{{ form_row(form.email, {'attr': {'class': 'form-control', 'id': 'form_email', 'oninput': 'updatePreview()', 'placeholder':'prénom.nom@unsa.org'}}) }}
-						</div>
-
-					</div>
-
-					<a id="infoEntrepriseBtn" class="btn btn-outline-warning" onclick="toggleInfoEntreprise()">Information entreprise</a><br>
-					<div id="infoEntrepriseFields" style="display: none;">
-						<div class="form-row">
-							<div class="col">
-								<div class="form-group">
-								{{ form_row(form.organization, {'attr': {'class': 'form-control', 'id': 'form_organization', 'oninput': 'updatePreview()'}}) }}
+						<br><br><br><div style="inline-size:516px;">
+							<a id="infoPersoBtn" class="btn btn-outline-warning" onclick="toggleInfoPerso()">Information personnelle&emsp;&emsp;&emsp;&emsp;🔽</a>
+						</div><br>
+						<div id="infoPersoFields" style="display: none;">
+							<div class="form-row">
+								<div class="col">
+									<div class="form-group">
+										{{ form_row(form.last_name, {'attr': {'class': 'form-control', 'id': 'form_last_name', 'oninput': 'updatePreview()','placeholder' : 'Nom'}}) }}
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-group">
+										{{ form_row(form.first_name, {'attr': {'class': 'form-control', 'id': 'form_first_name', 'oninput': 'updatePreview()', 'placeholder' : 'Prénom'}}) }}
+									</div>
 								</div>
 							</div>
-							<div class="col">
-								<div class="form-group">
-									{{ form_row(form.role, {'attr': {'class': 'form-control', 'id': 'form_role', 'oninput': 'updatePreview()'}}) }}
-								</div>
+							<div class="form-group">
+								{{ form_row(form.email, {'attr': {'class': 'form-control', 'id': 'form_email', 'oninput': 'updatePreview()', 'placeholder':'prénom.nom@unsa.org'}}) }}
 							</div>
-						</div>
-						<div class="form-group">
-							{{ form_row(form.adress, {'attr': {'class': 'form-control', 'id': 'form_address', 'oninput': 'updatePreview()'}}) }}
-						</div>
-						<div class="form-row">
-							<div class="col">
-								<div class="form-group">
-									{{ form_row(form.zip_code, {'attr': {'class': 'form-control', 'id': 'form_zip_code', 'oninput': 'updatePreview()'}}) }}
+							<div class="form-row">
+								<div class="col">
+									<div class="form-group">
+										{{ form_row(form.phone_landline, {'attr': {'class': 'form-control', 'id': 'form_phone_landline', 'oninput': 'updatePreview()', 'placeholder' : '01 42 42 42 42'}}) }}
+									</div>
 								</div>
-							</div>
-							<div class="col">
-								<div class="form-group">
-									{{ form_row(form.city, {'attr': {'class': 'form-control', 'id': 'form_city', 'oninput': 'updatePreview()'}}) }}
+								<div class="col">
+									<div class="form-group">
+										{{ form_row(form.phone_mobile, {'attr': {'class': 'form-control', 'id': 'form_phone_mobile', 'oninput': 'updatePreview()', 'placeholder' : '06 42 42 42 42'}}) }}
+									</div>
 								</div>
 							</div>
 						</div>
 
-					</div><br>
+						<a id="infoEntrepriseBtn" class="btn btn-outline-warning" onclick="toggleInfoEntreprise()">Information entreprise &nbsp;&emsp;&emsp;&emsp;&emsp; 🔽</a><br>
+						<div id="infoEntrepriseFields" style="display: none;"><br>
+							<div class="form-row">
+								<div class="col">
+									<div class="form-group">
+										{{ form_row(form.organization, {'attr': {'class': 'form-control', 'id': 'form_organization', 'oninput': 'updatePreview()'}}) }}
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-group">
+										{{ form_row(form.role, {'attr': {'class': 'form-control', 'id': 'form_role', 'oninput': 'updatePreview()'}}) }}
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								{{ form_row(form.adress, {'attr': {'class': 'form-control', 'id': 'form_address', 'oninput': 'updatePreview()'}}) }}
+							</div>
+							<div class="form-row">
+								<div class="col">
+									<div class="form-group">
+										{{ form_row(form.zip_code, {'attr': {'class': 'form-control', 'id': 'form_zip_code', 'oninput': 'updatePreview()'}}) }}
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-group">
+										{{ form_row(form.city, {'attr': {'class': 'form-control', 'id': 'form_city', 'oninput': 'updatePreview()'}}) }}
+									</div>
+								</div>
+							</div>
 
-					<a id="infoThemeBtn" class="btn btn-outline-warning" onclick="toggleInfoTheme()">Information theme</a><br><br>
-					<div id="infoThemeFields" style="display: none;">
-						<div class="form-group">
-							{{ form_row(form.logo, {'attr': {'class': 'form-control', 'id': 'form_logo', 'oninput': 'updatePreview()','required': 'required'}}) }}
+						</div><br>
+
+						<a id="infoThemeBtn" class="btn btn-outline-warning" onclick="toggleInfoTheme()">Information theme &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; 🔽</a><br><br>
+						<div id="infoThemeFields" style="display: none;">
+							<div class="form-row">
+								<div class="col">
+									<div class="form-group">
+										{{ form_row(form.logo, {'attr': {'class': 'form-control', 'id': 'form_logo', 'oninput': 'updatePreview()','required': 'required'}}) }}
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-group">
+										{{ form_row(form.logo_2, {'attr': {'class': 'form-control', 'id': 'form_logo_2', 'oninput': 'updatePreview()'}}) }}
+									</div>
+								</div>
+							</div>
+
+							<div id="disclaimer-container">
+								{{ form_row(form.disclaimer, {'attr': {'class': '','id':'disclaimer'}})}}
+							</div>
+
 						</div>
-					</div>
-					{{ form_end(form) }}<br>
-				</form>
+						<p>Merci de bien vouloir renseignez tout les champs obligatoire
+							<br>contenant une astérix (*).</p>
+						{{ form_end(form) }}<br>
+					</form>
 
-			</section><br>
-		</div>
-		<div style="flex-grow: 1; position: sticky; inset-block-start: 0;">
-			<section class="view_signature d-flex justify-content-center align-items-center mt-5">
-				<div class=" p-3">
-				<h4 class="text-center">Prévisualisation <h4>
-					<table border="0" cellpadding="0" width="500">
-						<tbody>
-							<tr>
-								<td align="left" valign="middle" width="10">
-									<p style="padding-inline-end: 10px;font-size: 12px;line-height: 14px;">
-										<a href="{{srcLogo}}"><img id="logo" src="" class="border-0" style="border: none;inline-size: 120px;" alt="LOGO UNSA"></a>
-									</p>
-								</td>
-								<td><br>
-									<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;text-align: start;">
-										<span id="name" class="font-weight-bold" style="color: #000;font-weight: bold;font-size: 14px;">Nom et Prénom</span><br>
-										<span id="role" style="color: #666;">
-											<i>Mon poste</i>
-										</span><br>
-										<span id="organization" style="color: #666;">
-											<i>Mon entreprise</i>
-										</span><br>
-									</p>
-									<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
-										<span style="color: #000;" id="address">Mon adresse</span><br>
-										<span style="color: #000;" id="zipCode">Code postal&nbsp;</span>
-										<span style="color: #000;" id="city">Ville</span><br>
-									</p>
-									<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
-										<img src="https://lab-web.unsa.org/signature/img/mail.png" class="border-0" style="border: none;block-size: 12px;margin-inline-end: .5em;">
-										<a id="previewEmail" href="mailto:${email}" style="color: #666;font-style: italic;">Adresse Email</a><br>
-										<img src="https://lab-web.unsa.org/signature/img/phone.png" class="border-0" style="border: none;block-size: 14px;margin-inline-end: .5em;">
-										<span id="phone" style="color: #666;">Numéro</span>
-									</p>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</section><br>
-
-				<div class="result">
-					{% if signature is not empty %}
-						<h1>Ma signature :</h1>
-						<div id="signature">{{ signature|raw }}</div><br>
-						<button class="btn btn-secondary" onclick="openModal('{{ path('html_signature',{id: signatureID}) }}')">Format HTML</button>
-						<button class="btn btn-success" onclick="openModal('{{ path('png_signature',{id: signatureID}) }}')">Format PNG</button>
-					{% endif %}
-
-				</div>
-		</div>
-			<!-- Modal -->
-			<div id="modal" class="modal">
-				<div class="modal-content">
-					<div class="modal-header">
-						<span class="close" onclick="closeModal()">&times;</span>
-						<h2 class="modal-title"></h2>
-					</div>
-					<div class="modal-body"></div>
-				</div>
+				</section><br>
 			</div>
-	</div>
-{% endblock %}
-{% block javascripts %}
-	{{ parent() }}
+			<div style="flex-grow: 1; position: sticky; inset-block-start: 0;">
+				<section class="view_signature d-flex justify-content-center align-items-center mt-5">
+					<div class=" p-3">
+						<h4 class="text-center">Prévisualisation
+							<h4>
+								<table border="0" cellpadding="0" width="500">
+									<tbody>
+										<tr>
+											<td align="left" valign="middle" width="10">
+												<p style="padding-inline-end: 10px;font-size: 12px;line-height: 14px;">
+													<a href="{{srcLogo}}"><img id="logo" src="" class="border-0" style="border: none;inline-size: 120px;" alt="LOGO UNSA"></a>
+												</p>
+											</td>
+											<td><br>
+												<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;text-align: start;">
+													<span id="name" class="font-weight-bold" style="color: #000;font-weight: bold;font-size: 14px;">Nom et Prénom</span><br>
+													<span id="role" style="color: #666;">
+														<i>Mon poste</i>
+													</span><br>
+													<span id="organization" style="color: #666;">
+														<i>Mon entreprise</i>
+													</span><br>
+												</p>
+												<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
+													<span style="color: #000;" id="address">Mon adresse</span><br>
+													<span style="color: #000;" id="zipCode">Code postal&nbsp;</span>
+													<span style="color: #000;" id="city">Ville</span><br>
+												</p>
+												<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
+													<img src="https://lab-web.unsa.org/signature/img/mail.png" class="border-0" style="border: none;block-size: 12px;margin-inline-end: .5em;">
+													<a id="previewEmail" href="mailto:${email}" style="color: #666;font-style: italic;">Adresse Email</a><br>
+													<img src="https://lab-web.unsa.org/signature/img/phone.png" class="border-0" style="border: none;block-size: 14px;margin-inline-end: .5em;">
+													<span id="phone" style="color: #666;">Numéro</span>
+												</p>
+												{% if logo2 is not null %}
+													<td align="right" valign="middle" width="10">
+														<p style="padding-inline-end: 10px; font-size: 12px; line-height: 14px;">
+															<a href="{{srcLogo2}}"><img id="logo_2" src="" style="border: none; inline-size: 120px;"></a>
+														</p>
+													</td>
+												{% endif %}
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</section><br>
 
-	<script>
+						<div class="result">
+							{% if signature is not empty %}
+								<h1>Ma signature :</h1>
+								<div id="signature">{{ signature|raw }}</div><br>
+								<button class="btn btn-secondary" onclick="openModal('{{ path('html_signature',{id: signatureID}) }}')">Format HTML</button>
+								<button class="btn btn-success" onclick="openModal('{{ path('png_signature',{id: signatureID}) }}')">Format PNG</button>
+							{% endif %}
 
-		function DownloadHTML() { // Récupère le nom de la personne
-			var firstNameValue = document.getElementById('form_first_name').value;
-			var lastNameValue = document.getElementById('form_last_name').value;
-			var fullName = firstNameValue + ' ' + lastNameValue;
+						</div>
+					</div>
+					<!-- Modal -->
+					<div id="modal" class="modal">
+						<div class="modal-content">
+							<div class="modal-header">
+								<span class="close" onclick="closeModal()">&times;</span>
+								<h2 class="modal-title"></h2>
+							</div>
+							<div class="modal-body"></div>
+						</div>
+					</div>
+				</div>
+			{% endblock %}
+			{% block javascripts %}
+				{{ parent() }}
 
-			var element = document.getElementById('signature').innerHTML;
-			var updatedElement = element.replace(/(<img id="LOGO" src=")([^"]+)(" style="border: none;inline-size: 120px;">)/, '$1https://lab-web.unsa.org/$2$3');
-			var updatedElementSecond = updatedElement.replace(/(<img id="LOGO-PHONE" src=")([^"]+)(" style="border: none;block-size: 14px;margin-inline-end: .5em;">)/, '$1https://lab-web.unsa.org$2$3');
-			var updatedElementThird = updatedElementSecond.replace(/(<img id="LOGO-MAIL" src=")([^"]+)(" style="border: none;block-size: 12px;margin-inline-end: .5em;">)/, '$1https://lab-web.unsa.org$2$3');
-			var filename = fullName + '.html';
-			
-			var link = document.createElement('a');
-			link.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(updatedElementThird));
-			// Ajoute le nom du fichier
-			link.setAttribute('download', filename);
-			link.style.display = 'none';
-			document.body.appendChild(link);
-			link.click();
-			document.body.removeChild(link);
-		}
+				<script>
 
-		function DownloadPNG() { // Récupère le nom de la personne
-			var firstNameValue = document.getElementById('form_first_name').value;
-			var lastNameValue = document.getElementById('form_last_name').value;
-			var fullName = firstNameValue + ' ' + lastNameValue;
+					function DownloadHTML() { // Récupère le nom de la personne
+var firstNameValue = document.getElementById('form_first_name').value;
+var lastNameValue = document.getElementById('form_last_name').value;
+var fullName = firstNameValue + ' ' + lastNameValue;
 
-			// Récupère l'élément de la signature
-			var element = document.getElementById('signature');
-			// Utilise html2canvas pour capturer l'élément en tant qu'image
-			html2canvas(element).then(function (canvas) { // Convertit le canevas en une URL de données d'image PNG
-				var dataURL = canvas.toDataURL('image/png');
+var element = document.getElementById('signature').innerHTML;
+var updatedElement = element.replace(/(<img id="LOGO" src=")([^"]+)(" style="border: none;inline-size: 120px;">)/, '$1https://lab-web.unsa.org/$2$3');
+var updatedElementSecond = updatedElement.replace(/(<img id="LOGO-PHONE" src=")([^"]+)(" style="border: none;block-size: 14px;margin-inline-end: .5em;">)/, '$1https://lab-web.unsa.org$2$3');
+var updatedElementThird = updatedElementSecond.replace(/(<img id="LOGO-MAIL" src=")([^"]+)(" style="border: none;block-size: 12px;margin-inline-end: .5em;">)/, '$1https://lab-web.unsa.org$2$3');
+var filename = fullName + '.html';
 
-				var link = document.createElement('a');
-				link.href = dataURL;
-				link.download = fullName + '.png';
-				link.style.display = 'none';
+var link = document.createElement('a');
+link.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(updatedElementThird));
+// Ajoute le nom du fichier
+link.setAttribute('download', filename);
+link.style.display = 'none';
+document.body.appendChild(link);
+link.click();
+document.body.removeChild(link);
+}
 
-				document.body.appendChild(link);
-				link.click();
-				document.body.removeChild(link);
-			});
-		}
+function DownloadPNG() { // Récupère le nom de la personne
+var firstNameValue = document.getElementById('form_first_name').value;
+var lastNameValue = document.getElementById('form_last_name').value;
+var fullName = firstNameValue + ' ' + lastNameValue;
 
-		function updatePreview() {
+// Récupère l'élément de la signature
+var element = document.getElementById('signature');
+// Utilise html2canvas pour capturer l'élément en tant qu'image
+html2canvas(element).then(function (canvas) { // Convertit le canevas en une URL de données d'image PNG
+var dataURL = canvas.toDataURL('image/png');
 
-			var previewName = document.getElementById('name');
-			var previewEmail = document.getElementById('previewEmail');
-			var previewLogo = document.getElementById('logo');
-			var previewOrganization = document.getElementById('organization');
-			var previewRole = document.getElementById('role');
-			var previewAdress = document.getElementById('address');
-			var previewZipCode = document.getElementById('zipCode');
-			var previewCity = document.getElementById('city');
-			var previewPhone = document.getElementById('phone');
+var link = document.createElement('a');
+link.href = dataURL;
+link.download = fullName + '.png';
+link.style.display = 'none';
 
-			var firstNameValue = document.getElementById('form_first_name').value;
-			var lastNameValue = document.getElementById('form_last_name').value;
-			var emailValue = document.getElementById('form_email').value;
-			var logoSelect = document.getElementById('form_logo');
-			var selectedOption = logoSelect.options[logoSelect.selectedIndex];
-			var logoValue = "https://lab-web.unsa.org/signature" + selectedOption.getAttribute('name');
-			var organizationValue = document.getElementById('form_organization').value;
-			var roleValue = document.getElementById('form_role').value;
-			var addressValue = document.getElementById('form_adress').value;
-			var cityValue = document.getElementById('form_city').value;
-			var phoneLandlineValue = document.getElementById('form_phone_landline').value;
-			var phoneMobileValue = document.getElementById('form_phone_mobile').value;
-			var zipCodeValue = document.getElementById('form_zip_code').value;		
-			var fullName = firstNameValue + ' ' + lastNameValue;
+document.body.appendChild(link);
+link.click();
+document.body.removeChild(link);
+});
+}
 
-			var imgElement = document.createElement("img");
-			imgElement.src = "https://lab-web.unsa.org/signature/img/mobile.png";
-			var phoneContent = phoneLandlineValue + "&ensp;&ensp; " + imgElement.outerHTML + " &ensp; " + phoneMobileValue;
+function updatePreview() {
 
-			previewName.textContent = fullName;
-			previewEmail.innerHTML = emailValue;
-			previewLogo.src = logoValue;
-			previewOrganization.textContent = organizationValue;
-			previewRole.textContent = roleValue;
-			previewAdress.textContent = addressValue;
-			previewCity.textContent = cityValue;
-			previewPhone.innerHTML = phoneContent;
-			previewZipCode.textContent = zipCodeValue;
-		}
+var previewName = document.getElementById('name');
+var previewEmail = document.getElementById('previewEmail');
+var previewLogo = document.getElementById('logo');
+var previewLogo2 = document.getElementById('logo_2');
+var previewOrganization = document.getElementById('organization');
+var previewRole = document.getElementById('role');
+var previewAdress = document.getElementById('address');
+var previewZipCode = document.getElementById('zipCode');
+var previewCity = document.getElementById('city');
+var previewPhone = document.getElementById('phone');
 
-		function toggleInfoPerso() {
-			var infoPersoFields = document.getElementById("infoPersoFields");
-			var infoPersoBtn = document.getElementById("infoPersoBtn");
+var firstNameValue = document.getElementById('form_first_name').value;
+var lastNameValue = document.getElementById('form_last_name').value;
+var emailValue = document.getElementById('form_email').value;
+var logoSelect = document.getElementById('form_logo');
+var logoSelect2 = document.getElementById('form_logo_2');
+var selectedOption = logoSelect.options[logoSelect.selectedIndex];
+var selectedOption2 = logoSelect2.options[logoSelect2.selectedIndex];
+var logoValue = "https://lab-web.unsa.org/signature" + selectedOption.getAttribute('name');
+var logoValue2 = "https://lab-web.unsa.org/signature" + selectedOption2.getAttribute('name');
+var organizationValue = document.getElementById('form_organization').value;
+var roleValue = document.getElementById('form_role').value;
+var addressValue = document.getElementById('form_adress').value;
+var cityValue = document.getElementById('form_city').value;
+var phoneLandlineValue = document.getElementById('form_phone_landline').value;
+var phoneMobileValue = document.getElementById('form_phone_mobile').value;
+var zipCodeValue = document.getElementById('form_zip_code').value;
+var fullName = firstNameValue + ' ' + lastNameValue;
 
-			if (infoPersoFields.style.display === "none") {
-				infoPersoFields.style.display = "block";
-			} else {
-				infoPersoFields.style.display = "none";
-			}	
-		}
+var imgElement = document.createElement("img");
+imgElement.src = "https://lab-web.unsa.org/signature/img/mobile.png";
+var phoneContent = phoneLandlineValue + "&ensp;&ensp; " + imgElement.outerHTML + " &ensp; " + phoneMobileValue;
 
-		function toggleInfoEntreprise() {
-			var infoPersoFields = document.getElementById("infoEntrepriseFields");
-			var infoPersoBtn = document.getElementById("infoEntrepriseBtn");
+previewName.textContent = fullName;
+previewEmail.innerHTML = emailValue;
+previewLogo.src = logoValue;
+previewLogo2.src = logoValue2;
+previewOrganization.textContent = organizationValue;
+previewRole.textContent = roleValue;
+previewAdress.textContent = addressValue;
+previewCity.textContent = cityValue;
+previewPhone.innerHTML = phoneContent;
+previewZipCode.textContent = zipCodeValue;
+}
 
-			if (infoPersoFields.style.display === "none") {
-				infoPersoFields.style.display = "block";
-			} else {
-				infoPersoFields.style.display = "none";
-			}
-		}
+function toggleInfoPerso() {
+var infoPersoFields = document.getElementById("infoPersoFields");
+var infoPersoBtn = document.getElementById("infoPersoBtn");
 
-		function toggleInfoTheme() {
-			var infoPersoFields = document.getElementById("infoThemeFields");
-			var infoPersoBtn = document.getElementById("infoThemeBtn");
+if (infoPersoFields.style.display === "none") {
+infoPersoFields.style.display = "block";
+} else {
+infoPersoFields.style.display = "none";
+}
+}
 
-			if (infoPersoFields.style.display === "none") {
-				infoPersoFields.style.display = "block";
-			} else {
-				infoPersoFields.style.display = "none";
-			}
-		}
+function toggleInfoEntreprise() {
+var infoPersoFields = document.getElementById("infoEntrepriseFields");
+var infoPersoBtn = document.getElementById("infoEntrepriseBtn");
 
-		function openModal(url, title) {
-			var modal = document.getElementById('modal')
-			var modalTitle = modal.querySelector('.modal-title')
-			var modalBody = modal.querySelector('.modal-body')
+if (infoPersoFields.style.display === "none") {
+infoPersoFields.style.display = "block";
+} else {
+infoPersoFields.style.display = "none";
+}
+}
 
-			// Charger le contenu de l'URL dans la modal via une requête iframe
-			modalTitle.textContent = title
-			modalBody.innerHTML = '<iframe src="' + url + '" style="inline-size:100%; block-size:100%; border:none;"></iframe>'
+function toggleInfoTheme() {
+var infoPersoFields = document.getElementById("infoThemeFields");
+var infoPersoBtn = document.getElementById("infoThemeBtn");
 
-			modal.style.display = 'block'
+if (infoPersoFields.style.display === "none") {
+infoPersoFields.style.display = "block";
+} else {
+infoPersoFields.style.display = "none";
+}
+}
 
-			setTimeout(function () {
-				closeModal();
-			}, 1000);
-		}
+function openModal(url, title) {
+var modal = document.getElementById('modal')
+var modalTitle = modal.querySelector('.modal-title')
+var modalBody = modal.querySelector('.modal-body')
 
-		function closeModal() {
-			var modal = document.getElementById('modal')
-			var modalTitle = modal.querySelector('.modal-title')
-			var modalBody = modal.querySelector('.modal-body')
+// Charger le contenu de l'URL dans la modal via une requête iframe
+modalTitle.textContent = title
+modalBody.innerHTML = '<iframe src="' + url + '" style="inline-size:100%; block-size:100%; border:none;"></iframe>'
 
-			modalTitle.textContent = ''
-			modalBody.innerHTML = ''
+modal.style.display = 'block'
 
-			modal.style.display = 'none'
-		}
+setTimeout(function () {
+closeModal();
+}, 1000);
+}
 
-		window.requestAnimationFrame(updatePreview);
-	</script>
+function closeModal() {
+var modal = document.getElementById('modal')
+var modalTitle = modal.querySelector('.modal-title')
+var modalBody = modal.querySelector('.modal-body')
+
+modalTitle.textContent = ''
+modalBody.innerHTML = ''
+
+modal.style.display = 'none'
+}
+
+window.requestAnimationFrame(updatePreview);
+</script>
 
 {% endblock %}

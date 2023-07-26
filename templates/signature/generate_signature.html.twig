@@ -61,12 +61,9 @@
 		}
 
 		#signate-container {
-  		/* Vos styles personnalisés ici */
-  		/* Par exemple : */
-  		border: 1px solid #ccc;
-  		padding: 10px;
-  		/* Ajoutez d'autres styles selon vos besoins */
-}
+			border: 1px solid #ccc;
+			padding: 10px;
+		}
 	</style>
 {% endblock %}
 
@@ -138,10 +135,10 @@
 							<td>
 								<section class="view_signature d-flex justify-content-center align-items-center mt-5">
 									<div class="border p-3">
-										<table border="0" cellpadding="0" width="500">
+										<table border="0" cellpadding="0" width="555">
 											<tbody>
 												<tr>
-													<td align="left" valign="middle" width="10">
+													<td align="left" valign="middle" width="10"><br>
 														<p style="padding-inline-end: 10px;font-size: 12px;line-height: 14px;">
 															<a href="{{signature.logo.refLink}}"><img id="logoEdit" src="https://lab-web.unsa.org/signature{{signature.logo.path}}" class="border-0" style="border: none;inline-size: 120px;" alt="LOGO UNSA"></a>
 														</p>
@@ -166,8 +163,17 @@
 															<a id="emailEdit" href="mailto:{{signature.email}}" style="color: #666; font-style: italic;">{{signature.email}}</a><br>
 															<img src="https://lab-web.unsa.org/signature/img/phone.png" class="border-0" style="border: none; block-size: 14px; margin-inline-end: .5em;">
 															{% set phoneNumbers = signature.phone|split(' - ') %}
-															{{ phoneNumbers[0] }} &ensp;&ensp;<img src="https://lab-web.unsa.org/signature/img/mobile.png" class="border-0" style="border: none; block-size: 14px; margin-inline-end: .5em;"> {{ phoneNumbers[1] }}
+															{{ phoneNumbers[0] }}
+															&ensp;&ensp;<img src="https://lab-web.unsa.org/signature/img/mobile.png" class="border-0" style="border: none; block-size: 14px; margin-inline-end: .5em;">
+															{{ phoneNumbers[1] }}
 														</p>
+														{% if signature.logo2 is not null %}
+															<td align="right" valign="middle" width="10"><br>
+																<p style="padding-inline-end: 10px; font-size: 12px; line-height: 14px;">
+																	<a href="https://www.unsa.org/"><img src="https://lab-web.unsa.org/signature{{signature.logo2.path}}" style="border: none; inline-size: 120px;"></a>
+																</p>
+															</td>
+														{% endif %}
 													</td>
 												</tr>
 											</tbody>
@@ -197,12 +203,14 @@
 
 		<div id"signate-container" class="container border" style="display: flex;padding:5%;">
 			<div style="flex-grow: 1;">
-				<section class="generate_signature" >
+				<section class="generate_signature">
 
 					<form class="form" method="post">
 						{{ form_start(form) }}
 
-						<br><br><br><div style="inline-size:516px;"><a id="infoPersoBtn" class="btn btn-outline-warning" onclick="toggleInfoPerso()">Information personnelle</a></div><br>
+						<br><br><br><div style="inline-size:516px;">
+							<a id="infoPersoBtn" class="btn btn-outline-warning" onclick="toggleInfoPerso()">Information personnelle&emsp;&emsp;&emsp;&emsp;🔽</a>
+						</div><br>
 						<div id="infoPersoFields" style="display: none;">
 							<div class="form-row">
 								<div class="col">
@@ -216,6 +224,9 @@
 									</div>
 								</div>
 							</div>
+							<div class="form-group">
+								{{ form_row(form.email, {'attr': {'class': 'form-control', 'id': 'form_email', 'oninput': 'updatePreview()'}}) }}
+							</div>
 							<div class="form-row">
 								<div class="col">
 									<div class="form-group">
@@ -228,12 +239,9 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group">
-								{{ form_row(form.email, {'attr': {'class': 'form-control', 'id': 'form_email', 'oninput': 'updatePreview()'}}) }}
-							</div>
 						</div>
 
-						<a id="infoEntrepriseBtn" class="btn btn-outline-warning" onclick="toggleInfoEntreprise()">Information entreprise</a><br>
+						<a id="infoEntrepriseBtn" class="btn btn-outline-warning" onclick="toggleInfoEntreprise()">Information entreprise &nbsp;&emsp;&emsp;&emsp;&emsp; 🔽</a><br>
 						<div id="infoEntrepriseFields" style="display: none;"><br>
 							<div class="form-row">
 								<div class="col">
@@ -247,9 +255,9 @@
 									</div>
 								</div>
 							</div>
-								<div class="form-group">
-									{{ form_row(form.adress, {'attr': {'class': 'form-control', 'id': 'form_address', 'oninput': 'updatePreview()'}}) }}
-								</div>
+							<div class="form-group">
+								{{ form_row(form.adress, {'attr': {'class': 'form-control', 'id': 'form_address', 'oninput': 'updatePreview()'}}) }}
+							</div>
 
 							<div class="form-row">
 								<div class="col">
@@ -265,202 +273,225 @@
 							</div>
 						</div><br>
 
-						<a id="infoThemeBtn" class="btn btn-outline-warning" onclick="toggleInfoTheme()">Information theme</a><br><br>
+						<a id="infoThemeBtn" class="btn btn-outline-warning" onclick="toggleInfoTheme()">Information theme &emsp;&emsp;&emsp;&emsp;&emsp;&emsp; 🔽</a><br><br>
 						<div id="infoThemeFields" style="display: none;">
-							<div class="form-group">
-								{{ form_row(form.logo, {'attr': {'class': 'form-control', 'id': 'form_logo', 'oninput': 'updatePreview()','required': 'required'}}) }}
+							<div class="form-row">
+								<div class="col">
+									<div class="form-group">
+										{{ form_row(form.logo, {'attr': {'class': 'form-control', 'id': 'form_logo', 'oninput': 'updatePreview()','required': 'required'}}) }}
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-group">
+										{{ form_row(form.logo_2, {'attr': {'class': 'form-control', 'id': 'form_logo_2', 'oninput': 'updatePreview()'}}) }}
+									</div>
+								</div>
 							</div>
 						</div>
+						<p>Merci de bien vouloir renseignez tout les champs obligatoire
+							<br>contenant une astérix (*).</p>
 
 						{{ form_end(form) }}
 					</form>
 
 				</section>
+
 			</div>
 			<div style="flex-grow: 1; position: sticky; inset-block-start: 0;">
 				<section class="view_signature d-flex justify-content-center align-items-center mt-5">
 					<div class=" p-3">
-					<h4 class="text-center">Prévisualisation :<h4><br>
-						<table border="0" cellpadding="0" width="500">
-							<tbody>
-								<tr>
-									<td align="left" valign="middle" width="10">
-										<p style="padding-inline-end: 10px;font-size: 12px;line-height: 14px;">
-											<a href="{{srcLogo}}"><img id="logo" src="" class="border-0" style="border: none;inline-size: 120px;" alt="LOGO UNSA"></a>
-										</p>
-									</td>
-									<td><br>
-										<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;text-align: start;">
-											<span id="name" class="font-weight-bold" style="color: #000;font-weight: bold;font-size: 14px;">Nom et Prénom</span><br>
-											<span id="role" style="color: #666;">
-												<i>Mon poste</i>
-											</span><br>
-											<span id="organization" style="color: #666;">
-												<i>Mon entreprise</i>
-											</span><br>
-										</p>
-										<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
-											<span style="color: #000;" id="address">Mon adresse</span><br>
-											<span style="color: #000;" id="zipCode">Code postal&nbsp;</span>
-											<span style="color: #000;" id="city">Ville</span><br>
-										</p>
-										<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
-											<img src="https://lab-web.unsa.org/signature/img/mail.png" class="border-0" style="border: none;block-size: 12px;margin-inline-end: .5em;">
-											<a id="previewEmail" href="mailto:${email}" style="color: #666;font-style: italic;">Adresse Email</a><br>
-											<img src="https://lab-web.unsa.org/signature/img/phone.png" class="border-0" style="border: none;block-size: 14px;margin-inline-end: .5em;">
-											<span id="phone" style="color: #666;">Numéro</span>
-										</p>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+						<h4 class="text-center">Prévisualisation :<h4><br>
+								<table border="0" cellpadding="0" width="500">
+									<tbody>
+										<tr>
+											<td align="left" valign="middle" width="10">
+												<p style="padding-inline-end: 10px;font-size: 12px;line-height: 14px;">
+													<a href="{{srcLogo}}"><img id="logo" src="" class="border-0" style="border: none;inline-size: 120px;" alt="LOGO UNSA"></a>
+												</p>
+											</td>
+											<td><br>
+												<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;text-align: start;">
+													<span id="name" class="font-weight-bold" style="color: #000;font-weight: bold;font-size: 14px;">Nom et Prénom</span><br>
+													<span id="role" style="color: #666;">
+														<i>Mon poste</i>
+													</span><br>
+													<span id="organization" style="color: #666;">
+														<i>Mon entreprise</i>
+													</span><br>
+												</p>
+												<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
+													<span style="color: #000;" id="address">Mon adresse</span><br>
+													<span style="color: #000;" id="zipCode">Code postal&nbsp;</span>
+													<span style="color: #000;" id="city">Ville</span><br>
+												</p>
+												<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
+													<img src="https://lab-web.unsa.org/signature/img/mail.png" class="border-0" style="border: none;block-size: 12px;margin-inline-end: .5em;">
+													<a id="previewEmail" href="mailto:${email}" style="color: #666;font-style: italic;">Adresse Email</a><br>
+													<img src="https://lab-web.unsa.org/signature/img/phone.png" class="border-0" style="border: none;block-size: 14px;margin-inline-end: .5em;">
+													<span id="phone" style="color: #666;">Numéro</span>
+												</p>
+												{% if logo2 is not null %}
+													<td align="right" valign="middle" width="10">
+														<p style="padding-inline-end: 10px; font-size: 12px; line-height: 14px;">
+															<a href="{{srcLogo2}}"><img id="logo_2" src="" style="border: none; inline-size: 120px;"></a>
+														</p>
+													</td>
+												{% endif %}
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</section>
+
+						<div class="container">
+							{% if signature is not empty %}
+								<h1>Ma signature :</h1>
+								<div id="signature">{{ signature|raw }}</div><br><br>
+								<button class="btn btn-secondary" onclick="openModal('{{ path('html_signature', {id: signatureID}) }}')">Format HTML</button>
+								<button class="btn btn-success" onclick="openModal('{{ path('png_signature', {id: signatureID}) }}')">Format PNG</button>
+							{% endif %}
+						</div>
 					</div>
-				</section>
-			
-				<div class="container">
-					{% if signature is not empty %}
-						<h1>Ma signature :</h1>
-						<div id="signature">{{ signature|raw }}</div><br><br>
-						<button class="btn btn-secondary" onclick="openModal('{{ path('html_signature', {id: signatureID}) }}')">Format HTML</button>
-						<button class="btn btn-success" onclick="openModal('{{ path('png_signature', {id: signatureID}) }}')">Format PNG</button>
-					{% endif %}
+				</div><br><br>
+
+				<div id="modal" class="modal">
+					<div class="modal-content">
+						<div class="modal-header">
+							<span class="close" onclick="closeModal()">&times;</span>
+							<h2 class="modal-title"></h2>
+						</div>
+						<div class="modal-body"></div>
+					</div>
 				</div>
 			</div>
-		</div><br><br>
+		{% endblock %}
+		{% block javascripts %}
+			{{ parent() }}
+			<script>
 
-		
-		<div id="modal" class="modal">
-			<div class="modal-content">
-				<div class="modal-header">
-					<span class="close" onclick="closeModal()">&times;</span>
-					<h2 class="modal-title"></h2>
-				</div>
-				<div class="modal-body"></div>
-			</div>
-		</div>
-	</div>
-{% endblock %}
-{% block javascripts %}
-{{ parent() }}
-	<script>
+				function updatePreview() {
+var previewName = document.getElementById('name');
+var previewEmail = document.getElementById('previewEmail');
+var previewLogo = document.getElementById('logo');
+var previewLogo2 = document.getElementById('logo_2');
+var previewOrganization = document.getElementById('organization');
+var previewRole = document.getElementById('role');
+var previewAdress = document.getElementById('address');
+var previewZipCode = document.getElementById('zipCode');
+var previewCity = document.getElementById('city');
+var previewPhone = document.getElementById('phone');
 
-	function updatePreview() {
+var firstNameValue = document.getElementById('form_first_name').value;
+var lastNameValue = document.getElementById('form_last_name').value;
+var emailValue = document.getElementById('form_email').value;
+var logoSelect = document.getElementById('form_logo');
+var logoSelect2 = document.getElementById('form_logo_2');
+var selectedOption = logoSelect.options[logoSelect.selectedIndex];
+var selectedOption2 = logoSelect2.options[logoSelect2.selectedIndex];
+var logoValue = "https://lab-web.unsa.org/signature" + selectedOption.getAttribute('name');
+var logoValue2 = "https://lab-web.unsa.org/signature" + selectedOption2.getAttribute('name');
 
-		var previewName = document.getElementById('name');
-		var previewEmail = document.getElementById('previewEmail');
-		var previewLogo = document.getElementById('logo');
-		var previewOrganization = document.getElementById('organization');
-		var previewRole = document.getElementById('role');
-		var previewAdress = document.getElementById('address');
-		var previewZipCode = document.getElementById('zipCode');
-		var previewCity = document.getElementById('city');
-		var previewPhone = document.getElementById('phone');
+var organizationValue = document.getElementById('form_organization').value;
+var roleValue = document.getElementById('form_role').value;
+var addressValue = document.getElementById('form_adress').value;
+var cityValue = document.getElementById('form_city').value;
+var phoneLandlineValue = document.getElementById('form_phone_landline').value;
+var phoneMobileValue = document.getElementById('form_phone_mobile').value;
+var zipCodeValue = document.getElementById('form_zip_code').value;
+var fullName = firstNameValue + ' ' + lastNameValue;
 
-		var firstNameValue = document.getElementById('form_first_name').value;
-		var lastNameValue = document.getElementById('form_last_name').value;
-		var emailValue = document.getElementById('form_email').value;
-		var logoSelect = document.getElementById('form_logo');
-		var selectedOption = logoSelect.options[logoSelect.selectedIndex];
-		var logoValue = "https://lab-web.unsa.org/signature" + selectedOption.getAttribute('name');
-		var organizationValue = document.getElementById('form_organization').value;
-		var roleValue = document.getElementById('form_role').value;
-		var addressValue = document.getElementById('form_adress').value;
-		var cityValue = document.getElementById('form_city').value;
-		var phoneLandlineValue = document.getElementById('form_phone_landline').value;
-		var phoneMobileValue = document.getElementById('form_phone_mobile').value;
-		var zipCodeValue = document.getElementById('form_zip_code').value;		
-		var fullName = firstNameValue + ' ' + lastNameValue;
+var imgElement = document.createElement("img");
+imgElement.src = "https://lab-web.unsa.org/signature/img/mobile.png";
+var phoneContent = phoneLandlineValue + "&ensp;&ensp; " + imgElement.outerHTML + " &ensp; " + phoneMobileValue;
 
-		var imgElement = document.createElement("img");
-		imgElement.src = "https://lab-web.unsa.org/signature/img/mobile.png";
-		var phoneContent = phoneLandlineValue + "&ensp;&ensp; " + imgElement.outerHTML + " &ensp; " + phoneMobileValue;
+previewName.textContent = fullName;
+previewEmail.innerHTML = emailValue;
+previewLogo.src = logoValue;
+previewLogo2.src = logoValue2;
+previewOrganization.textContent = organizationValue;
+previewRole.textContent = roleValue;
+previewAdress.textContent = addressValue;
+previewCity.textContent = cityValue;
+previewPhone.innerHTML = phoneContent;
+previewZipCode.textContent = zipCodeValue;
+}
 
-		previewName.textContent = fullName;
-		previewEmail.innerHTML = emailValue;
-		previewLogo.src = logoValue;
-		previewOrganization.textContent = organizationValue;
-		previewRole.textContent = roleValue;
-		previewAdress.textContent = addressValue;
-		previewCity.textContent = cityValue;
-		previewPhone.innerHTML = phoneContent;
-		previewZipCode.textContent = zipCodeValue;
-	}
+function togglePasswordVisibility(fieldName) {
+var passwordField = document.querySelector('input[name="' + fieldName + '"]');
+var showPasswordBtn = document.getElementById("showPasswordBtn");
 
-		function togglePasswordVisibility(fieldName) {
-			var passwordField = document.querySelector('input[name="' + fieldName + '"]');
-			var showPasswordBtn = document.getElementById("showPasswordBtn");
+if (passwordField.type === "password") {
+passwordField.type = "text";
+showPasswordBtn.textContent = "Cacher";
+} else {
+passwordField.type = "password";
+showPasswordBtn.textContent = "Afficher";
+}
+}
 
-			if (passwordField.type === "password") {
-				passwordField.type = "text";
-				showPasswordBtn.textContent = "Cacher";
-			} else {
-				passwordField.type = "password";
-				showPasswordBtn.textContent = "Afficher";
-			}
-		}
+function toggleInfoPerso() {
+var infoPersoFields = document.getElementById("infoPersoFields");
+var infoPersoBtn = document.getElementById("infoPersoBtn");
 
-		function toggleInfoPerso() {
-			var infoPersoFields = document.getElementById("infoPersoFields");
-			var infoPersoBtn = document.getElementById("infoPersoBtn");
+if (infoPersoFields.style.display === "none") {
+infoPersoFields.style.display = "block";
+} else {
+infoPersoFields.style.display = "none";
+}
+}
 
-			if (infoPersoFields.style.display === "none") {
-				infoPersoFields.style.display = "block";
-			} else {
-				infoPersoFields.style.display = "none";
-			}
-		}
+function toggleInfoEntreprise() {
+var infoPersoFields = document.getElementById("infoEntrepriseFields");
+var infoPersoBtn = document.getElementById("infoEntrepriseBtn");
 
-		function toggleInfoEntreprise() {
-			var infoPersoFields = document.getElementById("infoEntrepriseFields");
-			var infoPersoBtn = document.getElementById("infoEntrepriseBtn");
+if (infoPersoFields.style.display === "none") {
+infoPersoFields.style.display = "block";
+} else {
+infoPersoFields.style.display = "none";
+}
+}
 
-			if (infoPersoFields.style.display === "none") {
-				infoPersoFields.style.display = "block";
-			} else {
-				infoPersoFields.style.display = "none";
-			}
-		}
+function toggleInfoTheme() {
+var infoPersoFields = document.getElementById("infoThemeFields");
+var infoPersoBtn = document.getElementById("infoThemeBtn");
 
-		function toggleInfoTheme() {
-			var infoPersoFields = document.getElementById("infoThemeFields");
-			var infoPersoBtn = document.getElementById("infoThemeBtn");
+if (infoPersoFields.style.display === "none") {
+infoPersoFields.style.display = "block";
+} else {
+infoPersoFields.style.display = "none";
+}
+}
 
-			if (infoPersoFields.style.display === "none") {
-				infoPersoFields.style.display = "block";
-			} else {
-				infoPersoFields.style.display = "none";
-			}
-		}
+function openModal(url, title) {
+var modal = document.getElementById('modal')
+var modalTitle = modal.querySelector('.modal-title')
+var modalBody = modal.querySelector('.modal-body')
 
-		function openModal(url, title) {
-			var modal = document.getElementById('modal')
-			var modalTitle = modal.querySelector('.modal-title')
-			var modalBody = modal.querySelector('.modal-body')
+// Charger le contenu de l'URL dans la modal via une requête iframe
+modalTitle.textContent = title
+modalBody.innerHTML = '<iframe src="' + url + '" style="inline-size:100%; block-size:100%; border:none;"></iframe>'
 
-			// Charger le contenu de l'URL dans la modal via une requête iframe
-			modalTitle.textContent = title
-			modalBody.innerHTML = '<iframe src="' + url + '" style="inline-size:100%; block-size:100%; border:none;"></iframe>'
+modal.style.display = 'block'
+}
 
-			modal.style.display = 'block'
-		}
+function closeModal() {
+var modal = document.getElementById('modal')
+var modalTitle = modal.querySelector('.modal-title')
+var modalBody = modal.querySelector('.modal-body')
 
-		function closeModal() {
-			var modal = document.getElementById('modal')
-			var modalTitle = modal.querySelector('.modal-title')
-			var modalBody = modal.querySelector('.modal-body')
+modalTitle.textContent = ''
+modalBody.innerHTML = ''
 
-			modalTitle.textContent = ''
-			modalBody.innerHTML = ''
+modal.style.display = 'none'
+}
 
-			modal.style.display = 'none'
-		}
+window.requestAnimationFrame(updatePreview);
 
-		window.requestAnimationFrame(updatePreview);
-
-		window.addEventListener('message', function(event) {
-    		if (event.data === 'closeModal') {
-      			closeModal();
-    		}
- 		});
-	</script>
-{% endblock %}
+window.addEventListener('message', function (event) {
+if (event.data === 'closeModal') {
+closeModal();
+}
+});
+			</script>
+		{% endblock %}

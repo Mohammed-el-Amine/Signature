@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\Logo;
 use App\Entity\Signature;
@@ -58,16 +59,22 @@ class SignatureGeneratorController extends AbstractController
         $generatedSignature = '';
         $logos = $logoRepository->findAll();
         $logoChoices = [];
+        $logo2Choices = [];
 
         foreach ($logos as $logo) {
             $name = $logo->getName();
             $path = $logo->getPath();
             $logoChoices[$name] = $logo;
         }
+        foreach ($logos as $logo2) {
+            $name = $logo2->getName();
+            $path = $logo2->getPath();
+            $logo2Choices[$name] = $logo2;
+        }
 
         $form = $this->createFormBuilder()
             ->add('first_name', TextType::class, [
-                'label' => 'Prénom : ',
+                'label' => 'Prénom(*) : ',
                 'attr' => [
                     'placeholder' => 'Prénom',
                 ],
@@ -82,7 +89,7 @@ class SignatureGeneratorController extends AbstractController
                 ],
             ])
             ->add('last_name', TextType::class, [
-                'label' => 'Nom : ',
+                'label' => 'Nom(*) : ',
                 'attr' => [
                     'placeholder' => 'Nom',
                 ],
@@ -97,7 +104,7 @@ class SignatureGeneratorController extends AbstractController
                 ],
             ])
             ->add('role', TextType::class, [
-                'label' => 'Rôle : ',
+                'label' => 'Rôle(*) : ',
                 'attr' => [
                     'placeholder' => 'Poste dans l\'entreprise',
                 ],
@@ -112,7 +119,7 @@ class SignatureGeneratorController extends AbstractController
                 ],
             ])
             ->add('organization', TextType::class, [
-                'label' => 'Organisation : ',
+                'label' => 'Organisation(*) : ',
                 'attr' => [
                     'placeholder' => 'Nom de l\'entreprise'
                 ],
@@ -127,7 +134,7 @@ class SignatureGeneratorController extends AbstractController
                 ],
             ])
             ->add('adress', TextType::class, [
-                'label' => 'Adresse : ',
+                'label' => 'Adresse(*) : ',
                 'attr' => [
                     'placeholder' => 'Addresse',
                 ],
@@ -142,7 +149,7 @@ class SignatureGeneratorController extends AbstractController
                 ],
             ])
             ->add('zip_code', TextType::class, [
-                'label' => 'Code postal : ',
+                'label' => 'Code postal(*) : ',
                 'attr' => [
                     'placeholder' => 'Code Postal',
                 ],
@@ -157,7 +164,7 @@ class SignatureGeneratorController extends AbstractController
                 ],
             ])
             ->add('city', TextType::class, [
-                'label' => 'Ville : ',
+                'label' => 'Ville(*) : ',
                 'attr' => [
                     'placeholder' => 'Ville',
                 ],
@@ -172,7 +179,7 @@ class SignatureGeneratorController extends AbstractController
                 ],
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Email : ',
+                'label' => 'Email(*) : ',
                 'attr' => [
                     'placeholder' => 'Email',
                 ],
@@ -217,7 +224,7 @@ class SignatureGeneratorController extends AbstractController
                 ],
             ])
             ->add('logo', EntityType::class, [
-                'label' => 'Logo : ',
+                'label' => 'Logo(*) : ',
                 'class' => Logo::class,
                 'choice_label' => 'name',
                 'choice_attr' => function ($key) {
@@ -225,6 +232,28 @@ class SignatureGeneratorController extends AbstractController
                 },
                 'choices' => $logoChoices,
                 'required' => false,
+                'placeholder' => 'Choisir un logo',
+            ])
+            ->add('logo_2', EntityType::class, [
+                'label' => 'Logo supplémentaire ?',
+                'class' => Logo::class,
+                'choice_label' => 'name',
+                'choice_attr' => function ($key) {
+                    return ['name' => $key->getPath()];
+                },
+                'choices' => $logo2Choices,
+                'required' => false,
+                'placeholder' => 'Choisir un logo ',
+            ])    
+            ->add('disclaimer', ChoiceType::class, [
+                'label' => 'Ajouter le disclaimer ?(*)',
+                'choices' => [
+                    'Oui' => true,
+                    'Non' => false,
+                ],
+                'expanded' => true,
+                'multiple' => false,
+                'required' => true,
             ])
             ->add('signatureSubmit', SubmitType::class, [
                 'label' => 'Générer la signature',
@@ -282,6 +311,13 @@ class SignatureGeneratorController extends AbstractController
                     $signature->setEmail($data['email']);
                     $signature->setPhone($data['phone_landline'] . ' - ' . $data['phone_mobile']);
                     $signature->setLogo($data['logo']);
+                    $signature->setLogo2($data['logo_2']);
+                    $disclaimerResponse = $data['disclaimer'];
+                    if ($disclaimerResponse === true){
+                        $signature->setDisclaimer('<h2>ne pas jette sur la voi public</h2>');//Modifier par un vrais disclaimer
+                    }else{
+                        $signature->setDisclaimer('non');
+                    }
                     $signature->setUserId($session->get('user_id'));
                     // Définir la date de création
                     $createAt = new DateTimeImmutable();
@@ -296,6 +332,11 @@ class SignatureGeneratorController extends AbstractController
                     $generatedSignature = $this->generateEmailSignature($data);
                     $signatureID = $signature->getId();
                     $srcLogo = $signature->getLogo()->getRefLink();
+                    if ($signature->getLogo2()) {
+                        $srcLogo2 = $signature->getLogo2()->getRefLink();
+                    } else {
+                        $srcLogo2 = '';
+                    }
                 }
             }
 
@@ -362,11 +403,15 @@ class SignatureGeneratorController extends AbstractController
         );
 
         if (empty($signatureID)) {
-            $signatureID = null; // éviter une erreur si la variable n'est pas définie
+            $signatureID = null;
         }
 
         if (empty($srcLogo)) {
-            $srcLogo = null; // éviter une erreur si la variable n'est pas définie
+            $srcLogo = null;
+        }
+
+        if (empty($srcLogo2)) {
+            $srcLogo2 = null;
         }
 
         return $this->render('signature/generate_signature.html.twig', [
@@ -380,6 +425,8 @@ class SignatureGeneratorController extends AbstractController
             'user' => $user,
             'signatureID' => $signatureID,
             'srcLogo' => $srcLogo,
+            'srcLogo2' => $srcLogo2,
+            'logo2' => $logo2,
         ]);
     }
     private function generateEmailSignature(array $data): string
@@ -418,6 +465,15 @@ class SignatureGeneratorController extends AbstractController
         $html .= '<span style="color: #666;">' . $data['phone_landline'] . ' - ' . $data['phone_mobile'] . '</span>';
         $html .= '</p>';
         $html .= '</td>';
+
+        if ($data['logo_2'] !== null) {
+            $html .= '<td align="right" valign="middle" width="10">';
+            $html .= '<p style="padding-inline-end: 10px;font-size: 12px;line-height: 14px;">';
+            $html .= '<a href="' . $data['logo_2']->getRefLink() . '"><img id="LOGO" src="' . '/signature' . $data['logo_2']->getPath() . '" style="border: none; inline-size: 120px; "></a>';
+            $html .= '</p>';
+            $html .= '</td>';
+        }
+
         $html .= '</tr>';
         $html .= '</tbody>';
         $html .= '</table>';
@@ -489,16 +545,22 @@ class SignatureGeneratorController extends AbstractController
 
         $logos = $logoRepository->findAll();
         $logoChoices = [];
+        $logo2Choices = [];
 
         foreach ($logos as $logo) {
             $name = $logo->getName();
             $path = $logo->getPath();
             $logoChoices[$name] = $logo;
         }
+        foreach ($logos as $logo2) {
+            $name = $logo2->getName();
+            $path = $logo2->getPath();
+            $logo2Choices[$name] = $logo2;
+        }
 
         $form = $this->createFormBuilder()
             ->add('first_name', TextType::class, [
-                'label' => 'Prénom : ',
+                'label' => 'Prénom(*) : ',
                 'attr' => [
                     'placeholder' => 'Prénom',
                 ],
@@ -513,7 +575,7 @@ class SignatureGeneratorController extends AbstractController
                 ],
             ])
             ->add('last_name', TextType::class, [
-                'label' => 'Nom : ',
+                'label' => 'Nom(*) : ',
                 'attr' => [
                     'placeholder' => 'Nom',
                 ],
@@ -528,7 +590,7 @@ class SignatureGeneratorController extends AbstractController
                 ],
             ])
             ->add('role', TextType::class, [
-                'label' => 'Rôle : ',
+                'label' => 'Rôle(*) : ',
                 'attr' => [
                     'placeholder' => 'Poste dans l\'entreprise',
                 ],
@@ -543,7 +605,7 @@ class SignatureGeneratorController extends AbstractController
                 ],
             ])
             ->add('organization', TextType::class, [
-                'label' => 'Organisation : ',
+                'label' => 'Organisation(*) : ',
                 'attr' => [
                     'placeholder' => 'Nom de l\'entreprise'
                 ],
@@ -558,7 +620,7 @@ class SignatureGeneratorController extends AbstractController
                 ],
             ])
             ->add('adress', TextType::class, [
-                'label' => 'Adresse : ',
+                'label' => 'Adresse(*) : ',
                 'attr' => [
                     'placeholder' => 'Addresse',
                 ],
@@ -573,7 +635,7 @@ class SignatureGeneratorController extends AbstractController
                 ],
             ])
             ->add('zip_code', TextType::class, [
-                'label' => 'Code postal : ',
+                'label' => 'Code postal(*) : ',
                 'attr' => [
                     'placeholder' => 'Code Postal',
                 ],
@@ -588,7 +650,7 @@ class SignatureGeneratorController extends AbstractController
                 ],
             ])
             ->add('city', TextType::class, [
-                'label' => 'Ville : ',
+                'label' => 'Ville(*) : ',
                 'attr' => [
                     'placeholder' => 'Ville',
                 ],
@@ -603,7 +665,7 @@ class SignatureGeneratorController extends AbstractController
                 ],
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Email : ',
+                'label' => 'Email(*) : ',
                 'attr' => [
                     'placeholder' => 'Email',
                 ],
@@ -648,7 +710,7 @@ class SignatureGeneratorController extends AbstractController
                 ],
             ])
             ->add('logo', EntityType::class, [
-                'label' => 'Logo : ',
+                'label' => 'Logo(*) : ',
                 'class' => Logo::class,
                 'choice_label' => 'name',
                 'choice_attr' => function ($key) {
@@ -657,6 +719,27 @@ class SignatureGeneratorController extends AbstractController
                 'choices' => $logoChoices,
                 'required' => false,
             ])
+            ->add('logo_2', EntityType::class, [
+                'label' => 'Logo supplémentaire ?',
+                'class' => Logo::class,
+                'choice_label' => 'name',
+                'choice_attr' => function ($key) {
+                    return ['name' => $key->getPath()];
+                },
+                'choices' => $logo2Choices,
+                'required' => false,
+                'placeholder' => 'Choisir un logo ',
+            ])
+            // ->add('disclaimer', ChoiceType::class, [
+            //     'label' => 'Ajouter le disclaimer ?',
+            //     'choices' => [
+            //         'Oui' => true,
+            //         'Non' => false,
+            //     ],
+            //     'expanded' => true,
+            //     'multiple' => false,
+            //     'required' => true, 
+            // ])            
             ->add('signatureSubmit', SubmitType::class, [
                 'label' => 'Générer la signature',
                 'attr' => [
@@ -686,6 +769,7 @@ class SignatureGeneratorController extends AbstractController
             'phone_landline' => $phoneLandline,
             'phone_mobile' => $phoneMobile,
             'logo' => $signature->getLogo(),
+            'logo_2' => $signature->getLogo2(),
         ]);
 
         $form->handleRequest($request);
@@ -705,11 +789,8 @@ class SignatureGeneratorController extends AbstractController
             $signature->setEmail($newSignatureData['email']);
             $signature->setPhone($newSignatureData['phone_landline'] . ' - ' . $newSignatureData['phone_mobile']);
             $signature->setLogo($newSignatureData['logo']);
-
-            // Enregistrer les modifications dans la base de données
+            $signature->setLogo2($newSignatureData['logo_2']);
             $entityManager->flush();
-
-            // Rediriger vers une autre page ou afficher un message de succès
         }
 
         return $this->render('signature/edit_signature.html.twig', [
