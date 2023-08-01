@@ -314,7 +314,7 @@ class SignatureGeneratorController extends AbstractController
                     $signature->setLogo2($data['logo_2']);
                     $disclaimerResponse = $data['disclaimer'];
                     if ($disclaimerResponse === true){
-                        $signature->setDisclaimer('<h2>ne pas jette sur la voi public</h2>');//Modifier par un vrais disclaimer
+                        $signature->setDisclaimer('<p>Avant d\'imprimer, pensez à l\'environnement. N\'imprimez cette page que si nécessaire.</p>');//Modifier par un vrais disclaimer
                     }else{
                         $signature->setDisclaimer('non');
                     }

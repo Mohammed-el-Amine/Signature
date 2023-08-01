@@ -166,18 +166,23 @@
 															{{ phoneNumbers[0] }}
 															&ensp;&ensp;<img src="https://lab-web.unsa.org/signature/img/mobile.png" class="border-0" style="border: none; block-size: 14px; margin-inline-end: .5em;">
 															{{ phoneNumbers[1] }}
-														</p>
+														</p>														
 														{% if signature.logo2 is not null %}
 															<td align="right" valign="middle" width="10"><br>
 																<p style="padding-inline-end: 10px; font-size: 12px; line-height: 14px;">
 																	<a href="https://www.unsa.org/"><img alt="" src="https://lab-web.unsa.org/signature{{signature.logo2.path}}" style="border: none; inline-size: 120px;"></a>
 																</p>
 															</td>
-														{% endif %}
-													</td>
+														{% endif %}														
+													</td>												
 												</tr>
 											</tbody>
 										</table>
+										{% if signature.disclaimer != 'non' %}
+											<div style="background-color: #3f9b0b;">
+												{{ signature.disclaimer|raw }}
+											</div>
+										{% endif %}
 									</div>
 								</section><br>
 							</td>
