@@ -140,7 +140,7 @@
 												<tr>
 													<td align="left" valign="middle" width="10"><br>
 														<p style="padding-inline-end: 10px;font-size: 12px;line-height: 14px;">
-															<a href="{{signature.logo.refLink}}"><img id="logoEdit" src="https://lab-web.unsa.org/signature{{signature.logo.path}}" class="border-0" style="border: none;inline-size: 120px;" alt="LOGO UNSA"></a>
+															<a href="{{signature.logo.refLink}}"><img id="logoEdit" src="https://lab-web.unsa.org/signature{{signature.logo.path}}" class="border-0" style="border: none;inline-size: 120px;" alt=""></a>
 														</p>
 													</td>
 													<td><br>
@@ -170,7 +170,7 @@
 														{% if signature.logo2 is not null %}
 															<td align="right" valign="middle" width="10"><br>
 																<p style="padding-inline-end: 10px; font-size: 12px; line-height: 14px;">
-																	<a href="https://www.unsa.org/"><img src="https://lab-web.unsa.org/signature{{signature.logo2.path}}" style="border: none; inline-size: 120px;"></a>
+																	<a href="https://www.unsa.org/"><img alt="" src="https://lab-web.unsa.org/signature{{signature.logo2.path}}" style="border: none; inline-size: 120px;"></a>
 																</p>
 															</td>
 														{% endif %}
@@ -287,7 +287,13 @@
 									</div>
 								</div>
 							</div>
+
+							<div id="disclaimer-container">
+									{{ form_row(form.disclaimer, {'attr': {'class': '','id':'disclaimer'}})}}
+							</div>
+
 						</div>
+
 						<p>Merci de bien vouloir renseignez tout les champs obligatoire
 							<br>contenant une astérix (*).</p>
 
@@ -306,7 +312,7 @@
 										<tr>
 											<td align="left" valign="middle" width="10">
 												<p style="padding-inline-end: 10px;font-size: 12px;line-height: 14px;">
-													<a href="{{srcLogo}}"><img id="logo" src="" class="border-0" style="border: none;inline-size: 120px;" alt="LOGO UNSA"></a>
+													<a href="{{srcLogo}}"><img id="logo" src="" class="border-0" style="border: none;inline-size: 120px;" alt=""></a>
 												</p>
 											</td>
 											<td><br>
@@ -333,7 +339,7 @@
 												{% if logo2 is not null %}
 													<td align="right" valign="middle" width="10">
 														<p style="padding-inline-end: 10px; font-size: 12px; line-height: 14px;">
-															<a href="{{srcLogo2}}"><img id="logo_2" src="" style="border: none; inline-size: 120px;"></a>
+															<a href="{{srcLogo2}}"><img alt="" id="logo_2" src="" style="border: none; inline-size: 120px;"></a>
 														</p>
 													</td>
 												{% endif %}
