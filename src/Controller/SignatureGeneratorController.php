@@ -738,16 +738,16 @@ class SignatureGeneratorController extends AbstractController
                 'required' => false,
                 'placeholder' => 'Choisir un logo ',
             ])
-            // ->add('disclaimer', ChoiceType::class, [
-            //     'label' => 'Ajouter le disclaimer ?',
-            //     'choices' => [
-            //         'Oui' => true,
-            //         'Non' => false,
-            //     ],
-            //     'expanded' => true,
-            //     'multiple' => false,
-            //     'required' => true, 
-            // ])            
+            ->add('disclaimer', ChoiceType::class, [
+                'label' => 'Ajouter le disclaimer ?',
+                'choices' => [
+                    'Oui' => true,
+                    'Non' => false,
+                ],
+                'expanded' => true,
+                'multiple' => false,
+                'required' => true,
+            ])                       
             ->add('signatureSubmit', SubmitType::class, [
                 'label' => 'Générer la signature',
                 'attr' => [
@@ -778,6 +778,7 @@ class SignatureGeneratorController extends AbstractController
             'phone_mobile' => $phoneMobile,
             'logo' => $signature->getLogo(),
             'logo_2' => $signature->getLogo2(),
+            'disclaimer' => $signature->getDisclaimer(),
         ]);
 
         $form->handleRequest($request);
@@ -798,6 +799,11 @@ class SignatureGeneratorController extends AbstractController
             $signature->setPhone($newSignatureData['phone_landline'] . ' - ' . $newSignatureData['phone_mobile']);
             $signature->setLogo($newSignatureData['logo']);
             $signature->setLogo2($newSignatureData['logo_2']);
+            if ($signature->getDisclaimer()) {
+                $signature->setDisclaimer('<p>Avant d\'imprimer, pensez à l\'environnement. N\'imprimez cette page que si nécessaire.</p>');
+            } else {
+                $signature->setDisclaimer('non');
+            }
             $entityManager->flush();
         }
 
