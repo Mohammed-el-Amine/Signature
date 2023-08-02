@@ -294,7 +294,7 @@
 							</div>
 
 							<div id="disclaimer-container">
-									{{ form_row(form.disclaimer, {'attr': {'class': '','id':'disclaimer'}})}}
+									{{ form_row(form.disclaimer, {'attr': {'id':'disclaimer'}})}}
 							</div>
 
 						</div>
@@ -352,6 +352,9 @@
 										</tr>
 									</tbody>
 								</table>
+									<div id="previewDisclaimer" style="background-color: #3f9b0b; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; font-size: 1rem;">
+									<p>Avant d'imprimer, pensez à l'environnement. N'imprimez cette page que si nécessaire.</p>
+									</div>
 							</div>
 						</section>
 
@@ -381,7 +384,9 @@
 			{{ parent() }}
 			<script>
 
-				function updatePreview() {
+function updatePreview() {
+
+var previewdisclaimer = document.getElementById('previewDisclaimer');
 var previewName = document.getElementById('name');
 var previewEmail = document.getElementById('previewEmail');
 var previewLogo = document.getElementById('logo');
@@ -402,6 +407,16 @@ var selectedOption = logoSelect.options[logoSelect.selectedIndex];
 var selectedOption2 = logoSelect2.options[logoSelect2.selectedIndex];
 var logoValue = "https://lab-web.unsa.org/signature" + selectedOption.getAttribute('name');
 var logoValue2 = "https://lab-web.unsa.org/signature" + selectedOption2.getAttribute('name');
+
+document.getElementById('form_disclaimer_0').addEventListener('click', function() {
+  document.getElementById('previewDisclaimer').style.display = 'block';
+  localStorage.setItem('disclaimerState', 'visible');
+});
+
+document.getElementById('form_disclaimer_1').addEventListener('click', function() {
+  document.getElementById('previewDisclaimer').style.display = 'none';
+  localStorage.setItem('disclaimerState', 'hidden');
+});
 
 var organizationValue = document.getElementById('form_organization').value;
 var roleValue = document.getElementById('form_role').value;
@@ -427,6 +442,16 @@ previewCity.textContent = cityValue;
 previewPhone.innerHTML = phoneContent;
 previewZipCode.textContent = zipCodeValue;
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+  var disclaimerState = localStorage.getItem('disclaimerState');
+
+  if (disclaimerState === 'visible') {
+    document.getElementById('previewDisclaimer').style.display = 'block';
+  } else if (disclaimerState === 'hidden') {
+    document.getElementById('previewDisclaimer').style.display = 'none';
+  }
+});
 
 function togglePasswordVisibility(fieldName) {
 var passwordField = document.querySelector('input[name="' + fieldName + '"]');

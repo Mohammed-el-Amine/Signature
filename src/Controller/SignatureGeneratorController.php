@@ -248,9 +248,10 @@ class SignatureGeneratorController extends AbstractController
             ->add('disclaimer', ChoiceType::class, [
                 'label' => 'Ajouter le disclaimer ?(*)',
                 'choices' => [
-                    'Oui' => true,
-                    'Non' => false,
+                    'Oui' => false,
+                    'Non' => true,
                 ],
+                'attr' => ['id' => 'disclaimer'],
                 'expanded' => true,
                 'multiple' => false,
                 'required' => true,
@@ -477,6 +478,13 @@ class SignatureGeneratorController extends AbstractController
         $html .= '</tr>';
         $html .= '</tbody>';
         $html .= '</table>';
+        
+        if ($data['disclaimer'] != "non") {
+            $html .= '<div id="previewDisclaimer" style="background-color: #3f9b0b;">';
+			$html .= '<p>Avant d\'imprimer, pensez à l\'environnement. N\'imprimez cette page que si nécessaire.</p>';
+			$html .= '</div>';
+        }
+
         $html .= '</div>';
         $html .= '</body>';
         $html .= '</html>';
