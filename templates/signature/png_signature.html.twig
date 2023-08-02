@@ -58,6 +58,11 @@
 								</tr>
 							</tbody>
 						</table>
+						{% if signature.disclaimer != 'non' %}
+							<div style="background-color: #3f9b0b; width: 550px;">
+								{{ signature.disclaimer|raw }}
+							</div>
+						{% endif %}
 					</div><br><br>
 				</section>
 			</div>
