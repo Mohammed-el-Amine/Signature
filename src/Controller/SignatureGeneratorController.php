@@ -799,11 +799,14 @@ class SignatureGeneratorController extends AbstractController
             $signature->setPhone($newSignatureData['phone_landline'] . ' - ' . $newSignatureData['phone_mobile']);
             $signature->setLogo($newSignatureData['logo']);
             $signature->setLogo2($newSignatureData['logo_2']);
-            if ($signature->getDisclaimer()) {
-                $signature->setDisclaimer('<p>Avant d\'imprimer, pensez à l\'environnement. N\'imprimez cette page que si nécessaire.</p>');
+            if ($newSignatureData['disclaimer']) {
+                $disclaimerText = '<p>Avant d\'imprimer, pensez à l\'environnement. N\'imprimez cette page que si nécessaire.</p>';
             } else {
-                $signature->setDisclaimer('non');
+                $disclaimerText = 'non';
             }
+            
+            $signature->setDisclaimer($disclaimerText);
+            
             $entityManager->flush();
         }
 
