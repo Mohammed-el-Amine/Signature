@@ -51,7 +51,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<div id="previewDisclaimer" style="background-color: #3f9b0b; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; font-size: 1rem;">
+						<div id="previewDisclaimer2" style="background-color: #3f9b0b; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; font-size: 1rem;">
 							<p>Avant d'imprimer, pensez à l'environnement. N'imprimez cette page que si nécessaire.</p>
 						</div>
 					</div>
@@ -169,24 +169,26 @@
 		xhr.send(formData);
 	});
 
-var previewdisclaimer = document.getElementById('previewDisclaimer');
-document.getElementById('form_disclaimer_0').addEventListener('click', function() {
-  document.getElementById('previewDisclaimer').style.display = 'block';
-  localStorage.setItem('disclaimerState', 'visible');
+var element = document.getElementById('form_disclaimer_0'); element.id = 'oui';
+var element2 = document.getElementById('form_disclaimer_1'); element2.id = 'non';
+
+document.getElementById('oui').addEventListener('click', function() {
+  document.getElementById('previewDisclaimer2').style.display = 'block';
+  localStorage.setItem('disclaimerState1', 'visible');
 });
 
-document.getElementById('form_disclaimer_1').addEventListener('click', function() {
-  document.getElementById('previewDisclaimer').style.display = 'none';
-  localStorage.setItem('disclaimerState', 'hidden');
+document.getElementById('non').addEventListener('click', function() {
+  document.getElementById('previewDisclaimer2').style.display = 'none';
+  localStorage.setItem('disclaimerState1', 'hidden');
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-  var disclaimerState = localStorage.getItem('disclaimerState');
+  var disclaimerState1 = localStorage.getItem('disclaimerState1');
 
-  if (disclaimerState === 'visible') {
-    document.getElementById('previewDisclaimer').style.display = 'block';
-  } else if (disclaimerState === 'hidden') {
-    document.getElementById('previewDisclaimer').style.display = 'none';
+  if (disclaimerState1 === 'visible') {
+    document.getElementById('previewDisclaimer2').style.display = 'block';
+  } else if (disclaimerState1 === 'hidden') {
+    document.getElementById('previewDisclaimer2').style.display = 'none';
   }
 });
 
