@@ -73,7 +73,7 @@
 	<a class="btn btn-outline-info" href="{{ path('admin_index') }}">Utilisateurs</a>
 	<a class="btn btn-outline-info" href="{{ path('admin_create_signature') }}">Crée une signature</a><br><br>
 
-	<div class="listeLogo border">
+	<div class="listeLogo">
 		<h1 class="text-center">Liste des logos</h1><br>
 
 		{% for message in app.flashes('error') %}
@@ -104,15 +104,17 @@
 				<tbody>
 					{% for logo in logos %}
 						<tr>
-							<td>{{ logo.id }}</td>
-							<td>{{ logo.name }}</td>
-							<td><img src="https://lab-web.unsa.org/signature{{ logo.path }}" class="border-0" style="border: none; max-width: 120px;" alt=""/></td>
-							<td>{{ logo.refLink }}</td>
-							<td>{{ logo.createAT|date('d-m-Y') }}</td>
-							<td>{{ logo.updateAt|date('d-m-Y') }}</td>
-							<td>
+							<td class="text-center align-middle">{{ logo.id }}</td>
+							<td class="text-center align-middle">{{ logo.name }}</td>
+							<td class="text-center align-middle"><img src="https://lab-web.unsa.org/signature{{ logo.path }}" class="border-0" style="border: none; max-width: 120px;" alt=""/></td>
+							<td class="text-center align-middle">{{ logo.refLink }}</td>
+							<td class="text-center align-middle">{{ logo.createAT|date('d-m-Y') }}</td>
+							<td class="text-center align-middle">{{ logo.updateAt|date('d-m-Y') }}</td>
+							<td class="text-center align-middle">
+							<div style="display: flex; justify-content: center; align-items: center; gap: 5px">
 								<a href="#" class="logo-edit btn btn-warning" onclick="openModal('{{ path('admin_logo_edit', {'id': logo.id}) }}', 'Modifier le logo')">Modifier</a>
-								<a href="{{ path('admin_logo_delete', {'id': logo.id}) }}" class="logo-delete btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce logo ?')">Supprimer</a>
+								<a href="{{ path('admin_logo_delete', {'id': logo.id}) }}" class="logo-delete btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce logo ?')">&#128465;</a>
+							</div>
 							</td>
 						</tr>
 					{% endfor %}
@@ -121,7 +123,8 @@
 		</div>
 	</div><br><br>
 
-	<div class="allLogos">
+	{# <div class="allLogos"> #}
+	<div class="addLogo">
 		<h4>Ajouter un logo ?</h4><br>
 		{{ form_start(form) }}
 		<div class="form-group">

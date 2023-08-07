@@ -64,7 +64,7 @@
 
 {% block body %}
 	<br><br>
-	<div class="container"><br>
+	<div class="container" style="overflow:auto;width:auto"><br>
 		<div class="d-flex justify-content-end">
 			<a href="{{ path('logout') }}" class="btn btn-danger">Déconnexion</a>
 		</div>
@@ -74,16 +74,16 @@
 
 		<h1 class="text-center">Générer une signature</h1><br><br>
 
-		<div id"signate-container" class="container border" style="display: flex;padding:5%;">
-			<div style="flex-grow: 1;">
+		<div id"signate-container" class="container border" style="display: flex;padding:5%;overflow:auto;width:auto">
+			<div style="flex-grow: 1;overflow:auto;">
 				<section class="generate_signature">
 
-					<form class="form" method="post">
+					<form class="form" method="post" >
 						{{ form_start(form) }}
 
-						<br><br><br><div style="inline-size:516px;">
+						<br><br><br>
 							<a id="infoPersoBtn" class="btn btn-outline-warning" onclick="toggleInfoPerso()">Information personnelle&emsp;&emsp;&emsp;&emsp;🔽</a>
-						</div><br>
+						<br><br>
 						<div id="infoPersoFields" style="display: none;">
 							<div class="form-row">
 								<div class="col">
@@ -167,12 +167,13 @@
 
 						</div>
 						<p>Merci de bien vouloir renseignez tout les champs obligatoire
-							<br>contenant une astérix (*).</p>
+							<br>contenant une astérix (*).<br></p>
 						{{ form_end(form) }}<br>
 					</form>
 
 				</section><br>
 			</div>
+
 			<div style="flex-grow: 1; position: sticky; inset-block-start: 0;">
 				<section class="view_signature d-flex justify-content-center align-items-center mt-5">
 					<div class=" p-3">

@@ -65,19 +65,20 @@
 
 {% block body %}
 	<br><br>
-	<div class="container border"><br><br>
+	<div class="container border" style="overflow:auto; padding: 10px ;"><br><br>
 
 		<div class="d-flex justify-content-end">
 			<a href="{{ path('logout') }}" class="btn btn-danger">Déconnexion</a>
 		</div>
 
-		<h1 class="display-4 text-center">Bienvenue {{user.email}}</h1>
+		<h1 class="display-4 text-center">Bienvenue
+			{{user.email}}</h1>
 		<a class="btn btn-outline-info" href="{{ path('admin_index') }}">Utilisateurs</a>
 		<a class="btn btn-outline-info" href="{{ path('admin_logo') }}">Logo</a>
 		<a class="btn btn-outline-info" href="{{path('admin_create_signature')}}">Crée une signature</a>
 
 		<br><br><br><br>
-		<section class="all_signatures">
+		<section class="all_signatures" style="overflow:auto;padding: 10px;">
 			<h4 class="">Rechercher une signature :
 			</h4>
 
@@ -101,7 +102,7 @@
 			</form><br>
 			<h4 class="text-center">Liste des signatures</h4>
 
-			<table class="table border">
+			<table class="table">
 				<thead class="table-dark text-center">
 					<tr>
 						<th>Signature</th>
@@ -115,7 +116,7 @@
 						<tr>
 							<td>
 								<section class="view_signature d-flex justify-content-center align-items-center mt-5">
-									<div class=" p-3">
+									<div class=" p-3" >
 										<table border="0" cellpadding="0" width="560">
 											<tbody>
 												<tr>
@@ -144,7 +145,9 @@
 															<a id="previewEmail" href="mailto:{{signature.email}}" style="color: #666; font-style: italic;">{{signature.email}}</a><br>
 															<img src="https://lab-web.unsa.org/signature/img/phone.png" class="border-0" style="border: none; block-size: 14px; margin-inline-end: .5em;">
 															{% set phoneNumbers = signature.phone|split(' - ') %}
-															{{ phoneNumbers[0] }} &ensp;&ensp;<img src="https://lab-web.unsa.org/signature/img/mobile.png" class="border-0" style="border: none; block-size: 14px; margin-inline-end: .5em;"> {{ phoneNumbers[1] }}
+															{{ phoneNumbers[0] }}
+															&ensp;&ensp;<img src="https://lab-web.unsa.org/signature/img/mobile.png" class="border-0" style="border: none; block-size: 14px; margin-inline-end: .5em;">
+															{{ phoneNumbers[1] }}
 														</p>
 														{% if signature.logo2 is not null %}
 															<td align="right" valign="middle" width="10"><br>
@@ -153,7 +156,7 @@
 																</p>
 															</td>
 														{% endif %}
-														
+
 													</td>
 												</tr>
 											</tbody>
@@ -169,10 +172,16 @@
 							<td class="text-center align-middle">{{ signature.email }}</td>
 							<td class="text-center align-middle">{{ signature.createAT|date('d-m-Y') }}</td>
 							<td class="text-center align-middle">
-								<button class="btn btn-warning" onclick="openModal('{{ path('edit_signature',{ id: signature.id }) }}')">Éditer</button>
-								<a class="btn btn-danger" href="{{ path('admin_delete_signature', {'id': signature.id}) }}" class="signature-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette signature ?')">Supprimer</a>
-								<button class="btn btn-secondary" onclick="openModal('{{ path('html_signature',{id: signature.id}) }}')">HTML</button>
-								<button class="btn btn-success" onclick="openModal('{{ path('png_signature',{id: signature.id}) }}')">PNG</button>
+							    <div style="display: flex; flex-direction: column; align-items: center; gap: 5px">
+							        <div style="display: flex; justify-content: center; align-items: center; gap: 5px">						            
+										<button class="btn btn-warning" onclick="openModal('{{ path('edit_signature',{ id: signature.id }) }}')">&#128221; </button>
+							            <a class="btn btn-danger" href="{{ path('admin_delete_signature', {'id': signature.id}) }}" class="signature-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette signature ?')">&#128465;</a>
+							        </div>
+									 <div style="display: flex; justify-content: center; align-items: center; gap: 5px">
+							            <button class="btn btn-secondary" onclick="openModal('{{ path('html_signature',{id: signature.id}) }}')">HTML</button>
+										<button class="btn btn-success" onclick="openModal('{{ path('png_signature',{id: signature.id}) }}')">PNG</button>
+							        </div>
+							    </div>
 							</td>
 						</tr>
 					{% endfor %}
@@ -184,8 +193,9 @@
 				{{ knp_pagination_render(pagination) }}
 			</div>
 
-		</section><br>
-	</div><br><br>
+		</section><br><br>
+	</div>
+
 	<!-- Modal -->
 	<div id="modal" class="modal">
 		<div class="modal-content">
@@ -199,35 +209,33 @@
 
 	<script>
 
-		function openModal(url, title) {
-			var modal = document.getElementById('modal')
-			var modalTitle = modal.querySelector('.modal-title')
-			var modalBody = modal.querySelector('.modal-body')
+	function openModal(url, title) {
+		var modal = document.getElementById('modal')
+		var modalTitle = modal.querySelector('.modal-title')
+		var modalBody = modal.querySelector('.modal-body')
+		// Charger le contenu de l'URL dans la modal via une requête iframe
+		modalTitle.textContent = title
+		modalBody.innerHTML = '<iframe src="' + url + '" style="inline-size:100%; block-size:100%; border:none;"></iframe>'
+		modal.style.display = 'block'
+	}
 
-			// Charger le contenu de l'URL dans la modal via une requête iframe
-			modalTitle.textContent = title
-			modalBody.innerHTML = '<iframe src="' + url + '" style="inline-size:100%; block-size:100%; border:none;"></iframe>'
+	function closeModal() {
+		var modal = document.getElementById('modal')
+		var modalTitle = modal.querySelector('.modal-title')
+		var modalBody = modal.querySelector('.modal-body')
 
-			modal.style.display = 'block'
+		modalTitle.textContent = ''
+		modalBody.innerHTML = ''
+
+		modal.style.display = 'none'
+		window.location.reload()
+	}
+
+	window.addEventListener('message', function (event) {
+		if (event.data === 'closeModal') {
+			closeModal();
 		}
-
-		function closeModal() {
-			var modal = document.getElementById('modal')
-			var modalTitle = modal.querySelector('.modal-title')
-			var modalBody = modal.querySelector('.modal-body')
-
-			modalTitle.textContent = ''
-			modalBody.innerHTML = ''
-
-			modal.style.display = 'none'
-			window.location.reload()
-		}
-
-		window.addEventListener('message', function(event) {
-    		if (event.data === 'closeModal') {
-      			closeModal();
-    		}
- 		});
+	});
 	</script>
 
 {% endblock %}

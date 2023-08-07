@@ -159,11 +159,13 @@
 						<td class="text-center">{{ user.email }}</td>
 						<td class="text-center">{{ user.role }}</td>
 						<td class="text-center">
-							<button type="button" onclick="openModal('{{ path('utilisateur_edit', { id: user.id }) }}')" class="btn btn-primary">Modifier</button>
+						<div style="display: flex; justify-content: center; align-items: center; gap: 5px">
+							<button type="button" onclick="openModal('{{ path('utilisateur_edit', { id: user.id }) }}')" class="btn btn-primary">&#128221; </button>
 							<form action="{{ path('user_delete', { id: user.id }) }}" method="POST" onsubmit="return confirmDelete(event)">
 								<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}"/>
-								<button type="submit" class="btn btn-danger">Supprimer</button>
+								<button type="submit" class="btn btn-danger">&#128465;</button>
 							</form>
+						</div>
 						</td>
 					</tr>
 				{% endfor %}

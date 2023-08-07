@@ -235,7 +235,7 @@ class SignatureGeneratorController extends AbstractController
                 'placeholder' => 'Choisir un logo',
             ])
             ->add('logo_2', EntityType::class, [
-                'label' => 'Logo supplémentaire ?',
+                'label' => '2nd logo ?',
                 'class' => Logo::class,
                 'choice_label' => 'name',
                 'choice_attr' => function ($key) {
@@ -728,7 +728,7 @@ class SignatureGeneratorController extends AbstractController
                 'required' => false,
             ])
             ->add('logo_2', EntityType::class, [
-                'label' => 'Logo supplémentaire ?',
+                'label' => '2nd logo ?',
                 'class' => Logo::class,
                 'choice_label' => 'name',
                 'choice_attr' => function ($key) {

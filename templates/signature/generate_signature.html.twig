@@ -69,17 +69,16 @@
 
 {% block body %}
 
-	<div class="container"><br>
+	<div class="container" style="overflow:auto; padding: 10px ;"><br>
 		<div class="d-flex justify-content-end">
 			<a href="{{ path('logout') }}" class="btn btn-danger">Déconnexion</a>
 		</div>
 
 		<div style="display: flex; justify-content: center;">
 			<div style="display: flex; align-items: center;">
-				<h1 style="text-align: center; margin-inline-end: 10px;">Bienvue sur votre espace personnel
-					{{user.email}}
-					&nbsp;</h1>
-				<section class="userProfile">
+				<h1 style="text-align: center; margin-inline-end: 10px;">Bienvue sur votre espace personnel	{{user.email}}					&nbsp;</h1>
+
+				<section class="userProfile" style="overflow:auto; padding: 10px ;">
 					<form class="user-form" method="POST">
 						{{ form_start(userForm) }}<br>
 
@@ -87,7 +86,7 @@
 							<div class="input-group">
 								{{ form_row(userForm.password, {'attr': {'class': 'form-control', 'type': 'password'}}) }}
 								<div class="input-group-append">
-									<button class="btn btn-outline-secondary" type="button" id="showPasswordBtn" onclick="togglePasswordVisibility('{{ userForm.password.vars.full_name }}')">Afficher</button>
+									<button class="btn btn-outline-secondary btn-sm" type="button" id="showPasswordBtn" onclick="togglePasswordVisibility('{{ userForm.password.vars.full_name }}')">Afficher</button>
 								</div>
 							</div>
 						</div>
@@ -96,10 +95,11 @@
 						<br>
 					</form>
 				</section>
+
 			</div>
 		</div><br><br>
 
-		<section class="all_signatures">
+		<section class="all_signatures" style="overflow:auto; padding: 10px ;">
 
 			<form method="GET" action="{{ path('profile_signature') }}">
 				<div class="form-row">
@@ -190,7 +190,7 @@
 							<td class="text-center align-middle">{{ signature.createAT|date('d-m-Y') }}</td>
 							<td class="text-center align-middle">
 							<div style="display: flex; justify-content: center; align-items: center; gap: 5px">
-								<button class="btn btn-warning" onclick="openModal('{{ path('edit_signature',{ id: signature.id }) }}')">Éditer</button>
+								<button class="btn btn-warning" onclick="openModal('{{ path('edit_signature',{ id: signature.id }) }}')">&#128221;</button>
 								<button class="btn btn-secondary" onclick="openModal('{{ path('html_signature',{id: signature.id}) }}')">HTML</button>
 								<button class="btn btn-success" onclick="openModal('{{ path('png_signature',{id: signature.id}) }}')">PNG</button>
 							</div>
