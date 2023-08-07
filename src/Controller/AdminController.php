@@ -372,7 +372,8 @@ class AdminController extends AbstractController
         $user = $entityManager->getRepository(User::class)->findOneBy(['token' => $token]);
 
         if (!$user) {
-            return $this->redirectToRoute('app_home');;
+            return $this->redirectToRoute('app_home');
+            ;
         }
 
         $userToken = $user->getToken();
@@ -965,7 +966,7 @@ class AdminController extends AbstractController
                 ],
                 'expanded' => true,
                 'multiple' => false,
-                'required' => true, 
+                'required' => true,
             ])
             ->add('signatureSubmit', SubmitType::class, [
                 'label' => 'Générer la signature',
@@ -997,9 +998,9 @@ class AdminController extends AbstractController
                     $signature->setLogo($data['logo']);
                     $signature->setLogo2($data['logo_2']);
                     $disclaimerResponse = $data['disclaimer'];
-                    if ($disclaimerResponse === true){
+                    if ($disclaimerResponse === true) {
                         $signature->setDisclaimer('<p>Avant d\'imprimer, pensez à l\'environnement. N\'imprimez cette page que si nécessaire.</p>');
-                    }else{
+                    } else {
                         $signature->setDisclaimer('non');
                     }
                     $signature->setUserId($session->get('user_id'));
@@ -1019,7 +1020,7 @@ class AdminController extends AbstractController
                     if ($signature->getLogo2()) {
                         $srcLogo2 = $signature->getLogo2()->getRefLink();
                     } else {
-                        $srcLogo2 = ''; 
+                        $srcLogo2 = '';
                     }
                 }
             }
@@ -1095,13 +1096,13 @@ class AdminController extends AbstractController
         $html .= '</tr>';
         $html .= '</tbody>';
         $html .= '</table>';
-        
-        if ($data['disclaimer'] != "non" ) {
-            $html .= '<div id="previewDisclaimer" style="background-color: #3f9b0b;">';
-			$html .= '<p>Avant d\'imprimer, pensez à l\'environnement. N\'imprimez cette page que si nécessaire.</p>';
-			$html .= '</div>';
+
+        if ($data['disclaimer'] != "non") {
+            $html .= '<div id="previewDisclaimer" style="background-color: #2ecc71; border-radius : 5px; padding: 0 5px; color #ecf0f1; font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji; font-size: 1rem;">';
+            $html .= '<p>Avant d\'imprimer, pensez à l\'environnement. N\'imprimez cette page que si nécessaire.</p>';
+            $html .= '</div>';
         }
-        
+
         $html .= '</div>';
         $html .= '</body>';
         $html .= '</html>';
@@ -1174,17 +1175,17 @@ class AdminController extends AbstractController
 
         } else
 
-        $diff = $tokenCreationDate->diff($today);
-        
-        if ($diff->h >= 24 || $diff->d > 0 ) {
-                $Newtoken = Uuid::v4();
-                $tokenExpiration = new DateTime();
-                $tokenExpiration->modify('+24 hours');
-    
-                $tokenWithExpiration = $Newtoken . '-' . str_replace([' ', ':'], '-', $tokenExpiration->format('d-m-Y H:i:s'));
-                $user->setToken($tokenWithExpiration);
-                $entityManager->flush();
-            
+            $diff = $tokenCreationDate->diff($today);
+
+        if ($diff->h >= 24 || $diff->d > 0) {
+            $Newtoken = Uuid::v4();
+            $tokenExpiration = new DateTime();
+            $tokenExpiration->modify('+24 hours');
+
+            $tokenWithExpiration = $Newtoken . '-' . str_replace([' ', ':'], '-', $tokenExpiration->format('d-m-Y H:i:s'));
+            $user->setToken($tokenWithExpiration);
+            $entityManager->flush();
+
             $tokenWithExpiration = $token;
         }
 

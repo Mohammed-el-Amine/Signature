@@ -480,7 +480,7 @@ class SignatureGeneratorController extends AbstractController
         $html .= '</table>';
         
         if ($data['disclaimer'] != "non") {
-            $html .= '<div id="previewDisclaimer" style="background-color: #3f9b0b;">';
+            $html .= '<div id="previewDisclaimer" style="background-color: #2ecc71; border-radius : 5px; padding: 0 5px; color #ecf0f1; font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji; font-size: 1rem;">';
 			$html .= '<p>Avant d\'imprimer, pensez à l\'environnement. N\'imprimez cette page que si nécessaire.</p>';
 			$html .= '</div>';
         }
