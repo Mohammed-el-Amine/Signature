@@ -71,7 +71,7 @@
 
 	<div class="container" style="overflow:auto ;"><br>
 		<div class="d-flex justify-content-end">
-			<a href="{{ path('logout') }}" class="btn btn-danger">Déconnexion</a>
+			<a href="{{ path('logout') }}" class="btn btn-danger" onclick="removeStorage()">Déconnexion</a>
 		</div>
 
 		<div style="display: flex; justify-content: center;">
@@ -385,6 +385,10 @@
 		{% block javascripts %}
 			{{ parent() }}
 			<script>
+function removeStorage() {
+	localStorage.removeItem('disclaimerState');
+    localStorage.removeItem('disclaimerState1');
+}
 
 function updatePreview() {
 
@@ -452,7 +456,9 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('previewDisclaimer').style.display = 'block';
   } else if (disclaimerState === 'hidden') {
     document.getElementById('previewDisclaimer').style.display = 'none';
-  }
+  }  else {
+        document.getElementById('previewDisclaimer').style.display = 'none';
+    }
 });
 
 function togglePasswordVisibility(fieldName) {
