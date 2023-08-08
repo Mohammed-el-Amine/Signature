@@ -64,19 +64,32 @@
 			border: 1px solid #ccc;
 			padding: 10px;
 		}
+
+		.signature-details {
+    		max-inline-size: 100%; 
+		}
+
+		.signature-table {
+		    inline-size: 100%; 
+
+		}
+
 	</style>
 {% endblock %}
 
 {% block body %}
 
-	<div class="container" style="overflow:auto ;"><br>
+	<div class="container" style="overflow:auto ;inline-size:100%"><br>
+		{# Déconnexion #}
 		<div class="d-flex justify-content-end">
 			<a href="{{ path('logout') }}" class="btn btn-danger" onclick="removeStorage()">Déconnexion</a>
 		</div>
 
 		<div style="display: flex; justify-content: center;">
 			<div style="display: flex; align-items: center;">
-				<h1 style="text-align: center; margin-inline-end: 10px;">Bienvue sur votre espace personnel	{{user.email}}					&nbsp;</h1>
+				<h1 style="text-align: center; margin-inline-end: 10px;">Bienvue sur votre espace personnel
+					{{user.email}}
+					&nbsp;</h1>
 
 				<section class="userProfile" style="overflow:auto; padding: 10px ;">
 					<form class="user-form" method="POST">
@@ -99,26 +112,27 @@
 			</div>
 		</div><br><br>
 
-		<section class="all_signatures" style="overflow:auto;">
-
-			<form method="GET" action="{{ path('profile_signature') }}">
-				<div class="form-row">
-					<div class="form-group col-md">
-						<label for="date">Date de création :</label>
-						<input type="date" id="date" name="date" class="form-control" value="{{ date }}">
-					</div>
-					<div class="form-group col-md">
-						<label for="nom">Nom :</label>
-						<input type="text" id="nom" name="nom" class="form-control" value="{{ nom }}" pattern="^[A-Za-z]+$">
-					</div>
-					<div class="form-group col-md">
-						<label for="email">Email :</label>
-						<input type="text" id="email" name="email" class="form-control" value="{{ email }}" pattern="^[A-Za-z0-9@.]+$">
-					</div>
+		{# Formulaire de recherchedes signatures #}
+		<form method="GET" action="{{ path('profile_signature') }}">
+			<div class="form-row">
+				<div class="form-group col-md">
+					<label for="date">Date de création :</label>
+					<input type="date" id="date" name="date" class="form-control" value="{{ date }}">
 				</div>
+				<div class="form-group col-md">
+					<label for="nom">Nom :</label>
+					<input type="text" id="nom" name="nom" class="form-control" value="{{ nom }}" pattern="^[A-Za-z]+$">
+				</div>
+				<div class="form-group col-md">
+					<label for="email">Email :</label>
+					<input type="text" id="email" name="email" class="form-control" value="{{ email }}" pattern="^[A-Za-z0-9@.]+$">
+				</div>
+			</div>
 
-				<button type="submit" class="btn btn-primary">Rechercher</button>
-			</form><br>
+			<button type="submit" class="btn btn-primary">Rechercher</button>
+		</form><br>
+
+		<section class="all_signatures" style="overflow:auto;">
 
 			<table class="table border">
 				<thead class="table-dark">
@@ -133,12 +147,12 @@
 					{% for signature in pagination %}
 						<tr>
 							<td>
-								<section class="view_signature d-flex justify-content-center align-items-center mt-5">
+								<section class="view_signature d-flex justify-content-center align-items-center mt-5 signature-details">
 									<div class="border p-3">
-										<table border="0" cellpadding="0" width="555">
+										<table border="0" cellpadding="0" width="555" class="signature-table">
 											<tbody>
 												<tr>
-													<td align="left" valign="middle" width="10"><br>
+													<td align="left" valign="middle" width="10" class="signature-cell"><br>
 														<p style="padding-inline-end: 10px;font-size: 12px;line-height: 14px;">
 															<a href="{{signature.logo.refLink}}"><img id="logoEdit" src="https://lab-web.unsa.org/signature{{signature.logo.path}}" class="border-0" style="border: none;inline-size: 120px;" alt=""></a>
 														</p>
@@ -166,15 +180,15 @@
 															{{ phoneNumbers[0] }}
 															&ensp;&ensp;<img src="https://lab-web.unsa.org/signature/img/mobile.png" class="border-0" style="border: none; block-size: 14px; margin-inline-end: .5em;">
 															{{ phoneNumbers[1] }}
-														</p>														
+														</p>
 														{% if signature.logo2 is not null %}
 															<td align="right" valign="middle" width="10"><br>
 																<p style="padding-inline-end: 10px; font-size: 12px; line-height: 14px;">
 																	<a href="https://www.unsa.org/"><img alt="" src="https://lab-web.unsa.org/signature{{signature.logo2.path}}" style="border: none; inline-size: 120px;"></a>
 																</p>
 															</td>
-														{% endif %}														
-													</td>												
+														{% endif %}
+													</td>
 												</tr>
 											</tbody>
 										</table>
@@ -189,11 +203,11 @@
 							<td class="text-center align-middle">{{ signature.email }}</td>
 							<td class="text-center align-middle">{{ signature.createAT|date('d-m-Y') }}</td>
 							<td class="text-center align-middle">
-							<div style="display: flex; justify-content: center; align-items: center; gap: 5px">
-								<button class="btn btn-warning" onclick="openModal('{{ path('edit_signature',{ id: signature.id }) }}')">&#128221;</button>
-								<button class="btn btn-secondary" onclick="openModal('{{ path('html_signature',{id: signature.id}) }}')">HTML</button>
-								<button class="btn btn-success" onclick="openModal('{{ path('png_signature',{id: signature.id}) }}')">PNG</button>
-							</div>
+								<div style="display: flex; justify-content: center; align-items: center; gap: 5px">
+									<button class="btn btn-warning" onclick="openModal('{{ path('edit_signature',{ id: signature.id }) }}')">&#128221;</button>
+									<button class="btn btn-secondary" onclick="openModal('{{ path('html_signature',{id: signature.id}) }}')">HTML</button>
+									<button class="btn btn-success" onclick="openModal('{{ path('png_signature',{id: signature.id}) }}')">PNG</button>
+								</div>
 							</td>
 						</tr>
 					{% endfor %}
@@ -296,7 +310,7 @@
 							</div>
 
 							<div id="disclaimer-container">
-									{{ form_row(form.disclaimer, {'attr': {'id':'disclaimer'}})}}
+								{{ form_row(form.disclaimer, {'attr': {'id':'disclaimer'}})}}
 							</div>
 
 						</div>
@@ -354,9 +368,9 @@
 										</tr>
 									</tbody>
 								</table>
-									<div id="previewDisclaimer" style="background-color: #2ecc71; border-radius : 5px; padding: 0 5px; color #ecf0f1; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; font-size: 1rem;">
+								<div id="previewDisclaimer" style="background-color: #2ecc71; border-radius : 5px; padding: 0 5px; color #ecf0f1; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; font-size: 1rem;">
 									<p>Avant d'imprimer, pensez à l'environnement. N'imprimez cette page que si nécessaire.</p>
-									</div>
+								</div>
 							</div>
 						</section>
 
@@ -381,13 +395,17 @@
 					</div>
 				</div>
 			</div>
-		{% endblock %}
-		{% block javascripts %}
-			{{ parent() }}
-			<script>
-function removeStorage() {
-	localStorage.removeItem('disclaimerState');
-    localStorage.removeItem('disclaimerState1');
+		</div>
+
+	</div>
+
+{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+	<script>
+		function removeStorage() {
+localStorage.removeItem('disclaimerState');
+localStorage.removeItem('disclaimerState1');
 }
 
 function updatePreview() {
@@ -414,14 +432,14 @@ var selectedOption2 = logoSelect2.options[logoSelect2.selectedIndex];
 var logoValue = "https://lab-web.unsa.org/signature" + selectedOption.getAttribute('name');
 var logoValue2 = "https://lab-web.unsa.org/signature" + selectedOption2.getAttribute('name');
 
-document.getElementById('form_disclaimer_0').addEventListener('click', function() {
-  document.getElementById('previewDisclaimer').style.display = 'block';
-  localStorage.setItem('disclaimerState', 'visible');
+document.getElementById('form_disclaimer_0').addEventListener('click', function () {
+document.getElementById('previewDisclaimer').style.display = 'block';
+localStorage.setItem('disclaimerState', 'visible');
 });
 
-document.getElementById('form_disclaimer_1').addEventListener('click', function() {
-  document.getElementById('previewDisclaimer').style.display = 'none';
-  localStorage.setItem('disclaimerState', 'hidden');
+document.getElementById('form_disclaimer_1').addEventListener('click', function () {
+document.getElementById('previewDisclaimer').style.display = 'none';
+localStorage.setItem('disclaimerState', 'hidden');
 });
 
 var organizationValue = document.getElementById('form_organization').value;
@@ -449,16 +467,16 @@ previewPhone.innerHTML = phoneContent;
 previewZipCode.textContent = zipCodeValue;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  var disclaimerState = localStorage.getItem('disclaimerState');
+document.addEventListener('DOMContentLoaded', function () {
+var disclaimerState = localStorage.getItem('disclaimerState');
 
-  if (disclaimerState === 'visible') {
-    document.getElementById('previewDisclaimer').style.display = 'block';
-  } else if (disclaimerState === 'hidden') {
-    document.getElementById('previewDisclaimer').style.display = 'none';
-  }  else {
-        document.getElementById('previewDisclaimer').style.display = 'none';
-    }
+if (disclaimerState === 'visible') {
+document.getElementById('previewDisclaimer').style.display = 'block';
+} else if (disclaimerState === 'hidden') {
+document.getElementById('previewDisclaimer').style.display = 'none';
+} else {
+document.getElementById('previewDisclaimer').style.display = 'none';
+}
 });
 
 function togglePasswordVisibility(fieldName) {
@@ -537,5 +555,5 @@ if (event.data === 'closeModal') {
 closeModal();
 }
 });
-			</script>
-		{% endblock %}
+	</script>
+{% endblock %}
