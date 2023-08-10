@@ -194,7 +194,7 @@ class SignatureGeneratorController extends AbstractController
                 ],
             ])
             ->add('phone_landline', TelType::class, [
-                'label' => 'Téléphone fixe : ',
+                'label' => 'Tél fixe : ',
                 'attr' => [
                     'placeholder' => 'Tél fixe',
                 ],
@@ -209,7 +209,7 @@ class SignatureGeneratorController extends AbstractController
                 ],
             ])
             ->add('phone_mobile', TelType::class, [
-                'label' => 'Téléphone portable : ',
+                'label' => 'Tél portable : ',
                 'attr' => [
                     'placeholder' => 'Tél portable',
                 ],
@@ -688,7 +688,7 @@ class SignatureGeneratorController extends AbstractController
                 ],
             ])
             ->add('phone_landline', TelType::class, [
-                'label' => 'Téléphone fixe : ',
+                'label' => 'Tél fixe : ',
                 'attr' => [
                     'placeholder' => 'Tél fixe',
                 ],
@@ -703,7 +703,7 @@ class SignatureGeneratorController extends AbstractController
                 ],
             ])
             ->add('phone_mobile', TelType::class, [
-                'label' => 'Téléphone portable : ',
+                'label' => 'Tél portable : ',
                 'attr' => [
                     'placeholder' => 'Tél portable',
                 ],

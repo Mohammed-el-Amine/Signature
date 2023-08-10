@@ -112,7 +112,7 @@
 							<td class="text-center align-middle">{{ logo.updateAt|date('d-m-Y') }}</td>
 							<td class="text-center align-middle">
 							<div style="display: flex; justify-content: center; align-items: center; gap: 5px">
-								<a href="#" class="logo-edit btn btn-warning" onclick="openModal('{{ path('admin_logo_edit', {'id': logo.id}) }}', 'Modifier le logo')">Modifier</a>
+								<a href="#" class="logo-edit btn btn-warning" onclick="openModal('{{ path('admin_logo_edit', {'id': logo.id}) }}', 'Modifier le logo')">&#128221;</a>
 								<a href="{{ path('admin_logo_delete', {'id': logo.id}) }}" class="logo-delete btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce logo ?')">&#128465;</a>
 							</div>
 							</td>
