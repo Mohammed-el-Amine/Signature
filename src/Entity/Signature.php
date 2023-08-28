@@ -40,11 +40,26 @@ class Signature
     #[ORM\ManyToOne]
     private ?Logo $logo = null;
 
-    #[ORM\ManyToOne] 
+    #[ORM\ManyToOne]
     private ?Logo $logo_2 = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $disclaimer = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $facebook = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $youtube = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $unsa = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $linkedin = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $twitter = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createAt = null;
@@ -167,7 +182,7 @@ class Signature
 
         return $this;
     }
-    
+
     public function getLogo2(): ?Logo
     {
         return $this->logo_2;
@@ -192,6 +207,60 @@ class Signature
         return $this;
     }
 
+    public function getFacebook(): ?string
+    {
+        return $this->facebook;
+    }
+
+    public function setFacebook(?string $facebook): static
+    {
+        $this->facebook = $facebook;
+        return $this;
+    }
+
+    public function getYoutube(): ?string
+    {
+        return $this->youtube;
+    }
+
+    public function setYoutube(?string $youtube): static
+    {
+        $this->youtube = $youtube;
+        return $this;
+    }
+
+    public function getUnsa(): ?string
+    {
+        return $this->unsa;
+    }
+
+    public function setUnsa(?string $unsa): static
+    {
+        $this->unsa = $unsa;
+        return $this;
+    }
+
+    public function getLinkedin(): ?string
+    {
+        return $this->linkedin;
+    }
+
+    public function setLinkedin(?string $linkedin): static
+    {
+        $this->linkedin = $linkedin;
+        return $this;
+    }
+
+    public function getTwitter(): ?string
+    {
+        return $this->twitter;
+    }
+
+    public function setTwitter(?string $twitter): static
+    {
+        $this->twitter = $twitter;
+        return $this;
+    }
 
     public function getCreateAt(): ?\DateTimeImmutable
     {

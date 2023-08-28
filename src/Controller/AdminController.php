@@ -959,7 +959,7 @@ class AdminController extends AbstractController
                 'placeholder' => 'Choisir un logo ',
             ])
             ->add('disclaimer', ChoiceType::class, [
-                'label' => 'Ajouter le disclaimer ?',
+                'label' => 'Ajouter un disclaimer ?',
                 'choices' => [
                     'Oui' => false,
                     'Non' => true,
@@ -975,6 +975,45 @@ class AdminController extends AbstractController
                     'name' => 'signatureSubmit',
                 ],
             ])
+            ->add('facebook', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'placeholder' => 'Lien Facebook',
+                ],
+                'required' => false,
+            ])
+            
+            ->add('youtube', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'placeholder' => 'Lien YouTube',
+                ],
+                'required' => false,
+            ])
+            
+            ->add('unsa', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'placeholder' => 'Lien UNSA',
+                ],
+                'required' => false,
+            ])
+            
+            ->add('linkedin', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'placeholder' => 'Lien LinkedIn',
+                ],
+                'required' => false,
+            ])
+            
+            ->add('twitter', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'placeholder' => 'Lien Twitter',
+                ],
+                'required' => false,
+            ])           
             ->getForm();
 
         if ($request->isMethod('POST')) {
@@ -985,9 +1024,8 @@ class AdminController extends AbstractController
 
                 if ($form->isSubmitted() && $form->isValid()) {
                     $data = $form->getData();
-                    // Créer une instance de l'entité Signature et définir les valeurs des propriétés
                     $signature = new Signature();
-                    $signature->setName($data['first_name'] . ' ' . $data['last_name']);
+                    $signature->setName($data['first_name'] . '&' . $data['last_name']);
                     $signature->setRole($data['role']);
                     $signature->setOrganization($data['organization']);
                     $signature->setAdress($data['adress']);
@@ -997,7 +1035,34 @@ class AdminController extends AbstractController
                     $signature->setPhone($data['phone_landline'] . ' - ' . $data['phone_mobile']);
                     $signature->setLogo($data['logo']);
                     $signature->setLogo2($data['logo_2']);
+
+                    $facebookLink = $data['facebook'];
+                    if ($facebookLink !== null){
+                        $signature->setFacebook($data['facebook']);
+                    }
+
+                    $unsaLink = $data['unsa'];
+                    if ($unsaLink !== null){
+                        $signature->setUnsa($data['unsa']);
+                    }
+
+                    $youtubeLink = $data['youtube'];
+                    if ($youtubeLink !== null){
+                        $signature->setYoutube($data['youtube']);
+                    }
+
+                    $linkedinLink = $data['linkedin'];
+                    if ($linkedinLink !== null){
+                        $signature->setLinkedin($data['linkedin']);
+                    }
+
+                    $twitterLink = $data['twitter'];
+                    if ($twitterLink !== null){
+                        $signature->setTwitter($data['twitter']);
+                    }
+
                     $disclaimerResponse = $data['disclaimer'];
+
                     if ($disclaimerResponse === true) {
                         $signature->setDisclaimer('<p>Avant d\'imprimer, pensez à l\'environnement. N\'imprimez cette page que si nécessaire.</p>');
                     } else {
@@ -1050,6 +1115,17 @@ class AdminController extends AbstractController
 
     private function generateEmailSignature(array $data): string
     {
+        $socialLink = [
+            "facebook" => "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAD30lEQVR4AayShW4cMRCGLQgzHArKDK9xor5KnyDMSZmZmZmZRWWuKMy8e3y7U8/KvXG6PlR+6dM3Wtv/tElYulnzHXI918HnvQZ7PNfgGfdvz1XQEJzFtz14B++y+crCO+D2XoG97ssw475swhwuGWSOK26T3zX24luWbZbehTxe1uS+YOiuCzGwOB+3mA2yAvcFU8cO7Mrsf30R3Lz4nfMcL+eglZyNkm3QGXZhJ0snzrOw3nE61uc4zQs4wmKOxC3PaIszZA4/I2On6zSsY8ni4P9Kx6loX/WJMCCOk5G47dCZ+r79HLtxR8LfueN45F318TDEORYiW4TJHBcvbf8QhT/TJoRiJkQME2bCJvRpJnwaM8TbuX24Q/k3wS82VR0JwRwOB8nSjF5xJgRvhgxIEtEj3kngLibHcQzc1YdDetWhICSj8iD5UW8MUsX+PoBGdNzJ/qXqQHBv5f4AVHCEBX4yp1LMG26EIJ2I+2hpFn18J8OsuQi5lXv9MxV7/ZAul35HIY0k7cCduJtV7tN95bt0sNgdt5g1sjR/GrX/+E9+j8DyI35xV7eh6q/cpftY2Q5tDwfSoVxYj5jwf5Yf4qV0j+bknXtY2bbZZxxIh9KtlkERfjaD52QFcgdSvl17xkq3zP4u3TwDSAlZAZ2pgmeZgrtZ6aZpraRrGpR0kuVZFTpXv1eBu1lpx5RW3DEFFu1kmWzSM21AiehC04wWc/uUxorbpn4XtU6CiuLWKcvZ5HVPxN7ZQkZwNytqnnxW1DwBSGETWSabnPsSkjuV4G5W2DC+hwPJyCZdL/22ngLJYt7DihonfAW1Y2BRR5bJJhtvaeL9OFoJ7mZrGiC3sHb8b6vlcdswFATRL2ZCDagAX12H+3DOOWe7A8d2fFQZlsRMXpzu6z8kVnGdPcDgDbRJ5InP/nFB3lFOTMlck1TVuW8gD8wzcRO3FeQfFvfeQUbeQU5M2K0yOGBJXlVjcmaO1HFTsernecPZTd/c3ZQ0CeTM7M+S3L0MNWbpT/a94abql7ebXDrburidECiZa5LsspZUZO+kzNI2Z31r9JPsmlx7M2namzHZG7J1vaQkp6qBff09csYN3FKS6jt5w1mPA2stos8sCb/b6zFzIPMcduOG+kzORjpurUaBtRKRuRwSsz8LqnpWQuaoV8MAu9V3VF/MG9Zi2DQXAxrwUlhSENeZA7aWwyY/+bc1tkKu/hOXxkLwZswHVLlTUlINNW0mjFnswC71W+FtGLOd+9ps+7k2qw/MtEmSrlNZB+c6z5jBrPo3nZNjzXQm1FTrjgSp6dYDakr3oFd9U+9y1lO9tTZT6gAAAABJRU5ErkJggg==",
+
+            "unsa" => "data:image/png;base64,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",
+
+            "youtube" => "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAA3ElEQVR4Ae2WIQzDIBBFEdPV6Ip6L2Y3Me9NMzuB98GbWrysqHf1otWYismm+vYFTRCEhXXjJrjkmSslLwHgi8vjxkoRKAL/J0BCSHAHGhjQgxHMwIKnY/Px+taNHd2/Bmg3p4wKuIH0Y1RQAB+ugDJxDgn0GQVMSMBmFJhDApSTYwLLQtR13xNAo0oWINS6ErXtpxInX0CmC3g1TURNkypQ+QL1IYG9hiFFRPIL8C8B/ybkO4bsFxH7Vcz+GLE/x5yBRL+LZDVQkTi2Ochn70dimQpFspKKi0AReAF/IVUTZ3/BGQAAAABJRU5ErkJggg==",
+
+            "linkedin" => "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABDUlEQVR4AWP4////gOLB44D6nTcsGIo33QHi/zTGd0B2YTiAPpYjHIHNAf/piQk6wGPW8f/rLz8HYRCbXg5AWI4GQGJ0cwDY12gAJDbcHUA4CkZAIqQUK7Ts/m/SfxBMs5RupswBaACr+P47b/5zlG/5DyzZ/r/+8hNF7vuvP//nn3r0X6JhJ+0ccPrR+/+H7735jw9cf/n5v0D1Nuo5gBxQve06zR0AjoL7b7/+//zjN4bc+ScfaOeA33///k9Yfg4mDw7u/Xdeo6uhnQP6D93FMNxlxjF0ZbRzgMXEQ9iyI90cALIMJoccDXRzAK6CZog6YNQBow6gIx54Bwx4x2RAu2bAysoEZu9o7xgAQrvkxt3WZi0AAAAASUVORK5CYII=",
+
+            "twitter" => "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAAAAABWESUoAAAA3ElEQVR4Ac2SGQDFMBBE1ylOcYpTner0neK0TnGpU53iFKc6xWl+p+f25D7InZ295Cv0mGjFUOzWDVVVa/WykaBiaBBFfsiyory3JASRjs8mInqxUGRw47CIBIy7Ew0Sh0nED4OXCwkNh8h7GrrgCkVK9a7w6Q2BjoVa6Oo9EZEDVJ7I1M4UeMDXzIEhvoukFxNMaP8o4gpon1l9qnqc7DcPIgpd7Ce0t/fJVO0q0qIsVeuY1XwNYK1gwm8J2GAqvHRF5mD7BcG0Rl6yegjw0BqdakE8Bni0RyjyDf4Y1Y0n0wNT4wAAAABJRU5ErkJggg=="
+        ];
         $html = '<!DOCTYPE html>';
         $html .= '<html lang="fr">';
         $html .= '<head>';
@@ -1081,9 +1157,9 @@ class AdminController extends AbstractController
         $html .= '<img id="LOGO-MAIL" src="/signature/img/mail.png" style="border: none;block-size: 12px;margin-inline-end: .5em;">';
         $html .= '<a href="mailto:' . $data['email'] . '" style="color: #666;font-style: italic;">' . $data['email'] . '</a><br>';
         $html .= '<img id="LOGO-PHONE" src="/signature/img/phone.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
-        $html .= '<span style="color: #666;">' . $data['phone_landline'] . ' - ' . $data['phone_mobile'] . '</span>&ensp;&ensp;';
+        $html .= '<span style="color: #666;">' . $data['phone_landline'] . ' - ' . $data['phone_mobile'] . '</span>';
         $html .= '</p>';
-        $html .= '</td> ';
+        $html .= '</td>';
 
         if ($data['logo_2'] !== null) {
             $html .= '<td align="right" valign="middle" width="10">';
@@ -1097,10 +1173,30 @@ class AdminController extends AbstractController
         $html .= '</tbody>';
         $html .= '</table>';
 
+        if ($data['facebook'] !== null){
+            $html .= "<a id=\"facebook\" href=".$data['facebook']." style=\"color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none\"><img src= \"".$socialLink['facebook']."\"> ".$data['facebook']."</a> &nbsp;";
+        }
+
+        if ($data['unsa'] !== null){
+            $html .= "<a id=\"unsa\"href=".$data['unsa']." style=\"color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none\"><img src=\"".$socialLink['unsa']." \"> ".$data['unsa']."</a> &nbsp;";
+        }
+
+        if ($data['youtube'] !== null){
+            $html .= "<a id=\"youtube\"href=".$data['youtube']." style=\"color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none\"> <img src= \"". $socialLink['youtube'] ." \"> ".$data['youtube']."</a> &nbsp;";
+        }
+
+        if ($data['linkedin'] !== null){
+            $html .= "<a id=\"linkedin\"href=".$data['linkedin']." style=\"color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none\"> <img src= \" ". $socialLink['linkedin'] ." \"> ".$data['linkedin']."</a> &nbsp;";
+        }
+
+        if ($data['twitter'] !== null){
+            $html .= "<a id=\"twitter\"href=".$data['twitter']." style=\"color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none\"> <img src= \" ". $socialLink['twitter'] ."\"> ".$data['twitter']."</a> &nbsp;";
+        }
+
         if ($data['disclaimer'] != "non") {
-            $html .= '<div id="previewDisclaimer" style="background-color: #2ecc71; border-radius : 5px; padding: 0 5px; color #ecf0f1; font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji; font-size: 1rem;">';
-            $html .= '<p>Avant d\'imprimer, pensez à l\'environnement. N\'imprimez cette page que si nécessaire.</p>';
-            $html .= '</div>';
+            $html .= '<br><br><div id="previewDisclaimer" style="background-color: #2ecc71; border-radius : 5px; padding: 0 5px; color #ecf0f1; font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji; font-size: 1rem;">';
+			$html .= '<p>Avant d\'imprimer, pensez à l\'environnement. N\'imprimez cette page que si nécessaire.</p>';
+			$html .= '</div>';
         }
 
         $html .= '</div>';
