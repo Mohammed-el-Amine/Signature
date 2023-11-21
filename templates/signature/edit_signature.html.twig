@@ -54,9 +54,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<div id="previewDisclaimer2" style="background-color: #2ecc71; border-radius : 5px; padding: 0 5px; color #ecf0f1; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; font-size: 1rem;">
-							<p>Avant d'imprimer, pensez à l'environnement. N'imprimez cette page que si nécessaire.</p>
-						</div>
+						
 					</div>
 				</section><br>
 			</div>
@@ -144,21 +142,18 @@
 
 						<div class="form-row">								
 							<div class="col"><br>
-								{{ form_row(form.facebook, {'attr': {'id': 'facebook', 'class': 'hidden-facebook'}}) }}<br>
-								{{form_row(form.youtube,{'attr': {'id':'youtube', 'class': 'hidden-youtube'}})}}
-							</div>
-							<div class="col"><br>
 								{{form_row(form.unsa,{'attr': {'id':'unsa', 'class': 'hidden-unsa'}})}}<br>
 								{{form_row(form.linkedin,{'attr': {'id':'linkedin', 'class': 'hidden-linkedin'}})}}
+							</div>
+							<div class="col"><br>
+								{{ form_row(form.facebook, {'attr': {'id': 'facebook', 'class': 'hidden-facebook'}}) }}<br>
+								{{form_row(form.youtube,{'attr': {'id':'youtube', 'class': 'hidden-youtube'}})}}
 							</div>
 							<div class="col-md-6"><br>
 								{{form_row(form.twitter,{'attr': {'id':'twitter', 'class': 'hidden-twitter'}})}}
 							</div>
 						</div><br>
 
-						<div id="disclaimer-container">
-							{{ form_row(form.disclaimer, {'attr': {'class': '','id':'disclaimer', 'required': 'required'}})}}
-						</div>
 						
 						<p>Merci de bien vouloir renseignez tout les champs obligatoire <br>contenant une astérix (*).</p>
 
@@ -185,31 +180,6 @@
 		};
 		xhr.send(formData);
 	});
-
-var element = document.getElementById('form_disclaimer_0'); element.id = 'oui';
-var element2 = document.getElementById('form_disclaimer_1'); element2.id = 'non';
-
-document.getElementById('oui').addEventListener('click', function() {
-  document.getElementById('previewDisclaimer2').style.display = 'block';
-  localStorage.setItem('disclaimerState1', 'visible');
-});
-
-document.getElementById('non').addEventListener('click', function() {
-  document.getElementById('previewDisclaimer2').style.display = 'none';
-  localStorage.setItem('disclaimerState1', 'hidden');
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-  var disclaimerState1 = localStorage.getItem('disclaimerState1');
-
-  if (disclaimerState1 === 'visible') {
-    document.getElementById('previewDisclaimer2').style.display = 'block';
-  } else if (disclaimerState1 === 'hidden') {
-    document.getElementById('previewDisclaimer2').style.display = 'none';
-  }  else {
-        document.getElementById('previewDisclaimer2').style.display = 'none';
-    }
-});
 
 </script>
 

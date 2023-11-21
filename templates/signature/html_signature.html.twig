@@ -21,7 +21,8 @@
 										<p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;text-align: start;">
 											<span id="nameEdit" class="font-weight-bold" style="color: #000;font-weight: bold;font-size: 14px;">
 												{% set name = signature.name|split('&') %}
-												{{name[0]}} {{name[1]}}
+												{{name[0]}}
+												{{name[1]}}
 											</span><br>
 											<span id="role" style="color: #666;">
 												<i>{{signature.role}}</i>
@@ -38,9 +39,23 @@
 										<p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">
 											<img src="https://lab-web.unsa.org/signature/img/mail.png" class="border-0" style="border: none;block-size: 12px;margin-inline-end: .5em;">
 											<a id="previewEmail" href="mailto:{{signature.email}}" style="color: #666; font-style: italic;">{{signature.email}}</a><br>
-											<img src="https://lab-web.unsa.org/signature/img/phone.png" class="border-0" style="border: none; block-size: 14px; margin-inline-end: .5em;">
 											{% set phoneNumbers = signature.phone|split(' - ') %}
-											{{ phoneNumbers[0] }} &ensp;&ensp;<img src="https://lab-web.unsa.org/signature/img/mobile.png" class="border-0" style="border: none; block-size: 14px; margin-inline-end: .5em;"> {{ phoneNumbers[1] }}
+
+											{% if phoneNumbers|length == 2 %}
+												<img src="https://lab-web.unsa.org/signature/img/phone.png" class="border-0" style="border: none; block-size: 14px; margin-inline-end: .5em;">
+												{{ phoneNumbers[0] }}
+												&ensp;&ensp;<img src="https://lab-web.unsa.org/signature/img/mobile.png" class="border-0" style="border: none; block-size: 14px; margin-inline-end: .5em;">
+												{{ phoneNumbers[1] }}
+											{% else %}
+												{% set prefix = signature.phone|slice(0, 2) %}
+												{% if prefix == '01' %}
+													<img src="https://lab-web.unsa.org/signature/img/phone.png" alt="Image pour 01" class="border-0" style="border: none; block-size: 14px; margin-inline-end: .5em;">
+													{{ signature.phone }}
+												{% elseif prefix == '06' %}
+													<img src="https://lab-web.unsa.org/signature/img/mobile.png" alt="Image pour 06" class="border-0" style="border: none; block-size: 14px; margin-inline-end: .5em;">
+													{{ signature.phone }}
+												{% endif %}
+											{% endif %}
 										</p>
 										{% if signature.logo2 is not null %}
 											<td align="right" valign="middle" width="10"><br>
@@ -65,37 +80,26 @@
 						"twitter": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAAAAABWESUoAAAA3ElEQVR4Ac2SGQDFMBBE1ylOcYpTner0neK0TnGpU53iFKc6xWl+p+f25D7InZ295Cv0mGjFUOzWDVVVa/WykaBiaBBFfsiyory3JASRjs8mInqxUGRw47CIBIy7Ew0Sh0nED4OXCwkNh8h7GrrgCkVK9a7w6Q2BjoVa6Oo9EZEDVJ7I1M4UeMDXzIEhvoukFxNMaP8o4gpon1l9qnqc7DcPIgpd7Ce0t/fJVO0q0qIsVeuY1XwNYK1gwm8J2GAqvHRF5mD7BcG0Rl6yegjw0BqdakE8Bni0RyjyDf4Y1Y0n0wNT4wAAAABJRU5ErkJggg=="
 						} %}
 
-						{% if signature.facebook is not null %}
-							<img src= "{{ socialLinks['facebook'] }}"
-							alt="Facebook Logo" >
-								<a href="{{signature.facebook}}" style="color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none">{{signature.facebook}}</a>
+						{% if signature.unsa is not null %}
+							<a href="{{signature.unsa}}" style="color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none"><img src="{{socialLinks['unsa']}}" alt="UNSA Logo"></a>
 						{% endif %}
 
-						{% if signature.unsa is not null %}
-							<img src= "{{socialLinks['unsa']}}" alt="UNSA Logo" >
-								<a href="{{signature.unsa}}" style="color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none">{{signature.unsa}}</a>
+						{% if signature.facebook is not null %}
+							<a href="{{signature.facebook}}" style="color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none"><img src="{{ socialLinks['facebook'] }}" alt="Facebook Logo"></a>
 						{% endif %}
 
 						{% if signature.youtube is not null %}
-							<img src="{{socialLinks['youtube']}}" alt="Youtube Logo">
-								<a href="{{signature.youtube}}" style="color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none">{{signature.youtube}}</a>
+							<a href="{{signature.youtube}}" style="color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none"><img src="{{socialLinks['youtube']}}" alt="Youtube Logo"></a>
 						{% endif %}
 
 						{% if signature.linkedin is not null %}
-							<img src="{{socialLinks['linkedin']}}" alt="Linkedin Logo" >
-								<a href="{{signature.linkedin}}" style="color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none">{{signature.linkedin}}</a>
+							<a href="{{signature.linkedin}}" style="color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none"><img src="{{socialLinks['linkedin']}}" alt="Linkedin Logo"></a>
 						{% endif %}
 
 						{% if signature.twitter is not null %}
-							<img src="{{socialLinks['twitter']}}" alt="Twitter Logo" >
-								<a href="{{signature.twitter}}" style="color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none">{{signature.twitter}}</a>
+							<a href="{{signature.twitter}}" style="color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none"><img src="{{socialLinks['twitter']}}" alt="Twitter Logo"></a>
 						{% endif %}
 
-						{% if signature.disclaimer != 'non' %}
-								<br><br><div style="background-color: #2ecc71; border-radius : 5px; padding: 0 5px; color #ecf0f1; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; font-size: 1rem; width: 500px;">
-									{{ signature.disclaimer|raw }}
-								</div>
-						{% endif %}
 					</div>
 				</section><br><br><br>
 			</div>
@@ -107,25 +111,24 @@
 	<script>
 
 		document.addEventListener("DOMContentLoaded", function () {
-			html();
-		});
+html();
+});
 
-		function html() {
-			var name = document.getElementById("nameEdit").innerText;
-			var element = document.getElementById("signature-container").innerHTML;
-			var filename = name + '.html';
-			var link = document.createElement('a');
-			link.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(element));
-			link.setAttribute('download', filename);
-			link.style.display = 'none';
-			document.body.appendChild(link);
-			link.click();
-			document.body.removeChild(link);
-			setTimeout(function () {
-				var parentWindow = window.parent;
-				parentWindow.postMessage('closeModal', '*');
-			}, 500);
-		}
-	
+function html() {
+var name = document.getElementById("nameEdit").innerText;
+var element = document.getElementById("signature-container").innerHTML;
+var filename = name + '.html';
+var link = document.createElement('a');
+link.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(element));
+link.setAttribute('download', filename);
+link.style.display = 'none';
+document.body.appendChild(link);
+link.click();
+document.body.removeChild(link);
+setTimeout(function () {
+var parentWindow = window.parent;
+parentWindow.postMessage('closeModal', '*');
+}, 500);
+}
 	</script>
 {% endblock %}

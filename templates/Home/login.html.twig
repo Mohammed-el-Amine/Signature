@@ -33,7 +33,7 @@
 		-o-transition: background 0.2s ease;
 		background: "#192A51";
 		color: "#FFFFFF";
-		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 		font-weight: 700;
 	}
 
@@ -161,6 +161,25 @@
 		inline-size: 40px !important;
 	}
 
+	.alert {
+		padding: 15px;
+		margin-bottom: 20px;
+		border: 1px solid transparent;
+		border-radius: 5px;
+	}
+
+	.alert-danger {
+		color: #721c24;
+		background-color: #f8d7da;
+		border-color: #f5c6cb;
+	}
+
+	.alert-success {
+		color: #155724;
+		background-color: #d4edda;
+		border-color: #c3e6cb;
+	}
+
 	@keyframes wobble {
 		0% {
 			transform: scale(1.025);
@@ -222,5 +241,4 @@
 			</div>
 		</div>
 	</div>
-</section>
-{% endblock %}
+</section>{% endblock %}

@@ -107,11 +107,11 @@ class SignatureGeneratorController extends AbstractController
             ->add('role', TextType::class, [
                 'label' => 'Rôle(*) : ',
                 'attr' => [
-                    'placeholder' => 'Poste dans l\'entreprise',
+                    'placeholder' => 'Poste dans l\'organisation',
                 ],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Veuillez saisir votre rôle dans l\'entreprise.',
+                        'message' => 'Veuillez saisir votre rôle dans l\'organisation.',
                     ]),
                     new Regex([
                         'pattern' => '/^(?=.*[A-Za-zÀ-ÿ -]).{2,64}$/u',
@@ -122,30 +122,30 @@ class SignatureGeneratorController extends AbstractController
             ->add('organization', TextType::class, [
                 'label' => 'Organisation(*) : ',
                 'attr' => [
-                    'placeholder' => 'Nom de l\'entreprise'
+                    'placeholder' => 'Nom de l\'organisation'
                 ],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Veuillez saisir le nom de votre entreprise.',
+                        'message' => 'Veuillez saisir le nom de votre organisation.',
                     ]),
                     new Regex([
                         'pattern' => '/^(?=.*[A-Za-zÀ-ÿ-09 -]).{2,64}$/u',
-                        'message' => 'Veuillez saisir un nom d\'entreprise contenant uniquement des lettres, des espaces, des tirets et ayant une longueur de 2 à 64 caractères.',
+                        'message' => 'Veuillez saisir un nom d\'organisation contenant uniquement des lettres, des espaces, des tirets et ayant une longueur de 2 à 64 caractères.',
                     ]),
                 ],
             ])
             ->add('adress', TextType::class, [
                 'label' => 'Adresse(*) : ',
                 'attr' => [
-                    'placeholder' => 'Addresse',
+                    'placeholder' => 'Addresse postale',
                 ],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Veuillez saisir votre adresse.',
+                        'message' => 'Veuillez saisir votre adresse postale.',
                     ]),
                     new Regex([
                         'pattern' => '/^(?=.*[A-Za-zÀ-ÿ-09 -]).{2,24}$/u',
-                        'message' => 'Veuillez saisir une adresse contenant uniquement des lettres, des espaces, des tirets et ayant une longueur de 2 à 24 caractères.',
+                        'message' => 'Veuillez saisir une adresse postale contenant uniquement des lettres, des espaces, des tirets et ayant une longueur de 2 à 24 caractères.',
                     ]),
                 ],
             ])
@@ -199,30 +199,16 @@ class SignatureGeneratorController extends AbstractController
                 'attr' => [
                     'placeholder' => 'Tél fixe',
                 ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez saisir votre numéro de téléphone fixe.'
-                    ]),
-                    new Regex([
-                        'pattern' => '/^(?=.*[0-9])[0-9]{2}([ .])[0-9]{2}(?:\1[0-9]{2}){3}$/',
-                        'message' => 'Veuillez saisir un numéro de téléphone fixe contenant uniquement des chiffres et ayant un format valide (ex : 01 42 42 42 42 ou 01.42.42.42.42).'
-                    ]),
-                ],
+                'constraints' => [],
+                'required' => false,
             ])
             ->add('phone_mobile', TelType::class, [
                 'label' => 'Tél portable : ',
                 'attr' => [
                     'placeholder' => 'Tél portable',
                 ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez saisir votre numéro de téléphone portable.'
-                    ]),
-                    new Regex([
-                        'pattern' => '/^(?=.*[0-9])[0-9]{2}([ .])[0-9]{2}(?:\1[0-9]{2}){3}$/',
-                        'message' => 'Veuillez saisir un numéro de téléphone portable contenant uniquement des chiffres et ayant un format valide (ex : 06 42 42 42 42 ou 06.42.42.42.42).'
-                    ]),
-                ],
+                'constraints' => [],
+                'required' => false,
             ])
             ->add('logo', EntityType::class, [
                 'label' => 'Logo(*) : ',
@@ -245,17 +231,6 @@ class SignatureGeneratorController extends AbstractController
                 'choices' => $logo2Choices,
                 'required' => false,
                 'placeholder' => 'Choisir un logo ',
-            ])    
-            ->add('disclaimer', ChoiceType::class, [
-                'label' => 'Ajouter un disclaimer ?(*)',
-                'choices' => [
-                    'Oui' => false,
-                    'Non' => true,
-                ],
-                'attr' => ['id' => 'disclaimer'],
-                'expanded' => true,
-                'multiple' => false,
-                'required' => true,
             ])
             ->add('signatureSubmit', SubmitType::class, [
                 'label' => 'Générer la signature',
@@ -267,42 +242,42 @@ class SignatureGeneratorController extends AbstractController
             ->add('facebook', TextType::class, [
                 'label' => false,
                 'attr' => [
-                    'placeholder' => 'Lien Facebook',
+                    'placeholder' => 'https://wwww.facebook.fr',
                 ],
                 'required' => false,
             ])
-            
+
             ->add('youtube', TextType::class, [
                 'label' => false,
                 'attr' => [
-                    'placeholder' => 'Lien YouTube',
+                    'placeholder' => 'https://www.youtube.fr',
                 ],
                 'required' => false,
             ])
-            
+
             ->add('unsa', TextType::class, [
                 'label' => false,
                 'attr' => [
-                    'placeholder' => 'Lien UNSA',
+                    'placeholder' => 'https://www.unsa.org',
                 ],
                 'required' => false,
             ])
-            
+
             ->add('linkedin', TextType::class, [
                 'label' => false,
                 'attr' => [
-                    'placeholder' => 'Lien LinkedIn',
+                    'placeholder' => 'https://www.linkedin.fr',
                 ],
                 'required' => false,
             ])
-            
+
             ->add('twitter', TextType::class, [
                 'label' => false,
                 'attr' => [
-                    'placeholder' => 'Lien Twitter',
+                    'placeholder' => 'https://www.twitter.fr',
                 ],
                 'required' => false,
-            ])           
+            ])
             ->getForm();
 
         $user = $userRepository->find($userId);
@@ -350,42 +325,46 @@ class SignatureGeneratorController extends AbstractController
                     $signature->setZipCode($data['zip_code']);
                     $signature->setCity($data['city']);
                     $signature->setEmail($data['email']);
-                    $signature->setPhone($data['phone_landline'] . ' - ' . $data['phone_mobile']);
+
+                    if (!empty($data['phone_landline']) && !empty($data['phone_mobile'])) {
+                        $signature->setPhone($data['phone_landline'] . ' - ' . $data['phone_mobile']);
+                    } elseif (!empty($data['phone_landline']) && empty($data['phone_mobile'])) {
+                        // Si $phone_mobile est vide, agissez en conséquence (par exemple, enregistrez $phone_landline)
+                        $signature->setPhone($data['phone_landline']);
+                    } elseif (!empty($data['phone_mobile']) && empty($data['phone_landline'])) {
+                        // Si $phone_landline est vide, agissez en conséquence (par exemple, enregistrez $phone_mobile)
+                        $signature->setPhone($data['phone_mobile']);
+                    } else {
+                    }
+
                     $signature->setLogo($data['logo']);
                     $signature->setLogo2($data['logo_2']);
 
                     $facebookLink = $data['facebook'];
-                    if ($facebookLink !== null){
+                    if ($facebookLink !== null) {
                         $signature->setFacebook($data['facebook']);
                     }
 
                     $unsaLink = $data['unsa'];
-                    if ($unsaLink !== null){
+                    if ($unsaLink !== null) {
                         $signature->setUnsa($data['unsa']);
                     }
 
                     $youtubeLink = $data['youtube'];
-                    if ($youtubeLink !== null){
+                    if ($youtubeLink !== null) {
                         $signature->setYoutube($data['youtube']);
                     }
 
                     $linkedinLink = $data['linkedin'];
-                    if ($linkedinLink !== null){
+                    if ($linkedinLink !== null) {
                         $signature->setLinkedin($data['linkedin']);
                     }
 
                     $twitterLink = $data['twitter'];
-                    if ($twitterLink !== null){
+                    if ($twitterLink !== null) {
                         $signature->setTwitter($data['twitter']);
                     }
 
-                    $disclaimerResponse = $data['disclaimer'];
-                    
-                    if ($disclaimerResponse === true){
-                        $signature->setDisclaimer('<p>Avant d\'imprimer, pensez à l\'environnement. N\'imprimez cette page que si nécessaire.</p>');//Modifier par un vrais disclaimer
-                    }else{
-                        $signature->setDisclaimer('non');
-                    }
                     $signature->setUserId($session->get('user_id'));
                     // Définir la date de création
                     $createAt = new DateTimeImmutable();
@@ -540,8 +519,20 @@ class SignatureGeneratorController extends AbstractController
         $html .= '<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">';
         $html .= '<img id="LOGO-MAIL" src="/signature/img/mail.png" style="border: none;block-size: 12px;margin-inline-end: .5em;">';
         $html .= '<a href="mailto:' . $data['email'] . '" style="color: #666;font-style: italic;">' . $data['email'] . '</a><br>';
-        $html .= '<img id="LOGO-PHONE" src="/signature/img/phone.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
-        $html .= '<span style="color: #666;">' . $data['phone_landline'] . ' - ' . $data['phone_mobile'] . '</span>';
+        if (!empty($data['phone_landline']) && !empty($data['phone_mobile'])) {
+            $html .= '<img id="LOGO-PHONE" src="/signature/img/phone.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
+            $html .= '<span style="color: #666;">' . $data['phone_landline'] . '</span>';
+            $html .= '<img id="LOGO-PHONE" src="/signature/img/mobile.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
+            $html .= '<span style="color: #666;">' . $data['phone_mobile'] . '</span>';
+        } elseif (!empty($data['phone_landline']) && empty($data['phone_mobile'])) {
+            $html .= '<img id="LOGO-PHONE" src="/signature/img/phone.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
+            $html .= '<span style="color: #666;">' . $data['phone_landline'] . '</span>';
+        } elseif (!empty($data['phone_mobile']) && empty($data['phone_landline'])) {
+            $html .= '<img id="LOGO-PHONE" src="/signature/img/mobile.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
+            $html .= '<span style="color: #666;">' . $data['phone_mobile'] . '</span>';
+        } else {
+        }
+
         $html .= '</p>';
         $html .= '</td>';
 
@@ -557,30 +548,24 @@ class SignatureGeneratorController extends AbstractController
         $html .= '</tbody>';
         $html .= '</table>';
 
-        if ($data['facebook'] !== null){
-            $html .= "<a id=\"facebook\" href=".$data['facebook']." style=\"color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none\"><img src= \"".$socialLink['facebook']."\"> ".$data['facebook']."</a> &nbsp;";
+        if ($data['facebook'] !== null) {
+            $html .= "<a id=\"facebook\" href=" . $data['facebook'] . " style=\"color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none\"><img src= \"" . $socialLink['facebook'] . "\"> " . $data['facebook'] . "</a> &nbsp;";
         }
 
-        if ($data['unsa'] !== null){
-            $html .= "<a id=\"unsa\"href=".$data['unsa']." style=\"color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none\"><img src=\"".$socialLink['unsa']." \"> ".$data['unsa']."</a> &nbsp;";
+        if ($data['unsa'] !== null) {
+            $html .= "<a id=\"unsa\"href=" . $data['unsa'] . " style=\"color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none\"><img src=\"" . $socialLink['unsa'] . " \"> " . $data['unsa'] . "</a> &nbsp;";
         }
 
-        if ($data['youtube'] !== null){
-            $html .= "<a id=\"youtube\"href=".$data['youtube']." style=\"color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none\"> <img src= \"". $socialLink['youtube'] ." \"> ".$data['youtube']."</a> &nbsp;";
+        if ($data['youtube'] !== null) {
+            $html .= "<a id=\"youtube\"href=" . $data['youtube'] . " style=\"color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none\"> <img src= \"" . $socialLink['youtube'] . " \"> " . $data['youtube'] . "</a> &nbsp;";
         }
 
-        if ($data['linkedin'] !== null){
-            $html .= "<a id=\"linkedin\"href=".$data['linkedin']." style=\"color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none\"> <img src= \" ". $socialLink['linkedin'] ." \"> ".$data['linkedin']."</a> &nbsp;";
+        if ($data['linkedin'] !== null) {
+            $html .= "<a id=\"linkedin\"href=" . $data['linkedin'] . " style=\"color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none\"> <img src= \" " . $socialLink['linkedin'] . " \"> " . $data['linkedin'] . "</a> &nbsp;";
         }
 
-        if ($data['twitter'] !== null){
-            $html .= "<a id=\"twitter\"href=".$data['twitter']." style=\"color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none\"> <img src= \" ". $socialLink['twitter'] ."\"> ".$data['twitter']."</a> &nbsp;";
-        }
-
-        if ($data['disclaimer'] != "non") {
-            $html .= '<br><br><div id="previewDisclaimer" style="background-color: #2ecc71; border-radius : 5px; padding: 0 5px; color #ecf0f1; font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji; font-size: 1rem;">';
-			$html .= '<p>Avant d\'imprimer, pensez à l\'environnement. N\'imprimez cette page que si nécessaire.</p>';
-			$html .= '</div>';
+        if ($data['twitter'] !== null) {
+            $html .= "<a id=\"twitter\"href=" . $data['twitter'] . " style=\"color:#4267B2;font-weight: bold; font-size: 14px;text-decoration:none\"> <img src= \" " . $socialLink['twitter'] . "\"> " . $data['twitter'] . "</a> &nbsp;";
         }
 
         $html .= '</div>';
@@ -698,11 +683,11 @@ class SignatureGeneratorController extends AbstractController
             ->add('role', TextType::class, [
                 'label' => 'Rôle(*) : ',
                 'attr' => [
-                    'placeholder' => 'Poste dans l\'entreprise',
+                    'placeholder' => 'Poste dans l\'organisation',
                 ],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Veuillez saisir votre rôle dans l\'entreprise.',
+                        'message' => 'Veuillez saisir votre rôle dans l\'organisation.',
                     ]),
                     new Regex([
                         'pattern' => '/^(?=.*[A-Za-zÀ-ÿ -]).{2,64}$/u',
@@ -713,30 +698,30 @@ class SignatureGeneratorController extends AbstractController
             ->add('organization', TextType::class, [
                 'label' => 'Organisation(*) : ',
                 'attr' => [
-                    'placeholder' => 'Nom de l\'entreprise'
+                    'placeholder' => 'Nom de l\'organisation'
                 ],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Veuillez saisir le nom de votre entreprise.',
+                        'message' => 'Veuillez saisir le nom de votre organisation.',
                     ]),
                     new Regex([
                         'pattern' => '/^(?=.*[A-Za-zÀ-ÿ-09 -]).{2,64}$/u',
-                        'message' => 'Veuillez saisir un nom d\'entreprise contenant uniquement des lettres, des espaces, des tirets et ayant une longueur de 2 à 64 caractères.',
+                        'message' => 'Veuillez saisir un nom d\'organisation contenant uniquement des lettres, des espaces, des tirets et ayant une longueur de 2 à 64 caractères.',
                     ]),
                 ],
             ])
             ->add('adress', TextType::class, [
                 'label' => 'Adresse(*) : ',
                 'attr' => [
-                    'placeholder' => 'Addresse',
+                    'placeholder' => 'Addresse postale',
                 ],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Veuillez saisir votre adresse.',
+                        'message' => 'Veuillez saisir votre adresse postale.',
                     ]),
                     new Regex([
                         'pattern' => '/^(?=.*[A-Za-zÀ-ÿ-09 -]).{2,24}$/u',
-                        'message' => 'Veuillez saisir une adresse contenant uniquement des lettres, des espaces, des tirets et ayant une longueur de 2 à 24 caractères.',
+                        'message' => 'Veuillez saisir une adresse postale contenant uniquement des lettres, des espaces, des tirets et ayant une longueur de 2 à 24 caractères.',
                     ]),
                 ],
             ])
@@ -790,30 +775,16 @@ class SignatureGeneratorController extends AbstractController
                 'attr' => [
                     'placeholder' => 'Tél fixe',
                 ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez saisir votre numéro de téléphone fixe.'
-                    ]),
-                    new Regex([
-                        'pattern' => '/^(?=.*[0-9])[0-9]{2}([ .])[0-9]{2}(?:\1[0-9]{2}){3}$/',
-                        'message' => 'Veuillez saisir un numéro de téléphone fixe contenant uniquement des chiffres et ayant un format valide (ex : 01 42 42 42 42 ou 01.42.42.42.42).'
-                    ]),
-                ],
+                'constraints' => [],
+                'required' => false,
             ])
             ->add('phone_mobile', TelType::class, [
                 'label' => 'Tél portable : ',
                 'attr' => [
                     'placeholder' => 'Tél portable',
                 ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez saisir votre numéro de téléphone portable.'
-                    ]),
-                    new Regex([
-                        'pattern' => '/^(?=.*[0-9])[0-9]{2}([ .])[0-9]{2}(?:\1[0-9]{2}){3}$/',
-                        'message' => 'Veuillez saisir un numéro de téléphone portable contenant uniquement des chiffres et ayant un format valide (ex : 06 42 42 42 42 ou 06.42.42.42.42).'
-                    ]),
-                ],
+                'constraints' => [],
+                'required' => false,
             ])
             ->add('logo', EntityType::class, [
                 'label' => 'Logo(*) : ',
@@ -836,55 +807,45 @@ class SignatureGeneratorController extends AbstractController
                 'required' => false,
                 'placeholder' => 'Choisir un logo ',
             ])
-            ->add('disclaimer', ChoiceType::class, [
-                'label' => 'Ajouter un disclaimer ?(*)',
-                'choices' => [
-                    'Oui' => true,
-                    'Non' => false,
-                ],
-                'expanded' => true,
-                'multiple' => false,
-                'required' => true,
-            ]) 
             ->add('facebook', TextType::class, [
-                'label' => false,
+                'label' => 'URL FACEBOOK',
                 'attr' => [
-                    'placeholder' => 'Lien Facebook',
+                    'placeholder' => 'https://www.facebook.fr',
                 ],
                 'required' => false,
             ])
-            
+
             ->add('youtube', TextType::class, [
-                'label' => false,
+                'label' => 'URL YOUTUBE',
                 'attr' => [
-                    'placeholder' => 'Lien YouTube',
+                    'placeholder' => 'https://www.unsa.org',
                 ],
                 'required' => false,
             ])
-            
+
             ->add('unsa', TextType::class, [
-                'label' => false,
+                'label' => 'URL UNSA',
                 'attr' => [
-                    'placeholder' => 'Lien UNSA',
+                    'placeholder' => 'https://www.unsa.org',
                 ],
                 'required' => false,
             ])
-            
+
             ->add('linkedin', TextType::class, [
-                'label' => false,
+                'label' => 'URL LINKEDIN',
                 'attr' => [
-                    'placeholder' => 'Lien LinkedIn',
+                    'placeholder' => 'https://www.linkedin.fr',
                 ],
                 'required' => false,
             ])
-            
+
             ->add('twitter', TextType::class, [
-                'label' => false,
+                'label' => 'URL TWITTER',
                 'attr' => [
-                    'placeholder' => 'Lien Twitter',
+                    'placeholder' => 'https://www.twitter.fr',
                 ],
                 'required' => false,
-            ])                       
+            ])
             ->add('signatureSubmit', SubmitType::class, [
                 'label' => 'Générer la signature',
                 'attr' => [
@@ -895,10 +856,23 @@ class SignatureGeneratorController extends AbstractController
             ->getForm();
 
         $nameParts = explode('&', $signature->getName());
-        $phoneParts = explode('-', $signature->getPhone());
-
-        $phoneLandline = $phoneParts[0];
-        $phoneMobile = $phoneParts[1];
+        $phone = $signature->getPhone();
+        $phoneLandline = "";
+        $phoneMobile = "";
+        if ($phone !== null) {
+            if (strpos($phone, '-') !== false) {
+                $phoneParts = explode('-', $phone);
+                $phoneLandline = $phoneParts[0];
+                $phoneMobile = $phoneParts[1];
+            } elseif (substr($phone, 0, 2) === '01') {
+                $phoneLandline = $phone;
+                $phoneMobile = "";
+            } elseif (substr($phone, 0, 2) === '06') {
+                $phoneMobile = $phone;
+                $phoneLandline = "";
+            }
+        } else {
+        }
         $firstName = $nameParts[0];
         $lastName = $nameParts[1];
 
@@ -915,7 +889,6 @@ class SignatureGeneratorController extends AbstractController
             'phone_mobile' => $phoneMobile,
             'logo' => $signature->getLogo(),
             'logo_2' => $signature->getLogo2(),
-            'disclaimer' => $signature->getDisclaimer(),
             'facebook' => $signature->getFacebook(),
             'unsa' => $signature->getUnsa(),
             'youtube' => $signature->getYoutube(),
@@ -938,21 +911,25 @@ class SignatureGeneratorController extends AbstractController
             $signature->setZipCode($newSignatureData['zip_code']);
             $signature->setCity($newSignatureData['city']);
             $signature->setEmail($newSignatureData['email']);
-            $signature->setPhone($newSignatureData['phone_landline'] . ' - ' . $newSignatureData['phone_mobile']);
+
+            if (!empty($data['phone_landline']) && !empty($data['phone_mobile'])) {
+                $signature->setPhone($data['phone_landline'] . ' - ' . $data['phone_mobile']);
+            } elseif (!empty($data['phone_landline']) && empty($data['phone_mobile'])) {
+                // Si $phone_mobile est vide, agissez en conséquence (par exemple, enregistrez $phone_landline)
+                $signature->setPhone($data['phone_landline']);
+            } elseif (!empty($data['phone_mobile']) && empty($data['phone_landline'])) {
+                // Si $phone_landline est vide, agissez en conséquence (par exemple, enregistrez $phone_mobile)
+                $signature->setPhone($data['phone_mobile']);
+            } else {
+            }
+
             $signature->setLogo($newSignatureData['logo']);
             $signature->setLogo2($newSignatureData['logo_2']);
-            if ($newSignatureData['disclaimer']) {
-                $disclaimerText = '<p>Avant d\'imprimer, pensez à l\'environnement. N\'imprimez cette page que si nécessaire.</p>';
-            } else {
-                $disclaimerText = 'non';
-            }
-            $signature->setFacebook($newSignatureData['facebook']); 
-            $signature->setUnsa($newSignatureData['unsa']); 
-            $signature->setYoutube($newSignatureData['youtube']); 
-            $signature->setLinkedin($newSignatureData['linkedin']); 
-            $signature->setTwitter($newSignatureData['twitter']); 
-            $signature->setDisclaimer($disclaimerText);
-            
+            $signature->setFacebook($newSignatureData['facebook']);
+            $signature->setUnsa($newSignatureData['unsa']);
+            $signature->setYoutube($newSignatureData['youtube']);
+            $signature->setLinkedin($newSignatureData['linkedin']);
+            $signature->setTwitter($newSignatureData['twitter']);
             $entityManager->flush();
         }
 
@@ -970,10 +947,31 @@ class SignatureGeneratorController extends AbstractController
     {
         $signature = $signatureRepository->find($id);
         $nameParts = explode('&', $signature->getName());
-        $phoneParts = explode('-', $signature->getPhone());
+        $phoneLandline = "";
+        $phoneMobile = "";
+        $phone = $signature->getPhone();
 
-        $phoneLandline = $phoneParts[0];
-        $phoneMobile = $phoneParts[1];
+        if ($phone !== null) {
+            if (strpos($phone, '-') === false) {
+                $deuxPremiersCaracteres = substr($phone, 0, 2);
+        
+                if ($deuxPremiersCaracteres === "01") {
+                    $phoneLandline = $phone;
+                    $phoneMobile = "";
+                } elseif ($deuxPremiersCaracteres === "06") {
+                    $phoneLandline = '';
+                    $phoneMobile = $phone;
+                    echo "La chaîne commence par '06'.";
+                } else {
+                    $phoneParts = explode('-', $phone);
+        
+                    // Vérifiez si l'index 1 existe avant de l'utiliser
+                    $phoneLandline = isset($phoneParts[0]) ? $phoneParts[0] : '';
+                    $phoneMobile = isset($phoneParts[1]) ? $phoneParts[1] : '';
+                }
+            }
+        }       
+
         $firstName = $nameParts[0];
         $lastName = $nameParts[1];
 
@@ -995,10 +993,30 @@ class SignatureGeneratorController extends AbstractController
     {
         $signature = $signatureRepository->find($id);
         $nameParts = explode('&', $signature->getName());
-        $phoneParts = explode('-', $signature->getPhone());
+        $phoneLandline = "";
+        $phoneMobile = "";
+        $phone = $signature->getPhone();
 
-        $phoneLandline = $phoneParts[0];
-        $phoneMobile = $phoneParts[1];
+        if ($phone !== null) {
+            if (strpos($phone, '-') === false) {
+                $deuxPremiersCaracteres = substr($phone, 0, 2);
+        
+                if ($deuxPremiersCaracteres === "01") {
+                    $phoneLandline = $phone;
+                    $phoneMobile = "";
+                } elseif ($deuxPremiersCaracteres === "06") {
+                    $phoneLandline = '';
+                    $phoneMobile = $phone;
+                    echo "La chaîne commence par '06'.";
+                } else {
+                    $phoneParts = explode('-', $phone);
+        
+                    // Vérifiez si l'index 1 existe avant de l'utiliser
+                    $phoneLandline = isset($phoneParts[0]) ? $phoneParts[0] : '';
+                    $phoneMobile = isset($phoneParts[1]) ? $phoneParts[1] : '';
+                }
+            }
+        }       
         $firstName = $nameParts[0];
         $lastName = $nameParts[1];
 

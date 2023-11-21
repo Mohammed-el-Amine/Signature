@@ -71,9 +71,9 @@ class HomeController extends AbstractController
     {
         $hashedPassword = $user->getPassword();
 
-        // Hachage du mot de passe fourni avec la fonction SHA2() de MySQL
         $hashedPasswordInput = hash('sha256', $password);
 
         return $hashedPassword === $hashedPasswordInput;
     }
+   
 }
