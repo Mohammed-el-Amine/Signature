@@ -37,4 +37,59 @@ class DocumentController extends AbstractController
             throw $this->createNotFoundException('Le fichier demandé n\'existe pas.');
         }
     }
+
+    #[Route('/liste-fichiers', name: 'app_liste_fichiers')]
+    public function listeFichiers()
+    {
+        $publicDirectory = $this->getParameter('kernel.project_dir') . '/public/img';
+    
+        $contents = $this->getDirectoryContents($publicDirectory);
+    
+        $html = $this->generateTreeHtml($contents);
+    
+        return new Response($html);
+    }
+    
+    private function getDirectoryContents(string $dir)
+    {
+        $contents = [];
+        $handle = opendir($dir);
+    
+        while (false !== ($item = readdir($handle))) {
+            if ($item !== '.' && $item !== '..') {
+                $path = $dir . '/' . $item;
+                if (is_dir($path)) {
+                    // Récupérer les fichiers du sous-répertoire récursivement
+                    $subContents = $this->getDirectoryContents($path);
+                    // Ajouter les fichiers du sous-répertoire à la liste principale
+                    $contents[$item] = $subContents;
+                } else {
+                    // Ajouter le fichier au tableau des contenus
+                    $contents[] = $item;
+                }
+            }
+        }
+    
+        closedir($handle);
+    
+        return $contents;
+    }
+    
+    private function generateTreeHtml(array $contents, $isSubDirectory = false)
+    {
+        $html = $isSubDirectory ? '<ul>' : '<ul class="tree">';
+        foreach ($contents as $key => $item) {
+            if (is_array($item)) {
+                // Sous-répertoire, appel récursif
+                $html .= '<li>' . $key . $this->generateTreeHtml($item, true) . '</li>';
+            } else {
+                // Fichier
+                $html .= '<li>' . $item . '</li>';
+            }
+        }
+        $html .= '</ul>';
+    
+        return $html;
+    }
+    
 }

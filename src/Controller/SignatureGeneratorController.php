@@ -11,14 +11,12 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\Logo;
 use App\Entity\Signature;
 use App\Repository\UserRepository;
 use App\Repository\LogoRepository;
 use App\Repository\SignatureRepository;
-use ContainerFmJR8Qf\getTwigService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -517,18 +515,18 @@ class SignatureGeneratorController extends AbstractController
         $html .= '<span style="color: #000;">' . $data['city'] . '</span><br>';
         $html .= '</p>';
         $html .= '<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">';
-        $html .= '<img id="LOGO-MAIL" src="/signature/img/mail.png" style="border: none;block-size: 12px;margin-inline-end: .5em;">';
+        $html .= '<img id="LOGO-MAIL" src="/signature/img/Application/mail.png" style="border: none;block-size: 12px;margin-inline-end: .5em;">';
         $html .= '<a href="mailto:' . $data['email'] . '" style="color: #666;font-style: italic;">' . $data['email'] . '</a><br>';
         if (!empty($data['phone_landline']) && !empty($data['phone_mobile'])) {
-            $html .= '<img id="LOGO-PHONE" src="/signature/img/phone.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
+            $html .= '<img id="LOGO-PHONE" src="/signature/img/Application/phone.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
             $html .= '<span style="color: #666;">' . $data['phone_landline'] . '</span>';
-            $html .= '<img id="LOGO-PHONE" src="/signature/img/mobile.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
+            $html .= '<img id="LOGO-PHONE" src="/signature/img/Application/mobile.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
             $html .= '<span style="color: #666;">' . $data['phone_mobile'] . '</span>';
         } elseif (!empty($data['phone_landline']) && empty($data['phone_mobile'])) {
-            $html .= '<img id="LOGO-PHONE" src="/signature/img/phone.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
+            $html .= '<img id="LOGO-PHONE" src="/signature/img/Application/phone.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
             $html .= '<span style="color: #666;">' . $data['phone_landline'] . '</span>';
         } elseif (!empty($data['phone_mobile']) && empty($data['phone_landline'])) {
-            $html .= '<img id="LOGO-PHONE" src="/signature/img/mobile.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
+            $html .= '<img id="LOGO-PHONE" src="/signature/img/Application/mobile.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
             $html .= '<span style="color: #666;">' . $data['phone_mobile'] . '</span>';
         } else {
         }

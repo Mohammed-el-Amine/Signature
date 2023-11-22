@@ -561,8 +561,10 @@ class AdminController extends AbstractController
                         'maxSize' => '1M',
                         'mimeTypes' => [
                             'image/png',
+                            'image/jpeg',
+                            'image/jpg',
                         ],
-                        'mimeTypesMessage' => 'Veuillez télécharger un fichier PNG valide.',
+                        'mimeTypesMessage' => 'Veuillez télécharger un fichier image valide.',
                     ]),
                 ],
             ])
@@ -580,11 +582,11 @@ class AdminController extends AbstractController
 
             // Générer un nom de fichier unique
             // Utiliser le nom donné dans le formulaire
-            $filename = '/img/' . $form->get('name')->getData() . '.png';
+            $filename = '/img/Logo/' . $form->get('name')->getData() . '.png';
 
             // Déplacer le fichier vers le répertoire public/img
             $uploadedFile->move(
-                $this->getParameter('kernel.project_dir') . '/public/img',
+                $this->getParameter('kernel.project_dir') . '/public/img/Logo', // a modifier pour le dossier logo
                 $filename
             );
 
@@ -910,8 +912,7 @@ class AdminController extends AbstractController
                 'attr' => [
                     'placeholder' => 'Tél fixe',
                 ],
-                'constraints' => [
-                ],
+                'constraints' => [],
                 'required' => false,
             ])
             ->add('phone_mobile', TelType::class, [
@@ -919,9 +920,7 @@ class AdminController extends AbstractController
                 'attr' => [
                     'placeholder' => 'Tél portable',
                 ],
-                'constraints' => [
-                    
-                ],
+                'constraints' => [],
                 'required' => false,
             ])
             ->add('logo', EntityType::class, [
@@ -1137,19 +1136,19 @@ class AdminController extends AbstractController
         $html .= '<span style="color: #000;">' . $data['city'] . '</span><br>';
         $html .= '</p>';
         $html .= '<p style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, \'Helvetica Neue\', Arial, sans-serif;font-size: 12px; line-height: 14px; color: #000;">';
-        $html .= '<img id="LOGO-MAIL" src="/signature/img/mail.png" style="border: none;block-size: 12px;margin-inline-end: .5em;">';
+        $html .= '<img id="LOGO-MAIL" src="/signature/img/Application/mail.png" style="border: none;block-size: 12px;margin-inline-end: .5em;">';
         $html .= '<a href="mailto:' . $data['email'] . '" style="color: #666;font-style: italic;">' . $data['email'] . '</a><br>';
 
         if (!empty($data['phone_landline']) && !empty($data['phone_mobile'])) {
-            $html .= '<img id="LOGO-PHONE" src="/signature/img/phone.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
+            $html .= '<img id="LOGO-PHONE" src="/signature/img/Application/phone.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
             $html .= '<span style="color: #666;">' . $data['phone_landline'] . '</span>';
-            $html .= '<img id="LOGO-PHONE" src="/signature/img/mobile.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
+            $html .= '<img id="LOGO-PHONE" src="/signature/img/Application/mobile.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
             $html .= '<span style="color: #666;">' . $data['phone_mobile'] . '</span>';
         } elseif (!empty($data['phone_landline']) && empty($data['phone_mobile'])) {
-            $html .= '<img id="LOGO-PHONE" src="/signature/img/phone.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
+            $html .= '<img id="LOGO-PHONE" src="/signature/img/Application/phone.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
             $html .= '<span style="color: #666;">' . $data['phone_landline'] . '</span>';
         } elseif (!empty($data['phone_mobile']) && empty($data['phone_landline'])) {
-            $html .= '<img id="LOGO-PHONE" src="/signature/img/mobile.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
+            $html .= '<img id="LOGO-PHONE" src="/signature/img/Application/mobile.png" style="border: none;block-size: 14px;margin-inline-end: .5em;">';
             $html .= '<span style="color: #666;">' . $data['phone_mobile'] . '</span>';
         } else {
         }
