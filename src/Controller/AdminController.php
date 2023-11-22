@@ -103,8 +103,6 @@ class AdminController extends AbstractController
             $itemsPerPage
         );
 
-
-
         $users = $userRepository->findAll();
         $allSignatures = $signatureRepository->findAll();
 

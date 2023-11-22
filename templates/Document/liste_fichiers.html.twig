@@ -76,7 +76,7 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<form action="{{ path('app_fichier_ajouter') }}" method="post" enctype="multipart/form-data">
+						<form action="{{ path('app_fichier_ajouter') }}" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
 							<div class="mb-3">
 								<label for="dossierDestination" class="form-label">Sélectionnez le dossier de destination :</label>
 								<select name="dossierDestination" id="dossierDestination" class="form-select">
@@ -98,6 +98,8 @@
 
 							<button type="submit" class="btn btn-primary">Ajouter le fichier</button>
 						</form>
+
+
 					</div>
 				</div>
 			</div>
@@ -106,6 +108,22 @@
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script>
+	function validateForm() {
+var nomFichier = document.getElementById('nomFichier').value;
+
+// Expression régulière pour vérifier si le nom du fichier contient uniquement des lettres et des chiffres
+var regex = /^[a-zA-Z0-9]+$/;
+
+if (! regex.test(nomFichier)) {
+alert("Le nom du fichier ne doit contenir que des lettres et des chiffres.");
+return false; // Empêche l'envoi du formulaire si la validation échoue
+}
+
+return true; // Autorise l'envoi du formulaire si la validation réussit
+}
+</script>
+
 
 	</body>
 </html>

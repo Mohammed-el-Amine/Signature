@@ -211,17 +211,18 @@
 
 							<div class="form-row">
 								<div class="col"><br>
-									{{form_row(form.unsa,{'attr': {'id':'unsa', 'class': 'hidden-unsa'}})}}<br>
-									{{form_row(form.linkedin,{'attr': {'id':'linkedin', 'class': 'hidden-linkedin'}})}}
+									{{form_row(form.unsa,{'attr': {'id':'unsa', 'class': 'hidden-unsa', 'pattern': '^https://'}})}}<br>
+									{{form_row(form.linkedin,{'attr': {'id':'linkedin', 'class': 'hidden-linkedin' , 'pattern': '^https://'}})}}
 								</div>
 								<div class="col"><br>
-									{{ form_row(form.facebook, {'attr': {'id': 'facebook', 'class': 'hidden-facebook'}}) }}<br>
-									{{form_row(form.youtube,{'attr': {'id':'youtube', 'class': 'hidden-youtube'}})}}
+									{{ form_row(form.facebook, {'attr': {'id': 'facebook', 'class': 'hidden-facebook' , 'pattern': '^https://'}}) }}<br>
+									{{form_row(form.youtube,{'attr': {'id':'youtube', 'class': 'hidden-youtube' , 'pattern': '^https://'}})}}
 								</div>
 								<div class="col-md-6"><br>
-									{{form_row(form.twitter,{'attr': {'id':'twitter', 'class': 'hidden-twitter'}})}}
+									{{form_row(form.twitter,{'attr': {'id':'twitter', 'class': 'hidden-twitter' , 'pattern': '^https://'}})}}
 								</div>
-							</div><br>
+							</div>
+							<br>
 						</div><br>
 						<p>Merci de bien vouloir renseignez tout les champs obligatoire
 							<br>contenant une astérix (*).<br><br></p>
