@@ -1,0 +1,35 @@
+{# templates/Document/ajouter-fichier.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un fichier
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		<h1 class="mb-4">Ajouter un fichier</h1>
+
+		<form action="{{ path('app_fichier_ajouter') }}" method="post" enctype="multipart/form-data">
+			<div class="mb-3">
+				<label for="dossierDestination" class="form-label">Sélectionnez le dossier de destination :</label>
+				<select name="dossierDestination" id="dossierDestination" class="form-select">
+					{% for dossier in dossiers %}
+						<option value="{{ dossier }}">{{ dossier }}</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			<div class="mb-3">
+				<label for="nomFichier" class="form-label">Nom du fichier :</label>
+				<input type="text" name="nomFichier" id="nomFichier" class="form-control" required>
+			</div>
+
+			<div class="mb-3">
+				<label for="fichier" class="form-label">Choisissez un fichier :</label>
+				<input type="file" name="fichier" id="fichier" class="form-control">
+			</div>
+
+			<button type="submit" class="btn btn-primary">Ajouter le fichier</button>
+		</form>
+	</div>
+{% endblock %}

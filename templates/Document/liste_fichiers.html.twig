@@ -1,0 +1,111 @@
+{# templates/liste_fichiers.html.twig #}
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Liste des fichiers</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap-theme.min.css">
+	</head>
+	<body>
+		<div class="container" style="overflow:auto; padding: 10px ;"><br><br>
+
+			<div class="d-flex justify-content-end">
+				<a href="{{ path('logout') }}" class="btn btn-danger">Déconnexion</a>
+			</div>
+			<a class="btn btn-outline-info" href="{{ path('admin_dashboard') }}">Dashboard</a>
+			<a class="btn btn-outline-info" href="{{ path('admin_index') }}">Utilisateurs</a>
+			<a class="btn btn-outline-info" href="{{ path('admin_logo') }}">Logo</a>
+			<a class="btn btn-outline-info" href="{{path('admin_create_signature')}}">Crée une signature</a><br><br>
+
+			<h1>
+				Mes documents
+			</h1>
+			<br>
+			<div
+				class='buttonModals'>
+				<!-- Bouton pour ouvrir la première modal -->
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ajouterDossierModal">
+					Ajouter un dossier
+				</button>
+
+				<!-- Bouton pour ouvrir la deuxième modal -->
+				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#autreModal">
+					Ajouter un fichier
+				</button>
+			</div>
+			<br><br>
+
+			{{ treeHtml|raw }}
+
+		</div>
+
+		<!-- Modal pour ajouter un dossier -->
+		<div class="modal fade" id="ajouterDossierModal" tabindex="-1" role="dialog" aria-labelledby="ajouterDossierModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="ajouterDossierModalLabel">Ajouter un dossier</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="container mt-5">
+							<form action="{{ path('app_dossier_ajouter') }}" method="post">
+								<div class="form-group">
+									<label for="nomDossier">Nom du dossier :</label>
+									<input type="text" class="form-control" id="nomDossier" name="nomDossier" required>
+								</div>
+								<button type="submit" class="btn btn-primary">Créer le dossier</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Deuxième modal avec un autre contenu -->
+		<div class="modal fade" id="autreModal" tabindex="-1" role="dialog" aria-labelledby="autreModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="autreModalLabel">Ajouter un fichier</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form action="{{ path('app_fichier_ajouter') }}" method="post" enctype="multipart/form-data">
+							<div class="mb-3">
+								<label for="dossierDestination" class="form-label">Sélectionnez le dossier de destination :</label>
+								<select name="dossierDestination" id="dossierDestination" class="form-select">
+									{% for dossier in dossiers %}
+										<option value="{{ dossier }}">{{ dossier }}</option>
+									{% endfor %}
+								</select>
+							</div>
+
+							<div class="mb-3">
+								<label for="nomFichier" class="form-label">Nom du fichier :</label>
+								<input type="text" name="nomFichier" id="nomFichier" class="form-control" required>
+							</div>
+
+							<div class="mb-3">
+								<label for="fichier" class="form-label">Choisissez un fichier :</label>
+								<input type="file" name="fichier" id="fichier" class="form-control">
+							</div>
+
+							<button type="submit" class="btn btn-primary">Ajouter le fichier</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+	</body>
+</html>
