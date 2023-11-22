@@ -268,7 +268,7 @@
 							<td class="text-center align-middle">{{ signature.createAT|date('d-m-Y') }}</td>
 							<td class="text-center align-middle">
 								<div style="display: flex; justify-content: center; align-items: center; gap: 5px">
-									<button class="btn btn-warning" onclick="openModal('{{ path('edit_signature',{ id: signature.id }) }}')">&#128221;</button>
+									<button class="btn" onclick="openModal('{{ path('edit_signature',{ id: signature.id }) }}')"><img src="https://lab-web.unsa.org/signature/img/Application/edit.png"></button>
 									<button class="btn btn-secondary" onclick="openModal('{{ path('html_signature',{id: signature.id}) }}')">HTML</button>
 									<button class="btn btn-success" onclick="openModal('{{ path('png_signature',{id: signature.id}) }}')">PNG</button>
 								</div>
@@ -573,7 +573,6 @@ var combinedHTML = facebookValue !== "" ? imgElement.outerHTML + " " + facebookV
 previewFacebook.innerHTML = combinedHTML;
 previewFacebook.href = facebookValue;
 
-localStorage.setItem('facebookValue', facebookValue);
 });
 
 unsaInput.addEventListener('input', function () {
@@ -587,7 +586,6 @@ var combinedHTML = unsaValue !== "" ? imgElement.outerHTML + " " + unsaValue : u
 previewUnsa.innerHTML = combinedHTML;
 previewUnsa.href = UnsaValue;
 
-localStorage.setItem('unsa', UnsaValue);
 });
 
 youtubeInput.addEventListener('input', function () {
@@ -600,7 +598,6 @@ var combinedHTML = youtubeValue !== "" ? imgElement.outerHTML + " " + youtubeVal
 previewYoutube.innerHTML = combinedHTML;
 previewYoutube.href = youtubeValue;
 
-localStorage.setItem('youtubeValue', youtubeValue);
 });
 
 linkedinInput.addEventListener('input', function () {
@@ -613,7 +610,6 @@ var combinedHTML = linkedinValue !== "" ? imgElement.outerHTML + " " + linkedinV
 previewLinkedin.innerHTML = combinedHTML;
 previewLinkedin.href = linkedinValue;
 
-localStorage.setItem('linkedinValue', linkedinValue);
 });
 
 twitterInput.addEventListener('input', function () {
@@ -729,6 +725,7 @@ if (facebookCheckbox.checked) {
 hiddenFacebook.style.display = 'block'; // Afficher le champ caché
 } else {
 hiddenFacebook.style.display = 'none'; // Cacher le champ
+hiddenFacebook.value = '';
 }
 }
 updateHiddenFieldVisibilityFacebook();
@@ -746,6 +743,7 @@ if (youtubeCheckbox.checked) {
 hiddenYoutube.style.display = 'block'; // Afficher le champ caché
 } else {
 hiddenYoutube.style.display = 'none'; // Cacher le champ
+hiddenYoutube.value = '';
 }
 }
 updateHiddenFieldVisibilityYoutube();
@@ -763,6 +761,7 @@ if (unsaCheckbox.checked) {
 hiddenUnsa.style.display = 'block'; // Afficher le champ caché
 } else {
 hiddenUnsa.style.display = 'none'; // Cacher le champ
+hiddenUnsa.value = '';
 }
 }
 updateHiddenFieldVisibilityUnsa();
@@ -780,6 +779,7 @@ if (linkedinCheckbox.checked) {
 hiddenLinkedin.style.display = 'block'; // Afficher le champ caché
 } else {
 hiddenLinkedin.style.display = 'none'; // Cacher le champ
+hiddenLinkedin.value = '';
 }
 }
 updateHiddenFieldVisibilityLinkedin();
@@ -797,6 +797,7 @@ if (twitterCheckbox.checked) {
 hiddenTwitter.style.display = 'block'; // Afficher le champ caché
 } else {
 hiddenTwitter.style.display = 'none'; // Cacher le champ
+hiddenTwitter.value = '';
 }
 }
 updateHiddenFieldVisibilityTwitter();

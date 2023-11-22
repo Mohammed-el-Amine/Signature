@@ -419,7 +419,6 @@ var combinedHTML = facebookValue !== "" ? imgElement.outerHTML + " " + facebookV
 previewFacebook.innerHTML = combinedHTML;
 previewFacebook.href = facebookValue;
 
-localStorage.setItem('facebookValue', facebookValue);
 });
 
 unsaInput.addEventListener('input', function () {
@@ -433,7 +432,6 @@ var combinedHTML = unsaValue !== "" ? imgElement.outerHTML + " " + unsaValue : u
 previewUnsa.innerHTML = combinedHTML;
 previewUnsa.href = UnsaValue;
 
-localStorage.setItem('unsa', UnsaValue);
 });
 
 youtubeInput.addEventListener('input', function () {
@@ -446,7 +444,6 @@ var combinedHTML = youtubeValue !== "" ? imgElement.outerHTML + " " + youtubeVal
 previewYoutube.innerHTML = combinedHTML;
 previewYoutube.href = youtubeValue;
 
-localStorage.setItem('youtubeValue', youtubeValue);
 });
 
 linkedinInput.addEventListener('input', function () {
@@ -459,7 +456,6 @@ var combinedHTML = linkedinValue !== "" ? imgElement.outerHTML + " " + linkedinV
 previewLinkedin.innerHTML = combinedHTML;
 previewLinkedin.href = linkedinValue;
 
-localStorage.setItem('linkedinValue', linkedinValue);
 });
 
 twitterInput.addEventListener('input', function () {
@@ -559,12 +555,15 @@ if (facebookCheckbox.checked) {
 hiddenFacebook.style.display = 'block'; // Afficher le champ caché
 } else {
 hiddenFacebook.style.display = 'none'; // Cacher le champ
+hiddenFacebook.value = ''; // Vider la valeur du champ caché
 }
 }
+
 updateHiddenFieldVisibilityFacebook();
 
 facebookCheckbox.addEventListener('change', updateHiddenFieldVisibilityFacebook);
 });
+
 
 const youtubeCheckbox = document.getElementById('youtube-checkbox');
 document.addEventListener('DOMContentLoaded', function () {
@@ -576,6 +575,7 @@ if (youtubeCheckbox.checked) {
 hiddenYoutube.style.display = 'block'; // Afficher le champ caché
 } else {
 hiddenYoutube.style.display = 'none'; // Cacher le champ
+hiddenYoutube.value = '';
 }
 }
 updateHiddenFieldVisibilityYoutube();
@@ -593,6 +593,7 @@ if (unsaCheckbox.checked) {
 hiddenUnsa.style.display = 'block'; // Afficher le champ caché
 } else {
 hiddenUnsa.style.display = 'none'; // Cacher le champ
+hiddenUnsa.value = '';
 }
 }
 updateHiddenFieldVisibilityUnsa();
@@ -610,6 +611,7 @@ if (linkedinCheckbox.checked) {
 hiddenLinkedin.style.display = 'block'; // Afficher le champ caché
 } else {
 hiddenLinkedin.style.display = 'none'; // Cacher le champ
+hiddenLinkedin.value = '';
 }
 }
 updateHiddenFieldVisibilityLinkedin();
@@ -627,6 +629,7 @@ if (twitterCheckbox.checked) {
 hiddenTwitter.style.display = 'block'; // Afficher le champ caché
 } else {
 hiddenTwitter.style.display = 'none'; // Cacher le champ
+hiddenTwitter.value = '';
 }
 }
 updateHiddenFieldVisibilityTwitter();

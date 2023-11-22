@@ -161,10 +161,10 @@
 						<td class="text-center">{{ user.role }}</td>
 						<td class="text-center">
 						<div style="display: flex; justify-content: center; align-items: center; gap: 5px">
-							<button type="button" onclick="openModal('{{ path('utilisateur_edit', { id: user.id }) }}')" class="btn btn-primary">&#128221; </button>
+							<button type="button" onclick="openModal('{{ path('utilisateur_edit', { id: user.id }) }}')" class="btn btn-primary"><img src="https://lab-web.unsa.org/signature/img/Application/edit.png"></button> 
 							<form action="{{ path('user_delete', { id: user.id }) }}" method="POST" onsubmit="return confirmDelete(event)">
 								<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}"/>
-								<button type="submit" class="btn btn-danger">&#128465;</button>
+								<button type="submit" class="btn"><img src="https://lab-web.unsa.org/signature/img/Application/trash.png"></button> 
 							</form>
 						</div>
 						</td>
